@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.stock.mapper.StockInfoMapper">
+    
+    <resultMap type="StockInfo" id="StockInfoResult">
+        <result property="logid"    column="logid"    />
+        <result property="stockId"    column="stockId"    />
+        <result property="stockName"    column="stockName"    />
+        <result property="managerName"    column="managerName"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectStockInfo">
+        select logid, stockId, stockName, managerName, mobile, districtId, corpId, createTime from as_stock_info
+    </sql>
+	
+    <select id="selectStockInfoList" parameterType="StockInfo" resultMap="StockInfoResult">
+        <include refid="selectStockInfo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="stockId != null and stockId != ''"> and stockId = #{stockId}</if>
+             <if test="stockName != null and stockName != ''"> and stockName like concat("%",#{stockName},"%")</if>
+             <if test="managerName != null and managerName != ''"> and managerName like concat("%",#{managerName},"%")</if>
+             <if test="mobile != null and mobile != ''"> and mobile = #{mobile}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockInfoById" parameterType="String" resultMap="StockInfoResult">
+        <include refid="selectStockInfo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectStockInfoByIds" parameterType="String" resultMap="StockInfoResult">
+        <include refid="selectStockInfo"/>
+        where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </select>
+        
+    <insert id="insertStockInfo" parameterType="StockInfo">
+        insert into as_stock_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="stockId != null and stockId != '' ">stockId,</if>
+			<if test="stockName != null and stockName != '' ">stockName,</if>
+			<if test="managerName != null and managerName != '' ">managerName,</if>
+			<if test="mobile != null and mobile != '' ">mobile,</if>
+			<if test="districtId != null and districtId != '' ">districtId,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="stockId != null and stockId != ''">#{stockId},</if>
+			<if test="stockName != null and stockName != ''">#{stockName},</if>
+			<if test="managerName != null and managerName != ''">#{managerName},</if>
+			<if test="mobile != null and mobile != ''">#{mobile},</if>
+			<if test="districtId != null and districtId != ''">#{districtId},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateStockInfo" parameterType="StockInfo">
+        update as_stock_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stockId != null  and stockId != ''  ">stockId = #{stockId},</if>
+            <if test="stockName != null  and stockName != ''  ">stockName = #{stockName},</if>
+            <if test="managerName != null  and managerName != ''  ">managerName = #{managerName},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="districtId != null  ">districtId = #{districtId},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteStockInfoById" parameterType="String">
+        delete from as_stock_info where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStockInfoByIds" parameterType="String">
+        delete from as_stock_info where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+</mapper>

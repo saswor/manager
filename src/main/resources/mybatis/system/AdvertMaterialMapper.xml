@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.advert.mapper.AdvertMaterialMapper">
+    
+    <resultMap type="AdvertMaterial" id="AdvertMaterialResult">
+        <result property="logid"    column="logid"    />
+        <result property="materialId"    column="materialId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="mediaName"    column="mediaName"    />
+        <result property="mediaUrl"    column="mediaUrl"    />
+        <result property="mediaSUrl"    column="mediaSUrl"    />
+        <result property="mediaType"    column="mediaType"    />
+        <result property="mediaPX"    column="mediaPX"    />
+        <result property="mediaSize"    column="mediaSize"    />
+        <result property="playerPlat"    column="playerPlat"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectAdvertMaterialVo">
+        select logid, materialId, corpId, mediaName, mediaUrl, mediaSUrl, mediaType, mediaPX, mediaSize, playerPlat, createTime from as_advert_material
+    </sql>
+	
+    <select id="selectAdvertMaterialList" parameterType="AdvertMaterial" resultMap="AdvertMaterialResult">
+        <include refid="selectAdvertMaterialVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="materialId != null and materialId != ''"> and materialId = #{materialId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="mediaName != null and mediaName != ''"> and mediaName like concat('%', #{mediaName}, '%')</if>
+             <if test="mediaUrl != null and mediaUrl != ''"> and mediaUrl = #{mediaUrl}</if>
+             <if test="mediaSUrl != null and mediaSUrl != ''"> and mediaSUrl = #{mediaSUrl}</if>
+             <if test="mediaType != null and mediaType != ''"> and mediaType = #{mediaType}</if>
+             <if test="mediaPX != null and mediaPX != ''"> and mediaPX = #{mediaPX}</if>
+             <if test="mediaSize != null and mediaSize != ''"> and mediaSize = #{mediaSize}</if>
+             <if test="playerPlat != null and playerPlat != ''"> and playerPlat = #{playerPlat}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectAdvertMaterialById" parameterType="String" resultMap="AdvertMaterialResult">
+        <include refid="selectAdvertMaterialVo"/>
+        where materialId = #{materialId}
+    </select>
+    
+    <select id="selectAdvertMaterialByIds" parameterType="String" resultMap="AdvertMaterialResult">
+        <include refid="selectAdvertMaterialVo"/>
+        where materialId in 
+        <foreach item="materialId" collection="array" open="(" separator="," close=")">
+            #{materialId}
+        </foreach>
+    </select>
+    
+    <select id="selectMediaNameIsExit" parameterType="AdvertMaterial" resultMap="AdvertMaterialResult">
+        <include refid="selectAdvertMaterialVo"/>
+        where mediaName = #{mediaName} and corpId=#{corpId} 
+        <if test="materialId != null and materialId != ''"> and materialId != #{materialId}</if>
+        limit 0,1
+    </select>
+        
+    <insert id="insertAdvertMaterial" parameterType="AdvertMaterial">
+        insert into as_advert_material
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="materialId != null and materialId != '' ">materialId,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="mediaName != null and mediaName != '' ">mediaName,</if>
+			<if test="mediaUrl != null and mediaUrl != '' ">mediaUrl,</if>
+			<if test="mediaSUrl != null and mediaSUrl != '' ">mediaSUrl,</if>
+			<if test="mediaType != null and mediaType != '' ">mediaType,</if>
+			<if test="mediaPX != null and mediaPX != '' ">mediaPX,</if>
+			<if test="mediaSize != null and mediaSize != '' ">mediaSize,</if>
+			<if test="playerPlat != null and playerPlat != '' ">playerPlat,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="materialId != null and materialId != ''">#{materialId},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="mediaName != null and mediaName != ''">#{mediaName},</if>
+			<if test="mediaUrl != null and mediaUrl != ''">#{mediaUrl},</if>
+			<if test="mediaSUrl != null and mediaSUrl != ''">#{mediaSUrl},</if>
+			<if test="mediaType != null and mediaType != ''">#{mediaType},</if>
+			<if test="mediaPX != null and mediaPX != ''">#{mediaPX},</if>
+			<if test="mediaSize != null and mediaSize != ''">#{mediaSize},</if>
+			<if test="playerPlat != null and playerPlat != ''">#{playerPlat},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateAdvertMaterial" parameterType="AdvertMaterial">
+        update as_advert_material
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="materialId != null  and materialId != ''  ">materialId = #{materialId},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="mediaName != null  and mediaName != ''  ">mediaName = #{mediaName},</if>
+            <if test="mediaUrl != null  and mediaUrl != ''  ">mediaUrl = #{mediaUrl},</if>
+            <if test="mediaSUrl != null  and mediaSUrl != ''  ">mediaSUrl = #{mediaSUrl},</if>
+            <if test="mediaType != null  and mediaType != ''  ">mediaType = #{mediaType},</if>
+            <if test="mediaPX != null  and mediaPX != ''  ">mediaPX = #{mediaPX},</if>
+            <if test="mediaSize != null  ">mediaSize = #{mediaSize},</if>
+            <if test="playerPlat != null  and playerPlat != ''  ">playerPlat = #{playerPlat},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where materialId = #{materialId}
+    </update>
+
+	<delete id="deleteAdvertMaterialById" parameterType="String">
+        delete from as_advert_material where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteAdvertMaterialByIds" parameterType="String">
+        delete from as_advert_material where materialId in 
+        <foreach item="materialId" collection="array" open="(" separator="," close=")">
+            #{materialId}
+        </foreach>
+    </delete>
+    
+</mapper>

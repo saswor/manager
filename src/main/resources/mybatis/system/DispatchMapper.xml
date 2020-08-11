@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.base.mapper.DispatchMapper">
+    
+    <resultMap type="Dispatch" id="DispatchResult">
+        <result property="id"    column="id"  />
+        <result property="name"    column="name"    />
+        <result property="namepath"    column="namepath"    />
+        <result property="modifytime"    column="modifytime"    />
+        <result property="addtime"    column="addtime"    />
+        <result property="level"    column="level"    />
+        <result property="parentId"    column="parentId"    />
+    </resultMap>
+	
+	<sql id="selectDispatchVo">
+        select id, name, namepath, level, parentId, modifytime, addtime from sys_region
+    </sql>
+	
+    <select id="selectDispatchList" parameterType="Dispatch" resultMap="DispatchResult">
+        <include refid="selectDispatchVo"/>
+        <where>  
+            <if test="id != null and id != ''"> and id = #{id}</if>
+             <if test="name != null and name != ''"> and name = #{name}</if>
+             <if test="level != null and level != ''"> and level = #{level}</if>
+             <if test="parentId != null and parentId != ''"> and parentId = #{parentId}</if>
+         </where>
+    </select>
+    
+    <select id="selectDispatchById" parameterType="String" resultMap="DispatchResult">
+        <include refid="selectDispatchVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectDispatchByParentId" parameterType="String" resultMap="DispatchResult">
+        <include refid="selectDispatchVo"/>
+        where parentId = #{parentId}
+    </select>
+        
+    <insert id="insertDispatch" parameterType="Dispatch">
+        insert into sys_region
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != '' ">id,</if>
+			<if test="namepath != null and namepath != '' ">namepath,</if>
+			<if test="name != null and name != '' ">name,</if>
+			<if test="addtime != null and addtime != '' ">addtime,</if>
+			<if test="modifytime != null and modifytime != '' ">modifytime,</if>
+			<if test="level != null and level != '' ">level,</if>
+			<if test="parentId != null and parentId != '' ">parentId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">#{id},</if>
+			<if test="namepath != null and namepath != ''">#{namepath},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="addtime != null and addtime != ''">#{addtime},</if>
+			<if test="modifytime != null and modifytime != ''">#{modifytime},</if>
+			<if test="level != null and level != ''">#{level},</if>
+			<if test="parentId != null and parentId != ''">#{parentId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDispatch" parameterType="Dispatch">
+        update sys_region
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null  and id != ''  ">id = #{id},</if>
+            <if test="namepath != null  and namepath != ''  ">namepath = #{namepath},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="addtime != null  and addtime != ''  ">addtime = #{addtime},</if>
+            <if test="modifytime != null  and modifytime != ''  ">modifytime = #{modifytime},</if>
+            <if test="level != null  ">level = #{level},</if>
+            <if test="parentId != null  and parentId != ''  ">parentId = #{parentId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteDispatchById" parameterType="String">
+        delete from sys_region where id = #{id}
+    </delete>
+	
+    <delete id="deleteDispatchByIds" parameterType="String">
+        delete from sys_region where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingPlaneMapper">
+    
+    <resultMap type="VendingPlane" id="VendingPlaneResult">
+        <result property="logid"    column="logid"    />
+        <result property="mLaneId"    column="mLaneId"    />
+        <result property="mConfigId"    column="mConfigId"    />
+        <result property="name"    column="name"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="row"    column="row"    />
+        <result property="col"    column="col"    />
+        <result property="arrange"    column="arrange"    />
+        <result property="productId"    column="productId"    />
+        <result property="productPic"    column="productPic"    />
+        <result property="salePrice"    column="salePrice"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="warnCap"    column="warnCap"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="laneSate"    column="laneSate"    />
+    </resultMap>
+	
+	<sql id="selectVendingPlaneVo">
+        select logid, mLaneId, mConfigId, `name`, laneSId, laneEId, `row`, `col`, arrange, productId, productPic, salePrice, capacity, warnCap, createTime, corpId, laneSate from as_vending_plane
+    </sql>
+	
+    <select id="selectVendingPlaneList" parameterType="VendingPlane" resultMap="VendingPlaneResult">
+        <include refid="selectVendingPlaneVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="mLaneId != null and mLaneId != ''"> and mLaneId = #{mLaneId}</if>
+             <if test="mConfigId != null and mConfigId != ''"> and mConfigId = #{mConfigId}</if>
+             <if test="name != null and name != ''"> and `name` = #{name}</if>
+             <if test="laneSId != null and laneSId != ''"> and laneSId = #{laneSId}</if>
+             <if test="laneEId != null and laneEId != ''"> and laneEId = #{laneEId}</if>
+             <if test="row != null and row != ''"> and `row` = #{row}</if>
+             <if test="col != null and col != ''"> and `col` = #{col}</if>
+             <if test="arrange != null and arrange != ''"> and arrange = #{arrange}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="productPic != null and productPic != ''"> and productPic = #{productPic}</if>
+             <if test="salePrice != null and salePrice != ''"> and salePrice = #{salePrice}</if>
+             <if test="capacity != null and capacity != ''"> and capacity = #{capacity}</if>
+             <if test="warnCap != null and warnCap != ''"> and warnCap = #{warnCap}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="laneSate != null and laneSate != ''"> and laneSate = #{laneSate}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingPlaneById" parameterType="String" resultMap="VendingPlaneResult">
+        <include refid="selectVendingPlaneVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectVendingPlaneByMconfigId" parameterType="String" resultMap="VendingPlaneResult">
+        <include refid="selectVendingPlaneVo"/>
+        where mConfigId = #{mConfigId}
+    </select>
+        
+    <insert id="insertVendingPlane" parameterType="VendingPlane">
+        insert into as_vending_plane (logid,mLaneId,mConfigId,`name`,laneSId,laneEId,`row`,`col`,arrange,productId,
+        	productPic,salePrice,capacity,warnCap,createTime,corpId,laneSate)
+        values (#{logid},#{mLaneId},#{mConfigId},#{name},#{laneSId},#{laneEId},#{row},#{col},#{arrange},
+         #{productId},#{productPic},#{salePrice},#{capacity},#{warnCap},date_format(now(), '%Y-%m-%d %H:%i:%s'),
+         	#{corpId},#{laneSate})
+    </insert>
+	 
+    <update id="updateVendingPlane" parameterType="VendingPlane">
+        update as_vending_plane
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mLaneId != null  and mLaneId != ''  ">mLaneId = #{mLaneId},</if>
+            <if test="mConfigId != null  and mConfigId != ''  ">mConfigId = #{mConfigId},</if>
+            <if test="name != null  and name != ''  ">`name` = #{name},</if>
+            <if test="laneSId != null  ">laneSId = #{laneSId},</if>
+            <if test="laneEId != null  ">laneEId = #{laneEId},</if>
+            <if test="row != null  ">`row` = #{row},</if>
+            <if test="col != null  ">`col` = #{col},</if>
+            <if test="arrange != null  ">arrange = #{arrange},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="productPic != null  and productPic != ''  ">productPic = #{productPic},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+            <if test="capacity != null  ">capacity = #{capacity},</if>
+            <if test="warnCap != null  ">warnCap = #{warnCap},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="laneSate != null  and laneSate != ''  ">laneSate = #{laneSate},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingPlaneById" parameterType="String">
+        delete from as_vending_plane where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingPlaneByIds" parameterType="String">
+        delete from as_vending_plane where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteVendingPlaneByConfigId" parameterType="String">  	
+		DELETE FROM as_vending_plane 
+		WHERE logid IN (SELECT * FROM 
+			(SELECT a.logid 
+			FROM as_vending_plane a LEFT JOIN as_vending_pconfig b 
+				ON a.`mConfigId` = b.`mConfigId` AND a.`corpId` = b.`corpId` 
+			WHERE b.`logid` IN 
+			<foreach item="logid" collection="array" open="(" separator="," close=")">
+	            #{logid}
+	        </foreach>
+			) tmp)
+    </delete>
+    
+    <update id="updateVendingPlaneByProductId" parameterType="VendingPlane">
+        update as_vending_plane
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productPic != null  and productPic != ''  ">productPic = #{productPic},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+       </trim>
+        where productId = #{productId}
+    </update>
+    
+    
+</mapper>

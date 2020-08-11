@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingLanepMapper">
+    
+    <resultMap type="VendingLanep" id="VendingLanepResult">
+        <result property="logid"    column="logid"    />
+        <result property="slaneId"    column="slaneId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="productId"    column="productId"    />
+        <result property="productPic"    column="productPic"    />
+        <result property="salePrice"    column="salePrice"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="warnCap"    column="warnCap"    />
+        <result property="curCap"    column="curCap"    />
+        <result property="productSate"    column="productSate"    />
+        <result property="pStateTime"    column="pStateTime"    />
+        <result property="laneSate"    column="laneSate"    />
+        <result property="lSateTime"    column="lSateTime"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+    </resultMap>
+
+    <resultMap type="VendingLanep" id="VendingLanepResultS">
+        <result property="productName"    column="productName"/>
+        <result property="productId"    column="productId"/>
+        <result property="curCap"    column="curCap"/>
+    </resultMap>
+    
+    <resultMap type="UnderProductVo" id="UnderProductResult">
+    <result property="logid"    column="logid"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="productId"    column="productId"    />
+        <result property="curCap"    column="curCap"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+		<result property="lineId"    column="lineId"    />
+        <result property="lineName"    column="lineName"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="districtName"    column="districtName"    />
+    </resultMap>
+    
+    <sql id="selectUnderProduct">
+    	SELECT a.logid, a.slaneId, a.siteId, a.siteName, a.laneSId, a.laneEId, a.productId, a.productPic, 
+			a.salePrice, a.capacity, a.warnCap, a.curCap, a.productSate, a.pStateTime, a.laneSate, 
+			a.lSateTime, a.createTime, a.corpId,b.lineId,b.districtId,b.pointId
+		FROM as_vending_lanep a left join as_vending b on a.siteId=b.siteId
+		
+    </sql>
+	
+	<sql id="selectVendingLanepVo">
+        select logid, slaneId, siteId, siteName, laneSId, laneEId, productId, productPic, salePrice, capacity, warnCap, curCap, productSate, pStateTime, laneSate, lSateTime, createTime, corpId from as_vending_lanep
+    </sql>
+	<select id="selectVendingProduct" parameterType="String" resultMap="VendingLanepResult">
+        <include refid="selectVendingLanepVo"/>
+        where siteId = #{siteId} AND `productId` !=''
+    </select>
+    <select id="selectVendingLanepList" parameterType="VendingLanep" resultMap="VendingLanepResult">
+        <include refid="selectVendingLanepVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="slaneId != null and slaneId != ''"> and slaneId = #{slaneId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="laneSId != null and laneSId != ''"> and laneSId = #{laneSId}</if>
+             <if test="laneEId != null and laneEId != ''"> and laneEId = #{laneEId}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="productPic != null and productPic != ''"> and productPic = #{productPic}</if>
+             <if test="salePrice != null and salePrice != ''"> and salePrice = #{salePrice}</if>
+             <if test="capacity != null and capacity != ''"> and capacity = #{capacity}</if>
+             <if test="warnCap != null and warnCap != ''"> and warnCap = #{warnCap}</if>
+             <if test="curCap != null and curCap != ''"> and curCap = #{curCap}</if>
+             <if test="productSate != null and productSate != ''"> and productSate = #{productSate}</if>
+             <if test="pStateTime != null and pStateTime != ''"> and pStateTime = #{pStateTime}</if>
+             <if test="laneSate != null and laneSate != ''"> and laneSate = #{laneSate}</if>
+             <if test="lSateTime != null and lSateTime != ''"> and lSateTime = #{lSateTime}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingLanepByCabinetId" parameterType="String" resultMap="VendingLanepResult">
+        SELECT a.logid, a.slaneId, a.siteId, a.siteName, a.laneSId, a.laneEId, a.productId, a.productPic, 
+			a.salePrice, a.capacity, a.warnCap, a.curCap, a.productSate, a.pStateTime, a.laneSate, 
+			a.lSateTime, a.createTime, a.corpId, c.`name` AS productName
+		FROM as_vending_lanep a LEFT JOIN as_vending_lane b ON a.`slaneId` = b.`slaneId` AND a.`corpId` = b.`corpId`
+		     LEFT JOIN as_product_info c ON a.`productId` = c.`productId` AND a.`corpId` = c.`corpId`
+		WHERE b.`cabinetId` = #{cabinetId}
+		ORDER BY a.`laneSId` ASC
+    </select>
+    
+    <select id="selectVendingLanepById" parameterType="String" resultMap="VendingLanepResult">
+        <include refid="selectVendingLanepVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectVendingLanepByIds" parameterType="String" resultMap="UnderProductResult">
+        <include refid="selectUnderProduct"/>
+        where a.logid in
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </select>
+
+    <select id="selectVendingLanepByProId" parameterType="VendingLanep" resultMap="VendingLanepResult">
+        <include refid="selectVendingLanepVo"/>
+        where siteId = #{siteId} and laneSId=#{laneSId} and laneEId=#{laneEId}
+    </select>
+    
+    <select id="selectVendingLanepBySlaneId" parameterType="String" resultMap="VendingLanepResult">
+        <include refid="selectVendingLanepVo"/>
+        where slaneId = #{slaneId}
+    </select>
+    
+    <select id="selectUnderProductSite" parameterType="UnderProductVo" resultMap="UnderProductResult">
+        <include refid="selectUnderProduct"/>
+        <where>
+			<if test="siteId != null and siteId != ''"> and (a.siteId = #{siteId} or a.siteName like concat("%",#{siteId},"%"))</if>
+            <if test="productId != null and productId != ''"> and a.productId = #{productId}</if>
+            <if test="lineId != null and lineId != ''"> and b.lineId = #{lineId}</if>
+            <if test="districtId != null and districtId != ''"> and b.districtId = #{districtId}</if>
+            <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+		</where>
+    </select>
+
+    <insert id="insertVendingLanep" parameterType="VendingLanep">
+        insert into as_vending_lanep(logid,slaneId,siteId,siteName,laneSId,laneEId,productId,productPic,salePrice,capacity,warnCap,curCap,productSate,
+        	pStateTime,laneSate,lSateTime,createTime,corpId)
+        values (#{logid},#{slaneId},#{siteId},#{siteName},#{laneSId},#{laneEId},#{productId},#{productPic},#{salePrice},#{capacity},#{warnCap},
+        	#{curCap},#{productSate},#{pStateTime},#{laneSate},#{lSateTime},#{createTime},#{corpId})
+    </insert>
+    
+    <insert id="insertVendingLanepBatch" parameterType="VendingLanep">
+        insert into as_vending_lanep(logid,slaneId,siteId,siteName,laneSId,laneEId,productId,productPic,salePrice,capacity,warnCap,curCap,productSate,
+        	pStateTime,laneSate,lSateTime,createTime,corpId)
+        values 
+        <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.logid},#{item.slaneId},#{item.siteId},#{item.siteName},#{item.laneSId},#{item.laneEId},#{item.productId},#{item.productPic},#{item.salePrice},#{item.capacity},#{item.warnCap},
+        	#{item.curCap},#{item.productSate},#{item.pStateTime},#{item.laneSate},#{item.lSateTime},#{item.createTime},#{item.corpId})
+        </foreach>
+    </insert>
+	 
+    <update id="updateVendingLanep" parameterType="VendingLanep">
+        update as_vending_lanep set slaneId = #{slaneId},siteId = #{siteId},
+        	siteName = #{siteName},laneSId = #{laneSId},laneEId = #{laneEId},
+        	productId = #{productId},productPic = #{productPic},
+        	salePrice = #{salePrice},capacity = #{capacity},
+        	warnCap = #{warnCap},curCap = #{curCap},productSate = #{productSate},
+        	pStateTime = #{pStateTime},laneSate = #{laneSate},lSateTime = #{lSateTime}
+        where logid = #{logid}
+    </update>
+    
+    <update id="updateVendingLanepBySlaneId" parameterType="VendingLanep">
+        update as_vending_lanep set slaneId = #{slaneId},siteId = #{siteId},
+        	siteName = #{siteName},laneSId = #{laneSId},laneEId = #{laneEId},
+        	productId = #{productId},productPic = #{productPic},
+        	salePrice = #{salePrice},capacity = #{capacity},
+        	warnCap = #{warnCap},curCap = #{curCap},productSate = #{productSate},
+        	pStateTime = #{pStateTime},laneSate = #{laneSate},lSateTime = #{lSateTime}
+        where slaneId = #{slaneId}
+    </update>
+
+	<delete id="deleteVendingLanepById" parameterType="String">
+        delete from as_vending_lanep where logid = #{logid}
+    </delete>
+    
+    <delete id="deleteVendingLanepBySiteId" parameterType="String">
+        delete from as_vending_lanep where siteId = #{siteId}
+    </delete>
+    
+    <delete id="deleteVendingLanepByCabinetId" parameterType="String">
+        DELETE FROM as_vending_lanep 
+        WHERE slaneId IN (SELECT a.`slaneId` FROM as_vending_lane a WHERE a.`cabinetId` = #{cabinetId})
+    </delete>
+	
+    <delete id="deleteVendingLanepByIds" parameterType="String">
+        delete from as_vending_lanep where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteVendingLanepByCabId" parameterType="String">
+    	DELETE FROM as_vending_lanep 
+		WHERE slaneId IN 
+		(SELECT * FROM (SELECT a.slaneId FROM as_vending_lane a LEFT JOIN as_vending_cabinet b ON a.`cabinetId` = b.`cabinetId` AND a.`corpId` = b.`corpId` WHERE b.`logid` =#{logid} ) tmp) 
+    </delete>
+
+
+    <select id="selectSupplyPThreshold" parameterType="String" resultMap="VendingLanepResultS">
+        SELECT  c.productId,c.`name` as productName,sum(a.capacity)-sum(a.curCap) as curCap
+        FROM as_vending_lanep a  LEFT JOIN as_product_info c ON a.`productId` = c.`productId` AND a.`corpId` = c.`corpId`
+        WHERE a.`siteId` =#{siteId} and a.curCap &lt; a.warnCap and laneSate='1' group by c.productId,c.`name`
+    </select>
+
+    <select id="selectSupplyProduct" parameterType="String" resultMap="VendingLanepResultS">
+        SELECT  c.productId,c.`name` as productName,sum(a.capacity)-sum(a.curCap) as curCap
+        FROM as_vending_lanep a  LEFT JOIN as_product_info c ON a.`productId` = c.`productId` AND a.`corpId` = c.`corpId`
+        WHERE a.`siteId` =#{siteId} and laneSate='1' group by c.productId,c.`name`
+    </select>
+
+    <select id="selectCapacityBySiteIds" parameterType="String" resultMap="VendingLanepResultS">
+        SELECT  a.siteId,sum(a.capacity) as capacity,sum(a.curCap) as curCap
+        FROM as_vending_lanep a where a.siteId in
+        <foreach item="siteId" collection="array" open="(" separator="," close=")">
+            #{siteId}
+        </foreach>
+        group by a.siteId
+    </select>
+    <select id="selectCapacityThresholdBySiteIds" parameterType="String" resultMap="VendingLanepResultS">
+        SELECT  a.siteId,sum(a.capacity) as capacity,sum(a.curCap) as curCap
+        FROM as_vending_lanep a where a.siteId in
+        <foreach item="siteId" collection="array" open="(" separator="," close=")">
+            #{siteId}
+        </foreach>
+        and a.curCap &lt; a.warnCap
+        group by a.siteId
+    </select>
+
+
+    <select id="selectSupplyVPThreshold" parameterType="String" resultMap="VendingLanepResultS">
+        SELECT  c.productId,c.`name` as productName,a.capacity,a.curCap,a.siteId,a.laneSId,a.laneEId
+        FROM as_vending_lanep a  LEFT JOIN as_product_info c ON a.`productId` = c.`productId` AND a.`corpId` = c.`corpId`
+        WHERE a.`siteId` =#{siteId} and a.curCap &lt; a.warnCap and c.productId is NOT null and a.capacity!=0 and a.capacity!=a.curCap and a.laneSate='1'
+    </select>
+
+    <select id="selectSupplyVProduct" parameterType="String" resultMap="VendingLanepResultS">
+        SELECT  c.productId,c.`name` as productName,a.capacity,a.curCap,a.siteId,a.laneSId,a.laneEId
+        FROM as_vending_lanep a  LEFT JOIN as_product_info c ON a.`productId` = c.`productId` AND a.`corpId` = c.`corpId`
+        WHERE a.`siteId` =#{siteId} and c.productId is NOT null and a.capacity!=0 and a.capacity!=a.curCap and a.laneSate='1'
+    </select>
+
+    <select id="selectTotalNumBySiteIds" parameterType="String" resultMap="VendingLanepResultS">
+        SELECT  sum(a.capacity) as capacity,sum(a.curCap) as curCap
+        FROM as_vending_lanep a where a.siteId in
+        <foreach item="siteId" collection="array" open="(" separator="," close=")">
+            #{siteId}
+        </foreach>
+        <!-- group by a.capacity -->
+    </select>
+    
+    <select id="selectLanepMaxSidBySiteId" parameterType="String" resultType="java.lang.Integer">
+    SELECT MAX(t.`laneSId`) AS maxSid FROM as_vending_lanep t WHERE t.`siteId`=#{siteId}
+    </select>
+    
+    <update id="updateVendingLanepByProductId" parameterType="VendingLanep">
+    update as_vending_lanep
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productPic != null  and productPic != ''  ">productPic = #{productPic},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+        </trim>
+        where productId = #{productId}
+    </update>
+
+</mapper>

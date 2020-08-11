@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.statement.mapper.OrderApplyMapper">
+    
+    <resultMap type="com.manage.project.system.statement.vo.OrderVo" id="OrderResult">
+        <result property="logid"    column="logid"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="torderId"    column="torderId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="loginId"    column="loginId"    />
+        <result property="loginName"    column="loginName"    />
+        <result property="saleChannel"    column="saleChannel"    />
+        <result property="outState"    column="outState"    />
+        <result property="pNum"    column="pNum"    />
+        <result property="favWay"    column="favWay"    />
+        <result property="buyPrice"    column="buyPrice"    />
+        <result property="salePrice"    column="salePrice"    />
+        <result property="payPrice"    column="payPrice"    />
+        <result property="favPrice"    column="favPrice"    />
+        <result property="returnMoney"    column="returnMoney"    />
+        <result property="profitMoney"    column="profitMoney"    />
+        <result property="payType"    column="payType"    />
+        <result property="payState"    column="payState"    />
+        <result property="returnType"    column="returnType"    />
+        <result property="fetchOverTime"    column="fetchOverTime"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="abnomarlState"    column="abnomarlState"    />
+        <result property="outId"    column="outId"    />
+        <result property="aStateTime"    column="aStateTime"    />
+        <result property="orderType"    column="orderType"    />
+        <result property="passWord"    column="passWord"    />
+        <result property="encryptionType"    column="encryptionType"    />
+        <result property="slat"    column="slat"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="pTradeNo"    column="pTradeNo"    />
+        <result property="rTradeNo"    column="rTradeNo"    />
+        <result property="pushState"    column="pushState"    />
+        <result property="pStateTime"    column="pStateTime"    />
+        <result property="pointName"    column="pointName"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="operAction"    column="operAction"    />
+        <result property="payTypeName"    column="payTypeName"    />
+        <result property="payStateName"    column="payStateName"    />
+        <result property="returnTypeName"    column="returnTypeName"    />
+        <result property="curStateName"    column="curStateName"    />
+        <result property="abnomarlStateName"    column="abnomarlStateName"    />
+        <result property="productSalePrice"    column="productSalePrice"    />
+        <result property="productPayPrice"    column="productPayPrice"    />
+        <result property="productProfitMoney"    column="productProfitMoney"    />
+        <result property="operActionName"    column="operActionName"    />
+        <result property="saleNum" column="saleNum"/>
+    </resultMap>
+
+    <resultMap id="totalMap" type="com.manage.project.system.report.vo.TotalVo">
+        <result property="saleNum" column="saleNum"/>
+        <result property="saleMoney" column="saleMoney"/>
+        <result property="profit" column="profit"/>
+    </resultMap>
+    
+    <resultMap type="OrderBoxVo" id="OrderBoxVoResult">
+    	<result property="productId" column="productId" />
+    	<result property="productName" column="productName" />
+    	<result property="laneSId" column="laneSId" />
+    	<result property="laneEId" column="laneEId" />
+    	<result property="outState" column="outState" />
+    </resultMap>
+    
+    <resultMap type="OrderBoxExcelVo" id="OrderBoxExcelVoResult">
+    	<result property="orderId" column="orderId" />
+    	<result property="siteName" column="siteName" />
+    	<result property="productName" column="productName" />
+    	<result property="buyPrice" column="buyPrice" />
+    	<result property="salePrice" column="salePrice" />
+    	<result property="payPrice" column="payPrice" />
+    	<result property="profitMoney" column="profitMoney" />
+    	<result property="payType" column="payType" />
+    	<result property="payState" column="payState" />
+    	<result property="outState" column="outState" />
+    	<result property="sysState" column="sysState" />
+    	<result property="returnType" column="returnType" />
+    	<result property="pTradeNo" column="pTradeNo" />
+    	<result property="rTradeNo" column="rTradeNo" />
+    	<result property="createTime" column="createTime" />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select d.logid, a.orderId, a.torderId, a.corpId, a.districtId, a.lineId, a.pointId, a.siteId, a.siteName, a.loginId, a.loginName,
+         a.saleChannel, a.pNum, a.favWay, a.buyPrice, a.salePrice, a.payPrice, a.favPrice, a.returnMoney,
+         a.profitMoney, a.payType, a.payState, a.returnType, a.fetchOverTime, a.curState, a.stateTime, a.abnomarlState, a.outId,
+         a.aStateTime, a.orderType, a.passWord, a.encryptionType, a.slat, a.createTime, a.pTradeNo, a.rTradeNo, a.pushState,
+         a.pStateTime ,d.productId,d.productName,d.laneSId,d.laneEId,d.outState,d.salePrice productSalePrice,d.payPrice productPayPrice,d.profitMoney productprofitMoney
+         from as_order_apply a left join as_order_box d on a.orderId=d.orderId
+    </sql>
+
+    <sql id="selectOrderApplyVo">
+        select a.logid, a.orderId, a.torderId, a.corpId, a.districtId, a.lineId, a.pointId, a.siteId, a.siteName, a.loginId, a.loginName,
+         a.saleChannel, a.outState, a.pNum, a.favWay, a.buyPrice, a.salePrice, a.payPrice, a.favPrice, a.returnMoney,
+         a.profitMoney, a.payType, a.payState, a.returnType, a.fetchOverTime, a.curState, a.stateTime, a.abnomarlState, a.outId,
+         a.aStateTime, a.orderType, a.passWord, a.encryptionType, a.slat, a.createTime, a.pTradeNo, a.rTradeNo, a.pushState,a.pStateTime        
+         from as_order_apply a
+    </sql>
+
+    <select id="selectOrderList" parameterType="com.manage.project.system.statement.vo.OrderVo" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>
+            <if test="orderId != null and orderId != ''"> and a.orderId = #{orderId}</if>
+            <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+            <if test="districtId != null and districtId != ''"> and a.districtId = #{districtId}</if>
+            <if test="lineId != null and lineId != ''"> and a.lineId = #{lineId}</if>
+            <if test="pointId != null and pointId != ''"> and a.pointId = #{pointId}</if>
+            <if test="siteId != null and siteId != ''"> and a.siteId = #{siteId}</if>
+            <if test="siteName != null and siteName != ''"> and a.siteName = #{siteName}</if>
+            <if test="createDate != null and createDate != ''"> and to_days(a.createTime) = to_days(#{createDate})</if>
+            <if test="productName != null and productName != ''"> and d.productName like concat('%',#{productName},'%')</if>
+            <if test="payType != null and payType != ''"> and a.payType = #{payType}</if>
+            <if test="pTradeNo != null and pTradeNo != ''"> and a.pTradeNo = #{pTradeNo}</if>
+            <if test="curState != null and curState != ''"> and a.curState = #{curState}</if>
+            <if test="abnomarlState != null and abnomarlState != ''"> and a.abnomarlState = #{abnomarlState}</if>
+            <if test="createTime != null  and createTime != ''  "> and left(a.createTime,10) = #{createTime}</if>
+            <!-- <if test="operAction != null and operAction != ''"> and e.operAction = #{operAction}</if> -->
+        </where>
+    </select>
+
+    <select id="selectOrderApplyList" parameterType="com.manage.project.system.statement.vo.OrderVo" resultMap="OrderResult">
+        select logid, orderId,corpId,districtId,lineId,pointId,siteId, siteName, loginId,loginName,
+         saleChannel, outState, pNum, buyPrice, salePrice, payPrice, favPrice, returnMoney,
+         profitMoney, payType, payState, returnType, curState, a.abnomarlState,  a.orderType,  a.createTime, a.pTradeNo, a.rTradeNo       
+         from as_order_apply a
+        <where>
+        	<if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>  
+        	<if test="createDate != null and createDate != ''"> and to_days(a.createTime) = to_days(#{createDate})</if>
+        	<if test="startDate != null  and startDate != '' "> and left(a.createTime,10) &gt;= #{startDate}</if>
+         	 <if test="endDate != null  and endDate != '' "> and left(a.createTime,10) &lt;= #{endDate}</if>
+             <if test="orderId != null and orderId != ''"> and a.orderId = #{orderId}</if>
+             <if test="districtId != null and districtId != ''"> and a.districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and a.lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and a.pointId = #{pointId}</if>
+             <if test="siteId != null and siteId != ''"> and a.siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and a.siteName = #{siteName}</if>           	 
+         	 <if test="payType != null and payType != ''"> and a.payType = #{payType}</if>
+         	 <if test="pTradeNo != null and pTradeNo != ''"> and a.pTradeNo = #{pTradeNo}</if>
+         	 <if test="orderType != null and orderType != ''"> and a.orderType = #{orderType}</if>
+         	 <if test="curState != null and curState != ''"> and a.curState = #{curState}</if>
+         	 <if test="abnomarlState != null and abnomarlState != ''"> and a.abnomarlState = #{abnomarlState}</if>
+         	 <if test="createTime != null  and createTime != '' "> and left(a.createTime,10) = #{createTime}</if>
+         </where>
+
+    </select>
+    
+    <select id="selectOrderForCancel" parameterType="com.manage.project.system.statement.vo.OrderCancelVo" resultMap="OrderResult">
+        select a.orderId from as_order_apply a
+        <where>  
+        	 <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+         	 <if test="payState != null and payState != ''"> and a.payState = #{payState}</if>
+         	 <if test="curState != null and curState != ''"> and a.curState = #{curState}</if>
+         	 <if test="abnomarlState != null and abnomarlState != ''"> and a.abnomarlState = #{abnomarlState}</if>
+         	 <if test="beginTime != null  and beginTime != '' "> and a.createTime &gt;= #{beginTime}</if>
+         	 <if test="endTime != null  and endTime != '' "> and a.createTime &lt;= #{endTime}</if>
+         </where>
+    </select>
+
+    <select id="selectTotalSale" parameterType="com.manage.project.system.statement.vo.OrderVo" resultMap="totalMap">
+        select sum(a.pNum) saleNum,sum(a.salePrice) saleMoney,sum(a.profitMoney) profit from as_order_apply a left join as_order_product b on a.orderId=b.orderId
+        where a.siteId=#{siteId}
+        <if test="productName != null and productName != ''"> and b.productName like concat('%',#{productName},'%')</if>
+        <if test="payType != null and payType != ''"> and a.payType = #{payType}</if>
+        <if test="createDate != null and createDate != ''"> and to_days(a.createTime) = to_days(#{createDate})</if>
+    </select>
+
+    <select id="selectOrderById" parameterType="String" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where d.logid = #{logid}
+    </select>
+
+    <select id="selectOrderByOrderId" parameterType="String" resultMap="OrderResult">
+        select logid, orderId, torderId, corpId, districtId, lineId, pointId, siteId, siteName, loginId, loginName, saleChannel, outState, pNum, favWay, buyPrice, salePrice, payPrice, favPrice, returnMoney, profitMoney, payType, payState, returnType, fetchOverTime, curState, stateTime, abnomarlState, outId, aStateTime, orderType, passWord, encryptionType, slat, createTime, pTradeNo, rTradeNo, pushState, pStateTime from as_order_apply
+        where orderId = #{orderId}
+    </select>
+    
+    <select id="selectProductList" parameterType="String" resultMap="OrderResult">
+        select productId,productName,salePrice,saleNum from as_order_product
+        where orderId = #{orderId}
+    </select>
+    
+    <select id="selectBoxList" parameterType="String" resultMap="OrderBoxVoResult">
+        select productId,productName,laneSId,laneEId,outState from as_order_box
+        where orderId = #{orderId}
+    </select>
+
+    <update id="updateOrderApply" parameterType="OrderApply">
+        update as_order_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null  and orderId != ''  ">orderId = #{orderId},</if>
+            <if test="torderId != null  and torderId != ''  ">torderId = #{torderId},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="districtId != null  and districtId != ''  ">districtId = #{districtId},</if>
+            <if test="lineId != null  and lineId != ''  ">lineId = #{lineId},</if>
+            <if test="pointId != null  and pointId != ''  ">pointId = #{pointId},</if>
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="loginId != null  and loginId != ''  ">loginId = #{loginId},</if>
+            <if test="loginName != null  and loginName != ''  ">loginName = #{loginName},</if>
+            <if test="saleChannel != null  and saleChannel != ''  ">saleChannel = #{saleChannel},</if>
+            <if test="outState != null  and outState != ''  ">outState = #{outState},</if>
+            <if test="pNum != null  ">pNum = #{pNum},</if>
+            <if test="favWay != null  and favWay != ''  ">favWay = #{favWay},</if>
+            <if test="buyPrice != null  ">buyPrice = #{buyPrice},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+            <if test="payPrice != null  ">payPrice = #{payPrice},</if>
+            <if test="favPrice != null  ">favPrice = #{favPrice},</if>
+            <if test="returnMoney != null  ">returnMoney = #{returnMoney},</if>
+            <if test="profitMoney != null  ">profitMoney = #{profitMoney},</if>
+            <if test="payType != null  and payType != ''  ">payType = #{payType},</if>
+            <if test="payState != null  and payState != ''  ">payState = #{payState},</if>
+            <if test="returnType != null  and returnType != ''  ">returnType = #{returnType},</if>
+            <if test="fetchOverTime != null  and fetchOverTime != ''  ">fetchOverTime = #{fetchOverTime},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="abnomarlState != null  and abnomarlState != ''  ">abnomarlState = #{abnomarlState},</if>
+            <if test="outId != null  and outId != ''  ">outId = #{outId},</if>
+            <if test="aStateTime != null  and aStateTime != ''  ">aStateTime = #{aStateTime},</if>
+            <if test="orderType != null  and orderType != ''  ">orderType = #{orderType},</if>
+            <if test="passWord != null  and passWord != ''  ">passWord = #{passWord},</if>
+            <if test="encryptionType != null  and encryptionType != ''  ">encryptionType = #{encryptionType},</if>
+            <if test="slat != null  and slat != ''  ">slat = #{slat},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="pTradeNo != null  and pTradeNo != ''  ">pTradeNo = #{pTradeNo},</if>
+            <if test="rTradeNo != null  and rTradeNo != ''  ">rTradeNo = #{rTradeNo},</if>
+            <if test="pushState != null  and pushState != ''  ">pushState = #{pushState},</if>
+            <if test="pStateTime != null  and pStateTime != ''  ">pStateTime = #{pStateTime},</if>
+        </trim>
+        where orderId = #{orderId}
+    </update>
+
+    <select id="selectOrderProductList" parameterType="com.manage.project.system.statement.vo.OrderVo" resultMap="OrderResult">
+        select d.logid, a.orderId, a.torderId, a.corpId, a.districtId, a.lineId, a.pointId, a.siteId, a.siteName, a.loginId, a.loginName,
+        a.saleChannel, a.pNum, a.favWay, a.buyPrice, a.salePrice, a.payPrice, a.favPrice, a.returnMoney,c.saleNum,
+        a.profitMoney, a.payType, a.payState, a.returnType, a.fetchOverTime, a.curState, a.stateTime, a.abnomarlState, a.outId,
+        a.aStateTime, a.orderType, a.passWord, a.encryptionType, a.slat, a.createTime, a.pTradeNo, a.rTradeNo, a.pushState,
+        a.pStateTime ,d.productId,d.productName,d.laneSId,d.laneEId,d.outState,d.salePrice productSalePrice,d.payPrice productPayPrice,d.profitMoney productprofitMoney
+        from as_order_apply a left join as_order_box d on a.orderId=d.orderId 
+        left join as_order_product c on a.orderId=c.orderId and d.productId=c.productId
+        where a.orderId = #{orderId}
+    </select>
+    
+    <select id="selectOrderBoxExcelList" parameterType="OrderBoxDownParamVo" resultMap="OrderBoxExcelVoResult">
+    SELECT t.`orderId`, t.`siteName`, t.`productName`, t.`buyPrice`, t.`salePrice`, t.`payPrice`, 
+		t.`profitMoney`, t2.`payType`, t2.`payState`, t.`outState`,t.`sysState`, t2.`returnType`, t.`createTime`,t2.pTradeNo,t2.rTradeNo 
+	FROM as_order_box t LEFT JOIN as_order_apply t2 ON t.`orderId` = t2.`orderId` 
+	<where>
+	    <if test="siteId != null and siteId != ''"> and t.`siteId`= #{siteId}</if>
+	    <if test="orderId != null and orderId != ''"> and t2.orderId = #{orderId}</if>
+	    <if test="corpId != null and corpId != ''"> and t2.corpId = #{corpId}</if>
+	    <if test="districtId != null and districtId != ''"> and t2.districtId = #{districtId}</if>
+	    <if test="lineId != null and lineId != ''"> and t2.lineId = #{lineId}</if>
+		<if test="curState != null and curState != ''"> and t2.curState = #{curState}</if>
+	    <if test="startDate != null and startDate != '' and endDate != null and endDate!='' "> and DATE_FORMAT(t.createTime,'%Y-%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(#{startDate},'%Y-%m-%d') and DATE_FORMAT(t.createTime,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_FORMAT(#{endDate},'%Y-%m-%d')</if>
+	</where>
+	ORDER BY t.`orderId`, t.`createTime` ASC
+	</select>
+</mapper>

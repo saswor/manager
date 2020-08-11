@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.SoftwareVersionMapper">
+    
+    <resultMap type="SoftwareVersion" id="SoftwareVersionResult">
+        <result property="logid"    column="logid"    />
+        <result property="versionId"    column="versionId"    />
+        <result property="vName"    column="vName"    />
+        <result property="uType"    column="uType"    />
+        <result property="fileNum"    column="fileNum"    />
+        <result property="fileSize"    column="fileSize"    />
+        <result property="description"    column="description"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectSoftwareVersion">
+        select logid, versionId, vName, uType, fileNum, fileSize, description, corpId, createTime from as_software_version
+    </sql>
+	
+    <select id="selectSoftwareVersionList" parameterType="SoftwareVersion" resultMap="SoftwareVersionResult">
+        <include refid="selectSoftwareVersion"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="versionId != null and versionId != ''"> and versionId = #{versionId}</if>
+             <if test="vName != null and vName != ''"> and vName like concat("%",#{vName},"%")</if>
+             <if test="uType != null and uType != ''"> and uType =#{uType}</if>
+             <if test="fileNum != null and fileNum != ''"> and fileNum = #{fileNum}</if>
+             <if test="fileSize != null and fileSize != ''"> and fileSize = #{fileSize}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectSoftwareVersionById" parameterType="String" resultMap="SoftwareVersionResult">
+        <include refid="selectSoftwareVersion"/>
+        where versionId = #{versionId}
+    </select>
+        
+    <insert id="insertSoftwareVersion" parameterType="SoftwareVersion">
+        insert into as_software_version (logid,versionId,vName,uType,fileNum,fileSize,description,corpId,createTime) values
+        (#{logid},#{versionId},#{vName},#{uType},#{fileNum},#{fileSize},#{description},#{corpId},#{createTime}) 
+    </insert>
+	 
+    <update id="updateSoftwareVersion" parameterType="SoftwareVersion">
+        update as_software_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vName != null  and vName != ''  ">vName = #{vName},</if>
+            <if test="uType != null  and uType != ''  ">uType = #{uType},</if>
+            <if test="fileNum != null">fileNum = #{fileNum},</if>
+            <if test="fileSize != null">fileSize = #{fileSize},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+        </trim>
+        where versionId = #{versionId}
+    </update>
+
+	<delete id="deleteSoftwareVersionById" parameterType="String">
+        delete from as_software_version where versionId = #{versionId}
+    </delete>
+	
+    <delete id="deleteSoftwareVersionByIds" parameterType="String">
+        delete from as_software_version where versionId in 
+        <foreach item="versionId" collection="array" open="(" separator="," close=")">
+            #{versionId}
+        </foreach>
+    </delete>
+</mapper>

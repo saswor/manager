@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.statement.mapper.StatementOrderMapper">
+    
+    <resultMap type="com.manage.project.system.statement.vo.OrderVo" id="OrderResult">
+        <result property="logid"    column="logid"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="pointName"    column="pointName"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="payPrice"    column="payPrice"    />
+        <result property="payType"    column="payType"    />
+        <result property="payState"    column="payState"    />
+        <result property="operAction"    column="operAction"    />
+        <result property="abnomarlState"    column="abnomarlState"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="pTradeNo"    column="pTradeNo"    />
+        <result property="rTradeNo"    column="rTradeNo"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+    </resultMap>
+	
+	<sql id="selectOrderVo">
+        select a.logid, a.orderId, a.pointId,b.name pointName, a.siteId, a.siteName, a.payPrice, a.payType, a.payState, a.returnType,
+        e.operAction, a.abnomarlState, a.createTime, a.pTradeNo, a.rTradeNo, c.productId,c.productName,d.laneSId,d.laneEId         
+        from as_order_apply a left join as_vending_point b on a.pointId=b.pointId
+        left join as_order_product c on a.orderId=c.orderId
+        left join as_order_box d on a.orderId=d.orderId
+        left join as_order_change e on a.orderId=e.orderId
+    </sql>
+	
+    <select id="selectOrderList" parameterType="com.manage.project.system.statement.vo.OrderVo" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+             <if test="orderId != null and orderId != ''"> and orderId = #{orderId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="operAction != null and operAction != ''"> and operAction = #{operAction}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="String" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where a.logid = #{logid}
+    </select>
+    
+</mapper>

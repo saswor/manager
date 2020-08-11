@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.stock.mapper.StockPpurchaseMapper">
+    
+    <resultMap type="StockPpurchase" id="StockPpurchaseResult">
+        <result property="logid"    column="logid"    />
+        <result property="wppurchaseId"    column="wppurchaseId"    />
+        <result property="wpurchaseId"    column="wpurchaseId"    />
+        <result property="stockId"    column="stockId"    />
+        <result property="stokcName"    column="stokcName"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="supplierId"    column="supplierId"    />
+        <result property="pnum"    column="pnum"    />
+        <result property="buyPrice"    column="buyPrice"    />
+        <result property="totalPrice"    column="totalPrice"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="curNum"    column="curNum"    />
+    </resultMap>
+	
+	<sql id="selectStockPpurchaseVo">
+        select logid, wppurchaseId, wpurchaseId, stockId, stokcName, productId, productName, supplierId, pnum, buyPrice, totalPrice, corpId, createTime from as_stock_ppurchase
+    </sql>
+	
+    <select id="selectStockPpurchaseList" parameterType="StockPpurchase" resultMap="StockPpurchaseResult">
+        SELECT a.logid, a.wppurchaseId, a.wpurchaseId, a.stockId, a.stokcName, a.productId, a.productName, 
+	a.supplierId, a.pnum, a.buyPrice, a.totalPrice, a.corpId, a.createTime, b.`curNum`
+FROM as_stock_ppurchase a LEFT JOIN as_stock_warehouse b ON a.`stockId` = b.`stockId` AND a.`productId` = b.`productId`
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+             <if test="wppurchaseId != null and wppurchaseId != ''"> and a.wppurchaseId = #{wppurchaseId}</if>
+             <if test="wpurchaseId != null and wpurchaseId != ''"> and a.wpurchaseId = #{wpurchaseId}</if>
+             <if test="stockId != null and stockId != ''"> and a.stockId = #{stockId}</if>
+             <if test="stokcName != null and stokcName != ''"> and a.stokcName = #{stokcName}</if>
+             <if test="productId != null and productId != ''"> and a.productId = #{productId}</if>
+             <if test="productName != null and productName != ''"> and a.productName = #{productName}</if>
+             <if test="supplierId != null and supplierId != ''"> and a.supplierId = #{supplierId}</if>
+             <if test="pnum != null and pnum != ''"> and a.pnum = #{pnum}</if>
+             <if test="buyPrice != null and buyPrice != ''"> and a.buyPrice = #{buyPrice}</if>
+             <if test="totalPrice != null and totalPrice != ''"> and a.totalPrice = #{totalPrice}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockPpurchaseById" parameterType="String" resultMap="StockPpurchaseResult">
+        <include refid="selectStockPpurchaseVo"/>
+        where logid = #{logid}
+    </select>
+        
+    <insert id="insertStockPpurchase" parameterType="StockPpurchase">
+        insert into as_stock_ppurchase
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="wppurchaseId != null and wppurchaseId != '' ">wppurchaseId,</if>
+			<if test="wpurchaseId != null and wpurchaseId != '' ">wpurchaseId,</if>
+			<if test="stockId != null and stockId != '' ">stockId,</if>
+			<if test="stokcName != null and stokcName != '' ">stokcName,</if>
+			<if test="productId != null and productId != '' ">productId,</if>
+			<if test="productName != null and productName != '' ">productName,</if>
+			<if test="supplierId != null and supplierId != '' ">supplierId,</if>
+			<if test="pnum != null and pnum != '' ">pnum,</if>
+			<if test="buyPrice != null and buyPrice != '' ">buyPrice,</if>
+			<if test="totalPrice != null and totalPrice != '' ">totalPrice,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="wppurchaseId != null and wppurchaseId != ''">#{wppurchaseId},</if>
+			<if test="wpurchaseId != null and wpurchaseId != ''">#{wpurchaseId},</if>
+			<if test="stockId != null and stockId != ''">#{stockId},</if>
+			<if test="stokcName != null and stokcName != ''">#{stokcName},</if>
+			<if test="productId != null and productId != ''">#{productId},</if>
+			<if test="productName != null and productName != ''">#{productName},</if>
+			<if test="supplierId != null and supplierId != ''">#{supplierId},</if>
+			<if test="pnum != null and pnum != ''">#{pnum},</if>
+			<if test="buyPrice != null and buyPrice != ''">#{buyPrice},</if>
+			<if test="totalPrice != null and totalPrice != ''">#{totalPrice},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateStockPpurchase" parameterType="StockPpurchase">
+        update as_stock_ppurchase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wppurchaseId != null  and wppurchaseId != ''  ">wppurchaseId = #{wppurchaseId},</if>
+            <if test="wpurchaseId != null  and wpurchaseId != ''  ">wpurchaseId = #{wpurchaseId},</if>
+            <if test="stockId != null  and stockId != ''  ">stockId = #{stockId},</if>
+            <if test="stokcName != null  and stokcName != ''  ">stokcName = #{stokcName},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="productName != null  and productName != ''  ">productName = #{productName},</if>
+            <if test="supplierId != null  and supplierId != ''  ">supplierId = #{supplierId},</if>
+            <if test="pnum != null  ">pnum = #{pnum},</if>
+            <if test="buyPrice != null  ">buyPrice = #{buyPrice},</if>
+            <if test="totalPrice != null  ">totalPrice = #{totalPrice},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteStockPpurchaseById" parameterType="String">
+        delete from as_stock_ppurchase where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStockPpurchaseByIds" parameterType="String">
+        delete from as_stock_ppurchase where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

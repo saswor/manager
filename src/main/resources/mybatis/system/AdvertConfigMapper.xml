@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.advert.mapper.AdvertConfigMapper">
+    
+    <resultMap type="AdvertConfig" id="AdvertConfigResult">
+        <result property="logid"    column="logid"    />
+        <result property="advertId"    column="advertId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="name"    column="name"    />
+        <result property="deliveryType"    column="deliveryType"    />
+        <result property="lazyTime"    column="lazyTime"    />
+        <result property="operType"    column="operType"    />
+        <result property="materialNum"    column="materialNum"    />
+        <result property="playerNum"    column="playerNum"    />
+        <result property="playerPlat"    column="playerPlat"    />
+        <result property="curState"    column="curState"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectAdvertConfigVo">
+        select logid, advertId, corpId, name, deliveryType, lazyTime, operType, materialNum, playerNum, playerPlat, curState, createTime from as_advert_config
+    </sql>
+	
+    <select id="selectAdvertConfigList" parameterType="AdvertConfig" resultMap="AdvertConfigResult">
+        <include refid="selectAdvertConfigVo"/>
+        where curState!='4' 
+        <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+        <if test="advertId != null and advertId != ''"> and advertId = #{advertId}</if>
+        <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+        <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
+        <if test="deliveryType != null and deliveryType != ''"> and deliveryType = #{deliveryType}</if>
+        <if test="lazyTime != null and lazyTime != ''"> and lazyTime = #{lazyTime}</if>
+        <if test="operType != null and operType != ''"> and operType = #{operType}</if>
+        <if test="materialNum != null and materialNum != ''"> and materialNum = #{materialNum}</if>
+        <if test="playerNum != null and playerNum != ''"> and playerNum = #{playerNum}</if>
+        <if test="playerPlat != null and playerPlat != ''"> and playerPlat = #{playerPlat}</if>
+        <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+        <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+    </select>
+    
+    <select id="selectNotExcutingAdvertConfigList" parameterType="AdvertConfig" resultMap="AdvertConfigResult">
+        <include refid="selectAdvertConfigVo"/>
+        <where>  
+             <if test="deliveryType != null and deliveryType != ''"> and deliveryType = #{deliveryType}</if>
+             <if test="lazyTime != null and lazyTime != ''"> and lazyTime &lt;= #{lazyTime}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+         </where>
+    </select>
+    
+    <select id="selectNotInvalidAdvertConfigList" parameterType="AdvertConfig" resultMap="AdvertConfigResult">
+        <include refid="selectAdvertConfigVo"/>
+        where curState='2'
+        <if test="deliveryType != null and deliveryType != ''"> and deliveryType = #{deliveryType}</if>
+        <if test="lazyTime != null and lazyTime != ''"> and lazyTime &lt;= #{lazyTime}</if>
+    </select>
+    
+    <select id="selectAdvertConfigByAdvertId" parameterType="String" resultMap="AdvertConfigResult">
+        <include refid="selectAdvertConfigVo"/>
+        where advertId = #{advertId}
+    </select>
+    
+    <select id="selectNotDeleteAdvertByAdvertIds" parameterType="String" resultMap="AdvertConfigResult">
+        <include refid="selectAdvertConfigVo"/>
+        where curState!='4' and advertId in 
+        <foreach item="advertId" collection="array" open="(" separator="," close=")">
+            #{advertId}
+        </foreach>
+    </select>
+    
+    <select id="selectAdvertConfigNameNotExist" parameterType="AdvertConfig" resultMap="AdvertConfigResult">
+        <include refid="selectAdvertConfigVo"/>
+        where name = #{name} and corpId=#{corpId} and curState!='4' 
+        <if test="advertId != null and advertId != ''"> and advertId != #{advertId}</if>
+        limit 0,1
+    </select>
+    
+    <select id="selectAdvertConfigById" parameterType="String" resultMap="AdvertConfigResult">
+        <include refid="selectAdvertConfigVo"/>
+        where logid = #{logid}
+    </select>
+        
+    <insert id="insertAdvertConfig" parameterType="AdvertConfig">
+        insert into as_advert_config
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="advertId != null and advertId != '' ">advertId,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="name != null and name != '' ">name,</if>
+			<if test="deliveryType != null and deliveryType != '' ">deliveryType,</if>
+			<if test="lazyTime != null and lazyTime != '' ">lazyTime,</if>
+			<if test="operType != null and operType != '' ">operType,</if>
+			<if test="materialNum != null and materialNum != '' ">materialNum,</if>
+			<if test="playerNum != null and playerNum != '' ">playerNum,</if>
+			<if test="playerPlat != null and playerPlat != '' ">playerPlat,</if>
+			<if test="curState != null and curState != '' ">curState,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="advertId != null and advertId != ''">#{advertId},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="deliveryType != null and deliveryType != ''">#{deliveryType},</if>
+			<if test="lazyTime != null and lazyTime != ''">#{lazyTime},</if>
+			<if test="operType != null and operType != ''">#{operType},</if>
+			<if test="materialNum != null and materialNum != ''">#{materialNum},</if>
+			<if test="playerNum != null and playerNum != ''">#{playerNum},</if>
+			<if test="playerPlat != null and playerPlat != ''">#{playerPlat},</if>
+			<if test="curState != null and curState != ''">#{curState},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateAdvertConfig" parameterType="AdvertConfig">
+        update as_advert_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="deliveryType != null  and deliveryType != ''  ">deliveryType = #{deliveryType},</if>
+            <if test="lazyTime != null">lazyTime = #{lazyTime},</if>
+            <if test="operType != null  and operType != ''  ">operType = #{operType},</if>
+            <if test="materialNum != null  ">materialNum = #{materialNum},</if>
+            <if test="playerNum != null  ">playerNum = #{playerNum},</if>
+            <if test="playerPlat != null  and playerPlat != ''  ">playerPlat = #{playerPlat},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where advertId = #{advertId}
+    </update>
+
+	<delete id="deleteAdvertConfigById" parameterType="String">
+        delete from as_advert_config where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteAdvertConfigByIds" parameterType="String">
+        delete from as_advert_config where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

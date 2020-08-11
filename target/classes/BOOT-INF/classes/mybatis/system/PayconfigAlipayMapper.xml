@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.base.mapper.PayconfigAlipayMapper">
+    
+    <resultMap type="PayconfigAlipay" id="PayconfigAlipayResult">
+        <result property="logid"    column="logid"    />
+        <result property="payConfigId"    column="payConfigId"    />
+        <result property="payAccept"    column="payAccept"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="autoReturn"    column="autoReturn"    />
+        <result property="payType"    column="payType"    />
+        <result property="alipayVersion"    column="alipayVersion"    />
+        <result property="enType"    column="enType"    />
+        <result property="pid"    column="pid"    />
+        <result property="key"    column="`key`"    />
+        <result property="isCheckIn"    column="isCheckIn"    />
+        <result property="rate"    column="rate"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="publKey"    column="publKey"    />
+        <result property="signType"    column="signType"    />
+        <result property="alipayApi"    column="alipayApi"    />
+        <result property="authBack"    column="authBack"    />
+        <result property="returnNotice"    column="returnNotice"    />
+        <result property="privKey"    column="privKey"    />
+        <result property="title"    column="title"    />
+        <result property="body"    column="body"    />
+        <result property="tradeType"    column="tradeType"    />
+        <result property="testState"    column="testState"    />
+    </resultMap>
+	
+	<sql id="selectPayconfigAlipayVo">
+        select logid, payConfigId, payAccept, corpId, autoReturn, payType, alipayVersion, enType, pid, `key`, isCheckIn, rate, createTime,publKey,signType,alipayApi,authBack,returnNotice,privKey,title,body,tradeType,testState from as_payconfig_alipay
+    </sql>
+	
+    <select id="selectPayconfigAlipayList" parameterType="PayconfigAlipay" resultMap="PayconfigAlipayResult">
+        <include refid="selectPayconfigAlipayVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="payConfigId != null and payConfigId != ''"> and payConfigId = #{payConfigId}</if>
+             <if test="payAccept != null and payAccept != ''"> and payAccept = #{payAccept}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="autoReturn != null and autoReturn != ''"> and autoReturn = #{autoReturn}</if>
+             <if test="payType != null and payType != ''"> and payType = #{payType}</if>
+             <if test="alipayVersion != null and alipayVersion != ''"> and alipayVersion = #{alipayVersion}</if>
+             <if test="enType != null and enType != ''"> and enType = #{enType}</if>
+             <if test="pid != null and pid != ''"> and pid = #{pid}</if>
+             <if test="key != null and key != ''"> and `key` = #{key}</if>
+             <if test="isCheckIn != null and isCheckIn != ''"> and isCheckIn = #{isCheckIn}</if>
+             <if test="rate != null and rate != ''"> and rate = #{rate}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="publKey != null and publKey != ''"> and publKey = #{publKey}</if>
+             <if test="signType != null and signType != ''"> and signType = #{signType}</if>
+             <if test="alipayApi != null and alipayApi != ''"> and alipayApi = #{alipayApi}</if>
+             <if test="authBack != null and authBack != ''"> and authBack = #{authBack}</if>
+             <if test="returnNotice != null and returnNotice != ''"> and returnNotice = #{returnNotice}</if>
+             <if test="privKey != null and privKey != ''"> and privKey = #{privKey}</if>
+             <if test="title != null and title != ''"> and title = #{title}</if>
+             <if test="body != null and body != ''"> and body = #{body}</if>
+             <if test="tradeType != null and tradeType != ''"> and tradeType = #{tradeType}</if>
+         </where>
+    </select>
+    
+    <select id="selectPayconfigAlipayById" parameterType="String" resultMap="PayconfigAlipayResult">
+        <include refid="selectPayconfigAlipayVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectPayconfigAlipay" parameterType="PayconfigAlipay" resultMap="PayconfigAlipayResult">
+        <include refid="selectPayconfigAlipayVo"/>
+        where corpId = #{corpId}
+    </select>
+        
+    <insert id="insertPayconfigAlipay" parameterType="PayconfigAlipay">
+        insert into as_payconfig_alipay
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="payConfigId != null and payConfigId != '' ">payConfigId,</if>
+			<if test="payAccept != null and payAccept != '' ">payAccept,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="autoReturn != null and autoReturn != '' ">autoReturn,</if>
+			<if test="payType != null and payType != '' ">payType,</if>
+			<if test="alipayVersion != null and alipayVersion != '' ">alipayVersion,</if>
+			<if test="enType != null and enType != '' ">enType,</if>
+			<if test="pid != null and pid != '' ">pid,</if>
+			<if test="key != null and key != '' ">key,</if>
+			<if test="isCheckIn != null and isCheckIn != '' ">isCheckIn,</if>
+			<if test="rate != null and rate != '' ">rate,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+			<if test="publKey != null and publKey != ''">publKey,</if>
+             <if test="signType != null and signType != ''">signType,</if>
+             <if test="alipayApi != null and alipayApi != ''">alipayApi,</if>
+             <if test="authBack != null and authBack != ''">authBack,</if>
+             <if test="returnNotice != null and returnNotice != ''">  returnNotice,</if>
+             <if test="privKey != null and privKey != ''">  privKey ,</if>
+             <if test="title != null and title != ''">  title ,</if>
+             <if test="body != null and body != ''">  body ,</if>
+             <if test="tradeType != null and tradeType != ''">  tradeType ,</if>
+             <if test="testState != null and testState != ''">  testState ,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="payConfigId != null and payConfigId != ''">#{payConfigId},</if>
+			<if test="payAccept != null and payAccept != ''">#{payAccept},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="autoReturn != null and autoReturn != ''">#{autoReturn},</if>
+			<if test="payType != null and payType != ''">#{payType},</if>
+			<if test="alipayVersion != null and alipayVersion != ''">#{alipayVersion},</if>
+			<if test="enType != null and enType != ''">#{enType},</if>
+			<if test="pid != null and pid != ''">#{pid},</if>
+			<if test="key != null and key != ''">#{key},</if>
+			<if test="isCheckIn != null and isCheckIn != ''">#{isCheckIn},</if>
+			<if test="rate != null and rate != ''">#{rate},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+			<if test="publKey != null and publKey != ''">#{publKey},</if>
+             <if test="signType != null and signType != ''">#{signType},</if>
+             <if test="alipayApi != null and alipayApi != ''">#{alipayApi},</if>
+             <if test="authBack != null and authBack != ''">#{authBack},</if>
+             <if test="returnNotice != null and returnNotice != ''">#{returnNotice},</if>
+             <if test="privKey != null and privKey != ''">#{privKey},</if>
+             <if test="title != null and title != ''">#{title},</if>
+             <if test="body != null and body != ''">#{body},</if>
+             <if test="tradeType != null and tradeType != ''">#{tradeType},</if>
+             <if test="testState != null and testState != ''">#{testState},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updatePayconfigAlipay" parameterType="PayconfigAlipay">
+        update as_payconfig_alipay
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="payConfigId != null  and payConfigId != ''  ">payConfigId = #{payConfigId},</if>
+            <if test="payAccept != null  and payAccept != ''  ">payAccept = #{payAccept},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="autoReturn != null  and autoReturn != ''  ">autoReturn = #{autoReturn},</if>
+            <if test="payType != null  and payType != ''  ">payType = #{payType},</if>
+            <if test="alipayVersion != null  and alipayVersion != ''  ">alipayVersion = #{alipayVersion},</if>
+            <if test="enType != null  and enType != ''  ">enType = #{enType},</if>
+            <if test="pid != null  and pid != ''  ">pid = #{pid},</if>
+            <if test="key != null  and key != ''  ">key = #{key},</if>
+            <if test="isCheckIn != null  and isCheckIn != ''  ">isCheckIn = #{isCheckIn},</if>
+            <if test="rate != null  ">rate = #{rate},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="publKey != null and publKey != ''">publKey = #{publKey},</if>
+             <if test="signType != null and signType != ''">signType = #{signType},</if>
+             <if test="alipayApi != null and alipayApi != ''">alipayApi = #{alipayApi},</if>
+             <if test="authBack != null and authBack != ''">authBack = #{authBack},</if>
+             <if test="returnNotice != null and returnNotice != ''">returnNotice = #{returnNotice},</if>
+             <if test="privKey != null and privKey != ''">privKey = #{privKey},</if>
+             <if test="title != null and title != ''">title = #{title},</if>
+             <if test="body != null and body != ''">body = #{body},</if>
+             <if test="tradeType != null and tradeType != ''">tradeType = #{tradeType},</if>
+             <if test="testState != null and testState != ''">testState = #{testState},</if>
+        </trim>
+        where payConfigId = #{payConfigId}
+    </update>
+
+	<delete id="deletePayconfigAlipayById" parameterType="String">
+        delete from as_payconfig_alipay where logid = #{logid}
+    </delete>
+	
+    <delete id="deletePayconfigAlipayByIds" parameterType="String">
+        delete from as_payconfig_alipay where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

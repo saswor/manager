@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.product.mapper.ProductUnderMapper">
+    
+    <resultMap type="ProductUnder" id="ProductUnderResult">
+        <result property="logid"    column="logid"    />
+        <result property="underId"    column="underId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="productId"    column="productId"    />
+        <result property="name"    column="name"    />
+        <result property="fullName"    column="fullName"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="underType"    column="underType"    />
+        <result property="planTime"    column="planTime"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectProductUnderVo">
+        select logid, underId, districtId, lineId, pointId, siteId, siteName, productId, name, fullName, curState, stateTime, underType, planTime, corpId, createTime from as_product_under
+    </sql>
+	
+    <select id="selectProductUnderList" parameterType="ProductUnder" resultMap="ProductUnderResult">
+        <include refid="selectProductUnderVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="underId != null and underId != ''"> and underId = #{underId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="name != null and name != ''"> and name = #{name}</if>
+             <if test="fullName != null and fullName != ''"> and fullName = #{fullName}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="underType != null and underType != ''"> and underType = #{underType}</if>
+             <if test="planTime != null and planTime != ''"> and planTime = #{planTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectProductUnderById" parameterType="String" resultMap="ProductUnderResult">
+        <include refid="selectProductUnderVo"/>
+        where logid = #{logid}
+    </select>
+        
+    <insert id="insertProductUnder" parameterType="ProductUnder">
+        insert into as_product_under
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="underId != null and underId != '' ">underId,</if>
+			<if test="vUnderId != null and vUnderId != '' ">vUnderId,</if>
+			<if test="districtId != null and districtId != '' ">districtId,</if>
+			<if test="lineId != null and lineId != '' ">lineId,</if>
+			<if test="pointId != null and pointId != '' ">pointId,</if>
+			<if test="siteId != null and siteId != '' ">siteId,</if>
+			<if test="siteName != null and siteName != '' ">siteName,</if>
+			<if test="productId != null and productId != '' ">productId,</if>
+			<if test="name != null and name != '' ">name,</if>
+			<if test="fullName != null and fullName != '' ">fullName,</if>
+			<if test="underNum != null and underNum != '' ">underNum,</if>
+			<if test="curState != null and curState != '' ">curState,</if>
+			<if test="stateTime != null and stateTime != '' ">stateTime,</if>
+			<if test="underType != null and underType != '' ">underType,</if>
+			<if test="planTime != null and planTime != '' ">planTime,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			createTime
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="underId != null and underId != ''">#{underId},</if>
+			<if test="vUnderId != null and vUnderId != '' ">#{vUnderId},</if>
+			<if test="districtId != null and districtId != ''">#{districtId},</if>
+			<if test="lineId != null and lineId != ''">#{lineId},</if>
+			<if test="pointId != null and pointId != ''">#{pointId},</if>
+			<if test="siteId != null and siteId != ''">#{siteId},</if>
+			<if test="siteName != null and siteName != ''">#{siteName},</if>
+			<if test="productId != null and productId != ''">#{productId},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="fullName != null and fullName != ''">#{fullName},</if>
+			<if test="underNum != null and underNum != ''">#{underNum},</if>
+			<if test="curState != null and curState != ''">#{curState},</if>
+			<if test="stateTime != null and stateTime != ''">#{stateTime},</if>
+			<if test="underType != null and underType != ''">#{underType},</if>
+			<if test="planTime != null and planTime != ''">#{planTime},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			date_format(now(), '%Y-%m-%d %H:%i:%s'),
+         </trim>
+    </insert>
+	 
+    <update id="updateProductUnder" parameterType="ProductUnder">
+        update as_product_under
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="underId != null  and underId != ''  ">underId = #{underId},</if>
+            <if test="districtId != null  and districtId != ''  ">districtId = #{districtId},</if>
+            <if test="lineId != null  and lineId != ''  ">lineId = #{lineId},</if>
+            <if test="pointId != null  and pointId != ''  ">pointId = #{pointId},</if>
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="fullName != null  and fullName != ''  ">fullName = #{fullName},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="underType != null  and underType != ''  ">underType = #{underType},</if>
+            <if test="planTime != null  and planTime != ''  ">planTime = #{planTime},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteProductUnderById" parameterType="String">
+        delete from as_product_under where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteProductUnderByIds" parameterType="String">
+        delete from as_product_under where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+     <insert id="insertProductUnderBatch" parameterType="java.util.List">
+        insert into as_product_under (logid,underId,vUnderId,districtId,lineId,pointId,siteId,siteName,productId,name,fullName,curState,stateTime,underType,planTime,corpId,createTime,underNum) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.logid},#{item.underId},#{item.vUnderId},#{item.districtId},#{item.lineId},#{item.pointId},#{item.siteId},#{item.siteName},#{item.productId},#{item.name},#{item.fullName},#{item.curState},#{item.stateTime},#{item.underType},#{item.planTime},#{item.corpId},#{item.createTime},#{item.underNum})
+        </foreach>
+     </insert>
+
+</mapper>

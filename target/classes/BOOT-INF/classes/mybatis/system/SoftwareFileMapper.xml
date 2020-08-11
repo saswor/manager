@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.SoftwareFileMapper">
+    
+    <resultMap type="SoftwareFile" id="SoftwareFileResult">
+        <result property="logid"    column="logid"    />
+        <result property="vFileId"    column="vFileId"    />
+        <result property="versionId"    column="versionId"    />
+        <result property="fileName"    column="fileName"    />
+        <result property="fileSize"    column="fileSize"    />
+        <result property="fileType"    column="fileType"    />
+        <result property="filePath"    column="filePath"    />
+        <result property="localPath"    column="localPath"    />
+        <result property="seqId"    column="seqId"    />
+        <result property="fileMDF"    column="fileMDF"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectSoftwareFile">
+        select logid, vFileId, versionId, fileName, fileSize, fileType, filePath, localPath, seqId, fileMDF, corpId, createTime from as_software_file
+    </sql>
+	
+    <select id="selectSoftwareFileByVersionId" parameterType="String" resultMap="SoftwareFileResult">
+        <include refid="selectSoftwareFile"/>
+        where versionId = #{versionId} order by seqId asc
+    </select>
+        
+    <insert id="insertSoftwareFileBatch" parameterType="java.util.List">
+        insert into as_software_file (logid,vFileId,versionId,fileName,fileSize,fileType,filePath,localPath,seqId,fileMDF,corpId,createTime) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.logid},#{item.vFileId},#{item.versionId},#{item.fileName},#{item.fileSize},#{item.fileType},#{item.filePath},#{item.localPath},#{item.seqId},#{item.fileMDF},#{item.corpId},#{item.createTime})
+        </foreach>
+    </insert>
+
+	<delete id="deleteSoftwareFileByVersionId" parameterType="String">
+        delete from as_software_file where versionId = #{versionId}
+    </delete>
+	
+</mapper>

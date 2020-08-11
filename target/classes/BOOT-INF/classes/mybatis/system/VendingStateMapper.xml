@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingStateMapper">
+    
+    <resultMap type="VendingState" id="VendingStateResult">
+        <result property="logid"    column="logid"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="seqId"    column="seqId"    />
+        <result property="vFirmware"    column="vFirmware"    />
+        <result property="vVCS"    column="vVCS"    />
+        <result property="ipAddress"    column="ipAddress"    />
+        <result property="signalValue"    column="signalValue"    />
+        <result property="iccid"    column="iccid"    />
+        <result property="contime"    column="contime"    />
+        <result property="loseContime"    column="loseContime"    />
+        <result property="resoution"    column="resoution"    />
+        <result property="screenType"    column="screenType"    />
+        <result property="vAndroid"    column="vAndroid"    />
+        <result property="vBaseband"    column="vBaseband"    />
+        <result property="reportTime"    column="reportTime"    />
+        <result property="netSate"    column="netSate"    />
+        <result property="corpId"    column="corpId"    />
+    </resultMap>
+	
+	<sql id="selectVendingStateVo">
+        select logid, siteId, siteName, seqId, vFirmware, vVCS, ipAddress, signalValue, iccid, contime, loseContime, resoution, screenType, vAndroid, vBaseband, reportTime, netSate, corpId from as_vending_state
+    </sql>
+	
+    <select id="selectVendingStateList" parameterType="VendingState" resultMap="VendingStateResult">
+        <include refid="selectVendingStateVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="site != null and site != ''"> and (siteId = #{site} or siteName like concat("%",#{site},"%"))</if>
+             <if test="seqId != null and seqId != ''"> and seqId = #{seqId}</if>
+             <if test="vFirmware != null and vFirmware != ''"> and vFirmware = #{vFirmware}</if>
+             <if test="vVCS != null and vVCS != ''"> and vVCS = #{vVCS}</if>
+             <if test="ipAddress != null and ipAddress != ''"> and ipAddress = #{ipAddress}</if>
+             <if test="signalValue != null and signalValue != ''"> and signalValue = #{signalValue}</if>
+             <if test="iccid != null and iccid != ''"> and iccid = #{iccid}</if>
+             <if test="contime != null and contime != ''"> and contime = #{contime}</if>
+             <if test="loseContime != null and loseContime != ''"> and loseContime = #{loseContime}</if>
+             <if test="resoution != null and resoution != ''"> and resoution = #{resoution}</if>
+             <if test="screenType != null and screenType != ''"> and screenType = #{screenType}</if>
+             <if test="vAndroid != null and vAndroid != ''"> and vAndroid = #{vAndroid}</if>
+             <if test="vBaseband != null and vBaseband != ''"> and vBaseband = #{vBaseband}</if>
+             <if test="reportTime != null and reportTime != ''"> and reportTime = #{reportTime}</if>
+             <if test="netSate != null and netSate != ''"> and netSate = #{netSate}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingStateById" parameterType="String" resultMap="VendingStateResult">
+        <include refid="selectVendingStateVo"/>
+        where siteId = #{siteId}
+    </select>
+    
+    <select id="selectVendingStateBySiteId" parameterType="String" resultMap="VendingStateResult">
+        <include refid="selectVendingStateVo"/>
+        where siteId = #{siteId}
+    </select>
+        
+    <insert id="insertVendingState" parameterType="VendingState">
+        insert into as_vending_state(logid,siteId,siteName,seqId,vFirmware,vVCS,ipAddress,signalValue,iccid,contime,loseContime,resoution,
+        	screenType,vAndroid,vBaseband,reportTime,netSate,corpId)
+        values (#{logid},#{siteId},#{siteName},#{seqId},#{vFirmware},#{vVCS},#{ipAddress},#{signalValue},#{iccid},#{contime},#{loseContime},#{resoution},
+        	#{screenType},#{vAndroid},#{vBaseband},#{reportTime},#{netSate},#{corpId})
+    </insert>
+	 
+    <update id="updateVendingState" parameterType="VendingState">
+        update as_vending_state
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="seqId != null  and seqId != ''  ">seqId = #{seqId},</if>
+            <if test="vFirmware != null  and vFirmware != ''  ">vFirmware = #{vFirmware},</if>
+            <if test="vVCS != null  and vVCS != ''  ">vVCS = #{vVCS},</if>
+            <if test="ipAddress != null  and ipAddress != ''  ">ipAddress = #{ipAddress},</if>
+            <if test="signalValue != null  ">signalValue = #{signalValue},</if>
+            <if test="iccid != null  and iccid != ''  ">iccid = #{iccid},</if>
+            <if test="contime != null  ">contime = #{contime},</if>
+            <if test="loseContime != null  ">loseContime = #{loseContime},</if>
+            <if test="resoution != null  and resoution != ''  ">resoution = #{resoution},</if>
+            <if test="screenType != null  and screenType != ''  ">screenType = #{screenType},</if>
+            <if test="vAndroid != null  and vAndroid != ''  ">vAndroid = #{vAndroid},</if>
+            <if test="vBaseband != null  and vBaseband != ''  ">vBaseband = #{vBaseband},</if>
+            <if test="reportTime != null  and reportTime != ''  ">reportTime = #{reportTime},</if>
+            <if test="netSate != null  and netSate != ''  ">netSate = #{netSate},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where siteId = #{siteId}
+    </update>
+
+	<delete id="deleteVendingStateById" parameterType="String">
+        delete from as_vending_state where siteId = #{siteId}
+    </delete>
+	
+    <delete id="deleteVendingStateByIds" parameterType="String">
+        delete from as_vending_state where siteId in 
+        <foreach item="siteId" collection="array" open="(" separator="," close=")">
+            #{siteId}
+        </foreach>
+    </delete>
+    
+</mapper>

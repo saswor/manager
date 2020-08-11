@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.statement.mapper.StatementSupplyMapper">
+    
+    <resultMap type="com.manage.project.system.statement.vo.StatementSupplyVo" id="StatementSupplyResult">
+        <result property="logid"    column="logid"    />
+        <result property="sOrderId"    column="sOrderId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="name"    column="name"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="districtName"    column="districtName"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="lineName"    column="lineName"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="pointName"    column="pointName"    />
+        <result property="wmId"    column="wmId"    />
+        <result property="wmName"    column="wmName"    />
+        <result property="tradeSTime"    column="tradeSTime"    />
+        <result property="tradeEtime"    column="tradeEtime"    />
+        <result property="supplyNum"    column="supplyNum"    />
+        <result property="saleNum"    column="saleNum"    />
+        <result property="underNum"    column="underNum"    />
+        <result property="abnomarlNum"    column="abnomarlNum"    />
+        <result property="buyMoney"    column="buyMoney"    />
+        <result property="salePMoney"    column="salePMoney"    />
+        <result property="saleRMoney"    column="saleRMoney"    />
+        <result property="saleFMoney"    column="saleFMoney"    />
+        <result property="saleUMoney"    column="saleUMoney"    />
+        <result property="abnomarlMoney"    column="abnomarlMoney"    />
+        <result property="salteState"    column="salteState"    />
+        <result property="statementState"    column="statementState"    />
+        <result property="curState"    column="curState"    />
+        <result property="sbalanceId"    column="sbalanceId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="salteStateName"    column="salteStateName"    />
+        <result property="statementStateName"    column="statementStateName"    />
+        <result property="curStateName"    column="curStateName"    />
+    </resultMap>
+	
+<!-- 	<sql id="selectStatementSupplyVo">
+        select a.logid, a.sOrderId, a.siteId,c.siteName siteName, a.corpId, a.name, a.districtId, e.name districtName, 
+        a.lineId,b.name lineName, d.pointId pointId,d.name pointName, a.wmId, f.stockName wmName, a.tradeSTime, a.tradeEtime, 
+        a.supplyNum, a.saleNum, a.underNum, a.abnomarlNum, a.buyMoney, a.salePMoney, a.saleRMoney, a.saleFMoney, 
+        a.saleUMoney, a.abnomarlMoney, a.salteState, a.statementState, a.curState, a.sbalanceId, a.createTime,
+        case a.salteState when '1' then '未开始销售' when '2' then '销售中' when '3' then '销售完成' end as salteStateName,
+        case a.statementState when '1' then '等待售完' when '2' then '等待对账' when '3' then '对账正常' when '4' then '对账异常' end as statementStateName,
+        case a.curState when '1' then '未提交' when '2' then '未提交' end as curStateName
+        from as_statement_supply a left join as_vending_line b on a.lineId=b.lineId
+        left join as_vending c on a.siteId=c.siteId
+        left join as_vending_point d on c.pointId=d.pointId
+        left join as_vending_district e on a.districtId=e.districtId
+        left join as_stock_info f on a.wmId=f.stockId
+    </sql> -->
+    
+    <sql id="selectStatementSupplyVo">
+        select a.logid, a.sOrderId, a.siteId, a.corpId, a.name, a.districtId, a.lineId,a.wmId, a.tradeSTime,
+        a.tradeEtime, a.supplyNum, a.saleNum, a.underNum, a.abnomarlNum, a.buyMoney, a.salePMoney, a.saleRMoney, a.saleFMoney, 
+        a.saleUMoney, a.abnomarlMoney, a.salteState, a.statementState, a.curState, a.sbalanceId, a.createTime
+        from as_statement_supply a
+    </sql>
+    
+    <select id="selectStatementSupplyList" parameterType="StatementSupply" resultMap="StatementSupplyResult">
+        <include refid="selectStatementSupplyVo"></include>
+        <where>  
+             <if test="siteId != null and siteId != ''"> and a.siteId = #{siteId}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="districtId != null and districtId != ''"> and a.districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and a.lineId = #{lineId}</if>
+             <if test="tradeSTime != null and tradeSTime != ''"> and str_to_date(a.tradeSTime,'%Y-%m-%d') &gt;= str_to_date(#{tradeSTime},'%Y-%m-%d')</if>
+             <if test="tradeEtime != null and tradeEtime != ''"> and str_to_date(a.tradeEtime,'%Y-%m-%d') &lt;= str_to_date(#{tradeEtime},'%Y-%m-%d')</if>
+             <if test="statementState != null and statementState != ''"> and a.statementState = #{statementState}</if>
+         </where>
+    </select>
+    
+    <select id="selectStatementSupplyListByLogids" parameterType="String" resultMap="StatementSupplyResult">
+        <include refid="selectStatementSupplyVo"></include>
+        where a.logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </select>
+	
+    <!-- <select id="selectStatementSupplyList" parameterType="StatementSupply" resultMap="StatementSupplyResult">
+        select a.logid, a.sOrderId, a.siteId,d.pointId,d.name pointName ,a.lineId,b.name lineName, a.tradeSTime, 
+        a.tradeEtime,a.salteState, a.statementState, a.abnomarlNum, a.abnomarlMoney, a.createTime 
+        from as_statement_supply a left join as_vending_line b on a.lineId=b.lineId
+        left join as_vending c on a.siteId=c.siteId
+        left join as_vending_point d on c.pointId=d.pointId
+        <where>  
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="tradeSTime != null and tradeSTime != ''"> and tradeSTime = #{tradeSTime}</if>
+             <if test="tradeEtime != null and tradeEtime != ''"> and tradeEtime = #{tradeEtime}</if>
+             <if test="statementState != null and statementState != ''"> and statementState = #{statementState}</if>
+         </where>
+    </select> -->
+    
+    <select id="selectStatementSupplyById" parameterType="String" resultMap="StatementSupplyResult">
+        <include refid="selectStatementSupplyVo"></include>
+        where a.logid = #{logid}
+    </select>
+    
+    <select id="selectStatementSupplyBySOrderIdAndSiteId" parameterType="String" resultMap="StatementSupplyResult">
+        <include refid="selectStatementSupplyVo"></include>
+        where a.sOrderId = #{sOrderId} and a.siteId=#{siteId}
+    </select>
+        
+	 
+    <update id="updateStatementSupply" parameterType="StatementSupply">
+        update as_statement_supply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="abnomarlNum != null  ">abnomarlNum = #{abnomarlNum},</if>
+            <if test="abnomarlMoney != null  ">abnomarlMoney = #{abnomarlMoney},</if>
+            <if test="salteState != null  and salteState != ''  ">salteState = #{salteState},</if>
+            <if test="statementState != null  and statementState != ''  ">statementState = #{statementState},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="sbalanceId != null  and sbalanceId != ''  ">sbalanceId = #{sbalanceId},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+    
+</mapper>

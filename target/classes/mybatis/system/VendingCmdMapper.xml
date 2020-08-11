@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingCmdMapper">
+    
+    <resultMap type="VendingCmd" id="VendingCmdResult">
+        <result property="logid"    column="logid"    />
+        <result property="cmdId"    column="cmdId"    />
+        <result property="cmdCode"    column="cmdCode"    />
+        <result property="cmdType"    column="cmdType"    />
+        <result property="cmdLazy"    column="cmdLazy"    />
+        <result property="cmd"    column="cmd"    />
+        <result property="cont"    column="cont"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="state"    column="state"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="result"    column="result"    />
+        <result property="corpId"    column="corpId"    />
+    </resultMap>
+	
+	<sql id="selectVendingCmdVo">
+        select logid, cmdId, cmdCode, cmdType, cmdLazy, cmd, cont, createTime, state, stateTime, result, corpId from as_vending_cmd
+    </sql>
+	
+    <select id="selectVendingCmdList" parameterType="VendingCmd" resultMap="VendingCmdResult">
+        <include refid="selectVendingCmdVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="cmdId != null and cmdId != ''"> and cmdId = #{cmdId}</if>
+             <if test="cmdCode != null and cmdCode != ''"> and cmdCode = #{cmdCode}</if>
+             <if test="cmdType != null and cmdType != ''"> and cmdType = #{cmdType}</if>
+             <if test="cmdLazy != null and cmdLazy != ''"> and cmdLazy = #{cmdLazy}</if>
+             <if test="cmd != null and cmd != ''"> and cmd = #{cmd}</if>
+             <if test="cont != null and cont != ''"> and cont = #{cont}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="state != null and state != ''"> and state = #{state}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="result != null and result != ''"> and result = #{result}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingCmdById" parameterType="String" resultMap="VendingCmdResult">
+        <include refid="selectVendingCmdVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <insert id="insertVendingCmd" parameterType="VendingCmd">
+        insert into as_vending_cmd (logid,cmdId,cmdCode,cmdType,cmdLazy,cmd,cont,createTime,state,stateTime,result,corpId)
+        values (#{logid},#{cmdId},#{cmdCode},#{cmdType},#{cmdLazy},#{cmd},#{cont},#{createTime},#{state},#{stateTime},#{result},#{corpId})
+    </insert>
+        
+    <!-- <insert id="insertVendingCmd" parameterType="VendingCmd">
+        insert into as_vending_cmd 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="cmdId != null and cmdId != '' ">cmdId,</if>
+			<if test="cmdCode != null and cmdCode != '' ">cmdCode,</if>
+			<if test="cmdType != null and cmdType != '' ">cmdType,</if>
+			<if test="cmdLazy != null and cmdLazy != '' ">cmdLazy,</if>
+			<if test="cmd != null and cmd != '' ">cmd,</if>
+			<if test="cont != null and cont != '' ">cont,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+			<if test="state != null and state != '' ">state,</if>
+			<if test="stateTime != null and stateTime != '' ">stateTime,</if>
+			<if test="result != null and result != '' ">result,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="cmdId != null and cmdId != ''">#{cmdId},</if>
+			<if test="cmdCode != null and cmdCode != ''">#{cmdCode},</if>
+			<if test="cmdType != null and cmdType != ''">#{cmdType},</if>
+			<if test="cmdLazy != null and cmdLazy != ''">#{cmdLazy},</if>
+			<if test="cmd != null and cmd != ''">#{cmd},</if>
+			<if test="cont != null and cont != ''">#{cont},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+			<if test="state != null and state != ''">#{state},</if>
+			<if test="stateTime != null and stateTime != ''">#{stateTime},</if>
+			<if test="result != null and result != ''">#{result},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+         </trim>
+    </insert> -->
+	 
+    <update id="updateVendingCmd" parameterType="VendingCmd">
+        update as_vending_cmd
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cmdId != null  and cmdId != ''  ">cmdId = #{cmdId},</if>
+            <if test="cmdCode != null  and cmdCode != ''  ">cmdCode = #{cmdCode},</if>
+            <if test="cmdType != null  and cmdType != ''  ">cmdType = #{cmdType},</if>
+            <if test="cmdLazy != null  and cmdLazy != ''  ">cmdLazy = #{cmdLazy},</if>
+            <if test="cmd != null  and cmd != ''  ">cmd = #{cmd},</if>
+            <if test="cont != null  and cont != ''  ">cont = #{cont},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="state != null  and state != ''  ">state = #{state},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="result != null  and result != ''  ">result = #{result},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingCmdById" parameterType="String">
+        delete from as_vending_cmd where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingCmdByIds" parameterType="String">
+        delete from as_vending_cmd where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

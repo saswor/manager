@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.stock.mapper.StockWarehouseMapper">
+    
+    <resultMap type="StockWarehouse" id="StockWarehouseResult">
+        <result property="logid"    column="logid"    />
+        <result property="wstockId"    column="wstockId"    />
+        <result property="stockId"    column="stockId"    />
+        <result property="stokcName"    column="stokcName"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="totalNum"    column="totalNum"    />
+        <result property="curNum"    column="curNum"    />
+        <result property="overNum"    column="overNum"    />
+        <result property="warnNum"    column="warnNum"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="managerName"    column="managerName"    />
+        <result property="pNum"    column="pNum"    />
+        <result property="buyPrice"    column="buyPrice"    />
+        <result property="totalPrice"    column="totalPrice"    />
+    </resultMap>
+	
+	<sql id="selectStockWarehouseVo">
+        select logid, wstockId, stockId, stokcName, productId, productName, totalNum, curNum, overNum, warnNum, corpId, createTime from as_stock_warehouse
+    </sql>
+	
+    <select id="selectStockWarehouseList" parameterType="StockWarehouse" resultMap="StockWarehouseResult">
+        SELECT a.logid, a.wstockId, a.stockId, a.stokcName, a.productId, 
+			a.productName, a.totalNum, a.curNum, a.overNum, a.warnNum, a.corpId, a.createTime, b.`managerName` 
+		FROM as_stock_warehouse AS a LEFT JOIN as_stock_info AS b ON a.`stockId` = b.`stockId` AND a.`corpId` = b.`corpId`
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+             <if test="wstockId != null and wstockId != ''"> and a.wstockId = #{wstockId}</if>
+             <if test="stockId != null and stockId != ''"> and a.stockId = #{stockId}</if>
+             <if test="stokcName != null and stokcName != ''"> and a.stokcName like concat('%', #{stokcName},'%')</if>
+             <if test="productId != null and productId != ''"> and a.productId = #{productId}</if>
+             <if test="productName != null and productName != ''"> and a.productName like concat("%",#{productName},"%")</if>
+             <if test="totalNum != null and totalNum != ''"> and a.totalNum = #{totalNum}</if>
+             <if test="curNum != null and curNum != ''"> and a.a.curNum = #{curNum}</if>
+             <if test="overNum != null and overNum != ''"> and a.overNum = #{overNum}</if>
+             <if test="warnNum != null and warnNum != ''"> and a.warnNum = #{warnNum}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+             <if test="managerName != null and managerName != ''"> and b.managerName like concat('%', #{managerName}, '%')</if>
+         </where>
+    </select>
+    
+    <select id="selectStockWarehouse" parameterType="StockWarehouse" resultMap="StockWarehouseResult">
+        SELECT DISTINCT a.stockId, a.stokcName, b.`managerName`,a.createtime, a.productName, a.curNum,a.productId
+			FROM as_stock_warehouse AS a LEFT JOIN as_stock_info AS b ON a.`stockId` = b.`stockId` AND a.`corpId` = b.`corpId`
+        <where>
+        	 <if test="productName != null and productName != ''"> and a.productName = #{productName}</if>
+        	 <if test="curNum != null and curNum != ''"> and a.curNum = #{curNum}</if>
+             <if test="stockId != null and stockId != ''"> and a.stockId = #{stockId}</if>
+             <if test="stokcName != null and stokcName != ''"> and a.stokcName like concat('%', #{stokcName}, '%')</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="managerName != null and managerName != ''"> and b.managerName like concat('%', #{managerName}, '%')</if>
+         </where>
+    </select>
+    
+    <select id="selectStockWarehouseById" parameterType="String" resultMap="StockWarehouseResult">
+        <include refid="selectStockWarehouseVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectStockWarehouseByProductAndStock" parameterType="String" resultMap="StockWarehouseResult">
+        <include refid="selectStockWarehouseVo"/>
+        where productId = #{productId} and stockId=#{stockId} and corpId=#{corpId}
+    </select>
+    
+    <select id="selectStockWarehouseCurNumNotNull" parameterType="StockWarehouse" resultMap="StockWarehouseResult">
+        <include refid="selectStockWarehouseVo"/>
+        where curNum>0 
+        <if test="stockId != null and stockId != ''"> and stockId = #{stockId}</if>
+        <if test="stokcName != null and stokcName != ''"> and stokcName like concat('%', #{stokcName},'%')</if>
+        <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+        <if test="productName != null and productName != ''"> and productName like concat("%",#{productName},"%")</if>
+        <if test="totalNum != null and totalNum != ''"> and totalNum = #{totalNum}</if>
+        <if test="overNum != null and overNum != ''"> and overNum = #{overNum}</if>
+        <if test="warnNum != null and warnNum != ''"> and warnNum = #{warnNum}</if>
+        <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+        <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+    </select>
+       
+    <insert id="insertStockWarehouse" parameterType="StockWarehouse">
+        insert into as_stock_warehouse(logid,wstockId,stockId,stokcName,productId,productName,totalNum,curNum,overNum,warnNum,corpId,createTime)
+		values (#{logid},#{wstockId},#{stockId},#{stokcName},#{productId},#{productName},#{totalNum},#{curNum},#{overNum},#{warnNum},#{corpId},#{createTime})
+    </insert>
+	 
+    <update id="updateStockWarehouse" parameterType="StockWarehouse">
+        update as_stock_warehouse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wstockId != null  and wstockId != ''  ">wstockId = #{wstockId},</if>
+            <if test="stockId != null  and stockId != ''  ">stockId = #{stockId},</if>
+            <if test="stokcName != null  and stokcName != ''  ">stokcName = #{stokcName},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="productName != null  and productName != ''  ">productName = #{productName},</if>
+            <if test="totalNum != null  ">totalNum = #{totalNum},</if>
+            <if test="curNum != null  ">curNum = #{curNum},</if>
+            <if test="overNum != null  ">overNum = #{overNum},</if>
+            <if test="warnNum != null  ">warnNum = #{warnNum},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteStockWarehouseById" parameterType="String">
+        delete from as_stock_warehouse where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStockWarehouseByIds" parameterType="String">
+        delete from as_stock_warehouse where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteStockWarehouseByProductId" parameterType="String">
+        delete from as_stock_warehouse where productId = #{productId}
+    </delete>
+    
+    <update id="updateStockWarehouseByProductId" parameterType="StockWarehouse">
+        update as_stock_warehouse set productName = #{productName} where productId = #{productId}
+    </update>
+    
+    <update id="deleteStockWarehouseByStockId" parameterType="String">
+        delete from as_stock_warehouse where stockId=#{stockId}
+    </update>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.stock.mapper.StockProductMapper">
+    
+    <resultMap type="StockProduct" id="StockProductResult">
+        <result property="logid"    column="logid"    />
+        <result property="pstockId"    column="pstockId"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="totalNum"    column="totalNum"    />
+        <result property="curNum"    column="curNum"    />
+        <result property="overNum"    column="overNum"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectStockProductVo">
+        select logid, pstockId, productId, productName, totalNum, curNum, overNum, corpId, createTime from as_stock_product
+    </sql>
+	
+    <select id="selectStockProductList" parameterType="StockProduct" resultMap="StockProductResult">
+        <include refid="selectStockProductVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="pstockId != null and pstockId != ''"> and pstockId = #{pstockId}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="productName != null and productName != ''"> and productName like concat('%', #{productName}, '%')</if>
+             <if test="totalNum != null and totalNum != ''"> and totalNum = #{totalNum}</if>
+             <if test="curNum != null and curNum != ''"> and curNum = #{curNum}</if>
+             <if test="overNum != null and overNum != ''"> and overNum = #{overNum}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockProductCurNumNotNull" parameterType="StockProduct" resultMap="StockProductResult">
+        <include refid="selectStockProductVo"/>
+        where curNum>0  
+        <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+        <if test="productName != null and productName != ''"> and productName like concat('%', #{productName}, '%')</if>
+        <if test="totalNum != null and totalNum != ''"> and totalNum = #{totalNum}</if>
+        <if test="overNum != null and overNum != ''"> and overNum = #{overNum}</if>
+        <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+        <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+    </select>
+    
+    <select id="selectStockProductById" parameterType="String" resultMap="StockProductResult">
+        <include refid="selectStockProductVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectStockProductByCorpIdAndProdcutId" parameterType="String" resultMap="StockProductResult">
+        <include refid="selectStockProductVo"/>
+        where productId = #{productId} and corpId=#{corpId}
+    </select>
+        
+    <insert id="insertStockProduct" parameterType="StockProduct">
+        insert into as_stock_product(logid,pstockId,productId,productName,totalNum,curNum,overNum,corpId,createTime)
+		values (#{logid},#{pstockId},#{productId},#{productName},#{totalNum},#{curNum},#{overNum},#{corpId},#{createTime})
+    </insert>
+	 
+    <update id="updateStockProduct" parameterType="StockProduct">
+        update as_stock_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pstockId != null  and pstockId != ''  ">pstockId = #{pstockId},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="productName != null  and productName != ''  ">productName = #{productName},</if>
+            <if test="totalNum != null  ">totalNum = #{totalNum},</if>
+            <if test="curNum != null  ">curNum = #{curNum},</if>
+            <if test="overNum != null  ">overNum = #{overNum},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteStockProductById" parameterType="String">
+        delete from as_stock_product where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStockProductByIds" parameterType="String">
+        delete from as_stock_product where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteStockProductByProductId" parameterType="String">
+        delete from as_stock_product where productId = #{productId}
+    </delete>
+    
+    <update id="updateStockProductByProductId" parameterType="StockProduct">
+        update as_stock_product set productName = #{productName} where productId = #{productId}
+    </update>
+    
+</mapper>

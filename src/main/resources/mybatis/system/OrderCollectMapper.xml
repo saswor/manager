@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.report.mapper.OrderCollectMapper">
+ 
+ <resultMap id="totalMap" type="com.manage.project.system.report.vo.TotalVo">
+	<result property="saleNum" column="saleNum"/>
+	<result property="saleMoney" column="saleMoney"/>
+	<result property="profit" column="profit"/>
+	<result property="time" column="time"/>
+ </resultMap>
+ 
+ <resultMap id="orderDetailMap" type="com.manage.project.system.report.vo.OrderDetailVo">
+	<result property="orderId" column="orderId"/>
+	<result property="pointId" column="pointId"/>
+	<result property="pointName" column="pointName"/>
+	<result property="siteId" column="siteId"/>
+	<result property="cabinetId" column="cabinetId"/>
+	<result property="cabinetType" column="cabinetType"/>
+	<result property="laneSId" column="laneSId"/>
+	<result property="productId" column="productId"/>
+	<result property="productName" column="productName"/>
+	<result property="payPrice" column="payPrice"/>
+	<result property="payType" column="payType"/>
+	<result property="payState" column="payState"/>
+	<result property="outState" column="outState"/>
+	<result property="createTime" column="createTime"/>
+	<result property="cabinetTypeName" column="cabinetTypeName"/>
+	<result property="payTypeName" column="payTypeName"/>
+	<result property="payStateName" column="payStateName"/>
+	<result property="outStateName" column="outStateName"/>
+ </resultMap>
+ 
+ <sql id="incomeDetail_select">
+ 	select sum(d.saleNum) saleNum, sum(d.saleMoney) saleMoney,sum(d.profit) profit 
+ </sql>
+  
+  <!-- <sql id="orderDetail_select">
+  	select ob.orderId orderId,ob.pointId pointId,vp.name pointName,ob.siteId siteId,vc.cabinetId cabinetId,
+  		vc.cabinetType cabinetType,obd.laneSId laneSId,obd.productId productId,pi.name productName,obd.payPrice payPrice,
+  		ob.payType payType,ob.payState payState,obd.outState outState,ob.rptDate createTime,
+  		case vc.cabinetType when '01' then '弹簧机' when '02' then '履带机' when '03' then '混合机' end cabinetTypeName,
+  		case ob.payType when '1' then '支付宝' when '2' then '微信' when '3' then '百度钱包' end payTypeName,
+  		case ob.payState when '1' then '等待支付' when '2' then '支付成功' when '3' then '支付失败' end payStateName,
+  		case obd.outState when '1' then '未出柜' when '2' then '正常已出柜' when '3' then '异常已出柜' when '4' then '出柜失败' end outStateName
+  		from rpt_order_base ob left join as_vending_point vp on ob.pointId=vp.pointId 
+  		left join as_vending_cabinet vc on vc.siteId=ob.siteId 
+  		left join rpt_order_box_detail obd on ob.orderId=obd.orderId
+  		left join as_product_info pi on obd.productId=pi.productId
+  </sql> -->
+  
+  <sql id="orderDetail_select">
+  	select a.orderId,a.pointId,a.siteId,b.laneSId,b.laneEId,b.productId,b.productName,b.payPrice,
+  		a.payType,a.payState,a.returnType,b.outState,a.orderTime createTime,b.profitMoney profit
+  		from rpt_order_base a left join as_order_box b on a.orderId=b.orderId
+  </sql>
+  
+  <sql id="orderDetail_where" >
+  	<if test="productId !=null and productId !=''">
+		and b.productId=#{productId}
+	</if>
+	<if test="productName !=null and productName !=''">
+		and b.productName like concat("%",#{productName},"%")
+	</if>
+	<if test="pointId !=null and pointId !=''">
+		and a.pointId=#{pointId}
+	</if>
+	<if test="lineId !=null and lineId !=''">
+		and a.lineId=#{lineId}
+	</if>
+	<if test="siteId !=null and siteId !=''">
+		and a.siteId=#{siteId}
+	</if>
+	<if test="districtId !=null and districtId !=''">
+		and a.districtId=#{districtId}
+	</if>
+	<if test="corpId !=null and corpId !=''">
+		and a.corpId=#{corpId}
+	</if>
+  </sql>
+  
+  <sql id="total_where" >
+	<if test="districtId !=null and districtId !=''">
+		and districtId=#{districtId}
+	</if>
+	<if test="lineId !=null and lineId !=''">
+		and lineId=#{lineId}
+	</if>
+	<if test="siteId !=null and siteId !=''">
+		and vendingId=#{siteId}
+	</if>
+	<if test="corpId !=null and corpId !=''">
+		and corpId=#{corpId}
+	</if>
+  </sql>
+  
+  <sql id="detail_where" >
+  	<if test="districtId !=null and districtId !=''">
+		and districtId=#{districtId}
+	</if>
+	<if test="lineId !=null and lineId !=''">
+		and lineId=#{lineId}
+	</if>
+	<if test="siteId !=null and siteId !=''">
+		and vendingId=#{siteId}
+	</if>
+	<if test="corpId !=null and corpId !=''">
+		and corpId=#{corpId}
+	</if>
+  </sql>
+  
+  <sql id="selectTotal">
+  	select sum(saleNum) saleNum, sum(saleMoney) saleMoney,sum(profit) profit from
+  </sql>
+  
+  <sql id="selectDetail">
+  	select sum(saleNum) saleNum, sum(saleMoney) saleMoney,sum(profit) profit,etime time from
+  </sql>
+  
+  <select id="selectTotalByDay" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_vtime_day a where a.syear=#{year} and a.smonth=#{month} and a.sday=#{day}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectTotalByMonth" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_vtime_month where syear=#{year} and smonth=#{month}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectTotalByYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_vtime_month  where syear=#{year}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectTotalByQuarter" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_vtime_quarter  where syear=#{year} and squarter=#{quarter}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectTotalByHalfYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_vtime_halfyear where syear=#{year} and shalfYear=#{halfYear}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectTotalByCurMonth" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_vtime_day a where a.syear=#{year} and a.smonth=#{month}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectTotalByCurYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_vtime_day a where a.syear=#{year}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectProductTotalViewByDay" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_ptime_day a 
+    <if test="productName !=null and productName !=''">left join as_product_info b on a.productId=b.productId</if>
+    where a.syear=#{year} and a.smonth=#{month} and a.sday=#{day}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectProductTotalViewByMonth" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_ptime_month a 
+    <if test="productName !=null and productName !=''">left join as_product_info b on a.productId=b.productId</if>
+    where a.syear=#{year} and a.smonth=#{month}
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectProductTotalViewByYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectTotal"/>
+    rpt_ptime_month a 
+    <if test="productName !=null and productName !=''">left join as_product_info b on a.productId=b.productId</if>
+    where a.syear=#{year} 
+    <include refid="total_where"></include>
+  </select>
+  
+  <select id="selectIncomeDetailByDay" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_vtime_day
+    where syear=#{year} and smonth=#{month} and sday=#{day}
+    <include refid="detail_where"></include>
+    group by etime order by etime
+  </select>
+  
+  <select id="selectIncomeDetailByMonth" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_vtime_month
+    where syear=#{year} and smonth=#{month}
+    <include refid="detail_where"></include>
+    group by etime order by etime
+  </select>
+  
+  <select id="selectIncomeDetailByCurMonth" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_vtime_day
+    where syear=#{year} and smonth=#{month}
+    <include refid="detail_where"></include>
+    group by etime order by etime
+  </select>
+  
+  <select id="selectIncomeDetailByYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_vtime_month 
+    where syear=#{year}
+    <include refid="detail_where"></include>
+    group by etime order by etime
+  </select>
+  
+  <select id="selectIncomeDetailByCurYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_vtime_day 
+    where syear=#{year}
+    <include refid="detail_where"></include>
+    group by etime order by etime
+  </select>
+  
+  <select id="selectIncomeDetailByQuarter" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_vtime_quarter  
+    where syear=#{year} and squarter=#{quarter}
+    <include refid="detail_where"></include>
+    group by etime order by etime
+  </select>
+  
+  <select id="selectIncomeDetailByHalfYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_vtime_halfyear  
+    where syear=#{year} and shalfYear=#{halfYear}
+    <include refid="detail_where"></include>
+    group by etime order by etime
+  </select>
+  
+  <select id="selectProductDetailByDay" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_ptime_day a
+    <if test="productName !=null and productName !=''">left join as_product_info b on a.productId=b.productId</if>
+    where a.syear=#{year} and a.smonth=#{month} and a.sday=#{day}
+    <include refid="detail_where"></include>
+    group by a.etime order by a.etime
+  </select>
+  
+  <select id="selectProductDetailByMonth" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_ptime_month a
+    <if test="productName !=null and productName !=''">left join as_product_info b on a.productId=b.productId</if>
+    where a.syear=#{year} and a.smonth=#{month}
+    <include refid="detail_where"></include>
+    group by a.etime order by a.etime
+  </select>
+  
+  <select id="selectProductDetailByYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="totalMap">
+    <include refid="selectDetail"/>
+    rpt_ptime_month a
+    <if test="productName !=null and productName !=''">left join as_product_info b on a.productId=b.productId</if>
+    where a.syear=#{year}
+    <include refid="detail_where"></include>
+    group by a.etime order by a.etime
+  </select>
+  
+  <select id="selectOrderDetailByDay" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="orderDetailMap">
+    <include refid="orderDetail_select"/>
+    where a.rptYear=#{year} and a.rptMonth=#{month} and a.rptDay=#{day} 
+	<include refid="orderDetail_where"></include>
+  </select>
+  
+  <select id="selectOrderDetailByMonth" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="orderDetailMap">
+    <include refid="orderDetail_select"/>
+    where a.rptYear=#{year} and a.rptMonth=#{month} and rptDay!=day(CURRENT_DATE) 
+	<include refid="orderDetail_where"></include>
+  </select>
+  
+  <select id="selectOrderDetailByYear" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="orderDetailMap">
+    <include refid="orderDetail_select"/>
+    where a.rptYear=#{year}  and rptDay!=day(CURRENT_DATE) 
+	<include refid="orderDetail_where"></include>
+  </select>
+  
+  <select id="selectOrderDetail" parameterType="com.manage.project.system.report.vo.OrderCollectVo" resultMap="orderDetailMap">
+    <include refid="orderDetail_select"/>
+    <where>
+    	<if test="year !=null and year !=''"> and rptYear=#{year}</if>
+    	<if test="month !=null and month !=''"> and rptMonth=#{month}</if>
+    	<if test="day !=null and day !=''"> and rptDay=#{day}</if>
+    	<if test="quarter !=null and quarter !=''"> and rptQuarter=#{quarter}</if>
+    	<if test="halfYear !=null and halfYear !=''"> and rptHalfYear=#{halfYear}</if>
+    	<if test="productId !=null and productId !=''">and b.productId=#{productId}</if>
+	<if test="productName !=null and productName !=''">
+		and b.productName like concat("%",#{productName},"%")
+	</if>
+	<if test="pointId !=null and pointId !=''">
+		and a.pointId=#{pointId}
+	</if>
+	<if test="lineId !=null and lineId !=''">
+		and a.lineId=#{lineId}
+	</if>
+	<if test="siteId !=null and siteId !=''">
+		and a.siteId=#{siteId}
+	</if>
+	<if test="districtId !=null and districtId !=''">
+		and a.districtId=#{districtId}
+	</if>
+	<if test="corpId !=null and corpId !=''">
+		and a.corpId=#{corpId}
+	</if>
+    </where>
+  </select>
+ 
+</mapper>

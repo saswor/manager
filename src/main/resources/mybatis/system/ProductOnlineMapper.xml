@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.product.mapper.ProductOnlineMapper">
+    
+    <resultMap type="ProductOnlineVo" id="ProductOnlineResult">
+        <result property="logid"    column="logid"    />
+        <result property="productId"    column="productId"    />
+        <result property="name"    column="name"    />
+        <result property="fullName"    column="fullName"    />
+        <result property="typeId"    column="typeId"    />
+        <result property="salePrice"    column="salePrice"    />
+        <result property="bagType"    column="bagType"    />
+        <result property="factoryName"    column="factoryName"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="productCode"    column="productCode"    />
+        <result property="spec"    column="spec"    />
+    </resultMap>
+	
+	<sql id="selectProductOnlineVo">
+        select a.logid, a.productId, a.name, a.fullName, a.typeId, a.salePrice, a.bagType, a.factoryName, a.corpId, a.createTime,b.productCode,b.spec from as_product_online a left join as_product_info b on a.productId=b.productId
+    </sql>
+	
+    <select id="selectProductOnlineList" parameterType="ProductOnlineVo" resultMap="ProductOnlineResult">
+        <include refid="selectProductOnlineVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+             <if test="productId != null and productId != ''"> and a.productId = #{productId}</if>
+             <if test="name != null and name != ''"> and a.name like concat("%",#{name},"%")</if>
+             <if test="fullName != null and fullName != ''"> and a.fullName = #{fullName}</if>
+             <if test="typeId != null and typeId != ''"> and a.typeId = #{typeId}</if>
+             <if test="salePrice != null and salePrice != ''"> and a.salePrice = #{salePrice}</if>
+             <if test="bagType != null and bagType != ''"> and a.bagType = #{bagType}</if>
+             <if test="factoryName != null and factoryName != ''"> and a.factoryName = #{factoryName}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+             <if test="productCode != null and productCode != ''"> and (b.productCode = #{productCode} or a.productId = #{productCode})</if>
+         </where>
+    </select>
+    
+    <select id="selectProductOnlineById" parameterType="String" resultMap="ProductOnlineResult">
+        <include refid="selectProductOnlineVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectProductOnlineByProductId" parameterType="String" resultMap="ProductOnlineResult">
+        <include refid="selectProductOnlineVo"/>
+        where a.productId = #{productId}
+    </select>
+        
+    <insert id="insertProductOnline" parameterType="ProductOnline">
+        insert into as_product_online(logid,productId,name,fullName,typeId,salePrice,bagType,factoryName,corpId,createTime)
+		values (#{logid},#{productId},#{name},#{fullName},#{typeId},#{salePrice},#{bagType},#{factoryName},#{corpId},#{createTime})
+    </insert>
+	 
+    <update id="updateProductOnline" parameterType="ProductOnline">
+        update as_product_online
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="fullName != null  and fullName != ''  ">fullName = #{fullName},</if>
+            <if test="typeId != null  and typeId != ''  ">typeId = #{typeId},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+            <if test="bagType != null  and bagType != ''  ">bagType = #{bagType},</if>
+            <if test="factoryName != null  and factoryName != ''  ">factoryName = #{factoryName},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteProductOnlineById" parameterType="String">
+        delete from as_product_online where logid = #{logid}
+    </delete>
+    
+    <delete id="deleteProductOnlineByProductId" parameterType="String">
+        delete from as_product_online where productId = #{productId}
+    </delete>
+	
+    <delete id="deleteProductOnlineByIds" parameterType="String">
+        delete from as_product_online where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <update id="updateProductOnlineByProductId" parameterType="ProductOnline">
+        update as_product_online
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="fullName != null  and fullName != ''  ">fullName = #{fullName},</if>
+            <if test="typeId != null  and typeId != ''  ">typeId = #{typeId},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+            <if test="bagType != null  and bagType != ''  ">bagType = #{bagType},</if>
+            <if test="factoryName != null  and factoryName != ''  ">factoryName = #{factoryName},</if>
+        </trim>
+        where productId = #{productId}
+    </update>
+    
+</mapper>

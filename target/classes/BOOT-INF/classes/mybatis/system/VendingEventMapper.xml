@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vendingEvent.mapper.VendingEventMapper">
+    
+    <resultMap type="VendingEvent" id="VendingEventResult">
+        <result property="logid"    column="logid"    />
+        <result property="eventId"    column="eventId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="eventType"    column="eventType"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectVendingEventVo">
+        select logid, eventId, districtId, lineId, pointId, siteId, siteName, eventType, corpId, createTime from as_vending_event
+    </sql>
+	
+    <select id="selectVendingEventList" parameterType="VendingEvent" resultMap="VendingEventResult">
+        <include refid="selectVendingEventVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="eventId != null and eventId != ''"> and eventId = #{eventId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="eventType != null and eventType != ''"> and eventType = #{eventType}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="btime != null and btime != ''"> and createTime &gt;= #{btime}</if>
+             <if test="etime != null and etime != ''"> and createTime &lt;= #{etime}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingEventById" parameterType="String" resultMap="VendingEventResult">
+        <include refid="selectVendingEventVo"/>
+        where logid = #{logid}
+    </select>
+        
+    <insert id="insertVendingEvent" parameterType="VendingEvent">
+        insert into as_vending_event
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="eventId != null and eventId != '' ">eventId,</if>
+			<if test="districtId != null and districtId != '' ">districtId,</if>
+			<if test="lineId != null and lineId != '' ">lineId,</if>
+			<if test="pointId != null and pointId != '' ">pointId,</if>
+			<if test="siteId != null and siteId != '' ">siteId,</if>
+			<if test="siteName != null and siteName != '' ">siteName,</if>
+			<if test="eventType != null and eventType != '' ">eventType,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="eventId != null and eventId != ''">#{eventId},</if>
+			<if test="districtId != null and districtId != ''">#{districtId},</if>
+			<if test="lineId != null and lineId != ''">#{lineId},</if>
+			<if test="pointId != null and pointId != ''">#{pointId},</if>
+			<if test="siteId != null and siteId != ''">#{siteId},</if>
+			<if test="siteName != null and siteName != ''">#{siteName},</if>
+			<if test="eventType != null and eventType != ''">#{eventType},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingEvent" parameterType="VendingEvent">
+        update as_vending_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="eventId != null  and eventId != ''  ">eventId = #{eventId},</if>
+            <if test="districtId != null  and districtId != ''  ">districtId = #{districtId},</if>
+            <if test="lineId != null  and lineId != ''  ">lineId = #{lineId},</if>
+            <if test="pointId != null  and pointId != ''  ">pointId = #{pointId},</if>
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="eventType != null  and eventType != ''  ">eventType = #{eventType},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingEventById" parameterType="String">
+        delete from as_vending_event where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingEventByIds" parameterType="String">
+        delete from as_vending_event where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

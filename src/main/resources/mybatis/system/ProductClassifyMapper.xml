@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.product.mapper.ProductClassifyMapper">
+    
+    <resultMap type="ProductClassify" id="ProductClassifyResult">
+        <result property="logid"    column="logid"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="classifyId"    column="classifyId"    />
+        <result property="classifyName"    column="classifyName"    />
+        <result property="classifyDesc"    column="classifyDesc"    />
+        <result property="parentId"    column="parentId"    />
+        <result property="sortBy"    column="sortBy"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="picJson"    column="picJson"    />
+        <result property="level"    column="level"    />
+    </resultMap>
+	
+	<sql id="selectProductClassifyVo">
+        select logid, corpId, classifyId, classifyName, classifyDesc, parentId, sortBy, createTime, picJson, level from as_product_classify
+    </sql>
+	
+    <select id="selectProductClassifyList" parameterType="ProductClassify" resultMap="ProductClassifyResult">
+        <include refid="selectProductClassifyVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="classifyId != null and classifyId != ''"> and classifyId = #{classifyId}</if>
+             <if test="classifyName != null and classifyName != ''"> and classifyName = #{classifyName}</if>
+             <if test="classifyDesc != null and classifyDesc != ''"> and classifyDesc = #{classifyDesc}</if>
+             <if test="parentId != null and parentId != ''"> and parentId = #{parentId}</if>
+             <if test="sortBy != null and sortBy != ''"> and sortBy = #{sortBy}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="picJson != null and picJson != ''"> and picJson = #{picJson}</if>
+             <if test="level != null and level != ''"> and level = #{level}</if>
+         </where>
+    </select>
+    
+    <select id="selectProductClassifyById" parameterType="String" resultMap="ProductClassifyResult">
+        <include refid="selectProductClassifyVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectProductClassifyByClassifyId" parameterType="String" resultMap="ProductClassifyResult">
+        <include refid="selectProductClassifyVo"/>
+        where classifyId = #{classifyId}
+    </select>
+        
+    <insert id="insertProductClassify" parameterType="ProductClassify">
+        insert into as_product_classify
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="classifyId != null and classifyId != '' ">classifyId,</if>
+			<if test="classifyName != null and classifyName != '' ">classifyName,</if>
+			<if test="classifyDesc != null and classifyDesc != '' ">classifyDesc,</if>
+			<if test="parentId != null and parentId != '' ">parentId,</if>
+			<if test="sortBy != null and sortBy != '' ">sortBy,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+			<if test="picJson != null and picJson != '' ">picJson,</if>
+			<if test="level != null and level != '' ">level,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="classifyId != null and classifyId != ''">#{classifyId},</if>
+			<if test="classifyName != null and classifyName != ''">#{classifyName},</if>
+			<if test="classifyDesc != null and classifyDesc != ''">#{classifyDesc},</if>
+			<if test="parentId != null and parentId != ''">#{parentId},</if>
+			<if test="sortBy != null and sortBy != ''">#{sortBy},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+			<if test="picJson != null and picJson != ''">#{picJson},</if>
+			<if test="level != null and level != ''">#{level},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProductClassify" parameterType="ProductClassify">
+        update as_product_classify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="classifyId != null  and classifyId != ''  ">classifyId = #{classifyId},</if>
+            <if test="classifyName != null  and classifyName != ''  ">classifyName = #{classifyName},</if>
+            <if test="classifyDesc != null  and classifyDesc != ''  ">classifyDesc = #{classifyDesc},</if>
+            <if test="parentId != null  and parentId != ''  ">parentId = #{parentId},</if>
+            <if test="sortBy != null  and sortBy != ''  ">sortBy = #{sortBy},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="picJson != null  and picJson != ''  ">picJson = #{picJson},</if>
+            <if test="level != null  and level != ''  ">level = #{level},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteProductClassifyById" parameterType="String">
+        delete from as_product_classify where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteProductClassifyByIds" parameterType="String">
+        delete from as_product_classify where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <select id="selectProductClassifyByName" parameterType="ProductClassify" resultMap="ProductClassifyResult">
+        <include refid="selectProductClassifyVo"/>
+        where classifyName like '%${classifyName}%'
+    </select>
+    
+</mapper>

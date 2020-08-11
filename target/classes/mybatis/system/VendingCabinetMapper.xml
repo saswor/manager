@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingCabinetMapper">
+    
+    <resultMap type="VendingCabinet" id="VendingCabinetResult">
+        <result property="logid"    column="logid"    />
+        <result property="cabinetId"    column="cabinetId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="seqId"    column="seqId"    />
+        <result property="deviceId"    column="deviceId"    />
+        <result property="vmcId"    column="vmcId"    />
+        <result property="hangType"    column="hangType"    />
+        <result property="pointCode"    column="pointCode"    />
+        <result property="factoryId"    column="factoryId"    />
+        <result property="cabinetType"    column="cabinetType"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="description"    column="description"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="reportTime"    column="reportTime"    />
+        <result property="cabinetName"    column="cabinetName"    />    
+        <result property="viewName"    column="viewName"    />    
+    </resultMap>
+	
+	<sql id="selectVendingCabinetVo">
+        select logid,cabinetName, cabinetId, siteId, siteName, seqId, deviceId, vmcId, hangType, pointCode, factoryId, cabinetType, createTime, description, corpId, reportTime, viewName from as_vending_cabinet
+    </sql>
+	
+    <select id="selectVendingCabinetList" parameterType="VendingCabinet" resultMap="VendingCabinetResult">
+        <include refid="selectVendingCabinetVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+            <if test="cabinetId != null and cabinetId != ''"> and cabinetId = #{cabinetId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="seqId != null and seqId != ''"> and seqId = #{seqId}</if>
+             <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+             <if test="vmcId != null and vmcId != ''"> and vmcId = #{vmcId}</if>
+             <if test="hangType != null and hangType != ''"> and hangType = #{hangType}</if>
+             <if test="pointCode != null and pointCode != ''"> and pointCode = #{pointCode}</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="reportTime != null and reportTime != ''"> and reportTime = #{reportTime}</if>
+             <if test="cabinetName != null and cabinetName != ''"> and cabinetName = #{cabinetName}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingCabinetById" parameterType="String" resultMap="VendingCabinetResult">
+        <include refid="selectVendingCabinetVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectVendingCabinetByCabinetId" parameterType="String" resultMap="VendingCabinetResult">
+        <include refid="selectVendingCabinetVo"/>
+        where cabinetId = #{cabinetId}
+    </select>
+    
+    <select id="selectVendingCabinetListByDeviceIds" parameterType="String" resultType="Integer">
+        select count(*) from as_vending_cabinet a left join as_vending b on a.siteId=b.siteId
+        where  b.curState!='3' and b.deviceId in 
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+    </select>
+        
+    <insert id="insertVendingCabinet" parameterType="VendingCabinet">
+        insert into as_vending_cabinet(logid,cabinetId,siteId,cabinetName,siteName,seqId,deviceId,vmcId,hangType,pointCode,factoryId,cabinetType,
+        	description,corpId,reportTime,viewName,createTime)
+        values (#{logid},#{cabinetId},#{siteId},#{cabinetName},#{siteName},#{seqId},#{deviceId},#{vmcId},#{hangType},#{pointCode},#{factoryId},
+        	#{cabinetType},#{description},#{corpId},#{reportTime},#{viewName},#{createTime})		
+    </insert>
+	 
+    <update id="updateVendingCabinet" parameterType="VendingCabinet">
+        update as_vending_cabinet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="seqId != null  ">seqId = #{seqId},</if>
+            <if test="deviceId != null  and deviceId != ''  ">deviceId = #{deviceId},</if>
+            <if test="vmcId != null  and vmcId != ''  ">vmcId = #{vmcId},</if>
+            <if test="hangType != null  and hangType != ''  ">hangType = #{hangType},</if>
+            <if test="pointCode != null  and pointCode != ''  ">pointCode = #{pointCode},</if>
+            <if test="factoryId != null  and factoryId != ''  ">factoryId = #{factoryId},</if>
+            <if test="cabinetType != null  and cabinetType != ''  ">cabinetType = #{cabinetType},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="reportTime != null  and reportTime != ''  ">reportTime = #{reportTime},</if>
+            <if test="cabinetName != null  and cabinetName != ''  ">cabinetName = #{cabinetName},</if>
+            <if test="viewName != null and viewName != '' ">viewName = #{viewName},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingCabinetById" parameterType="String">
+        delete from as_vending_cabinet where logid = #{logid}
+    </delete>
+    
+    <delete id="deleteVendingCabinetBySiteId" parameterType="String">
+        delete from as_vending_cabinet where siteId = #{siteId}
+    </delete>
+	
+    <delete id="deleteVendingCabinetByIds" parameterType="String">
+        delete from as_vending_cabinet where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

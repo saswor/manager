@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.product.mapper.ProductVunderMapper">
+   
+    <resultMap type="ProductVunder" id="productVunderMap">
+   		<result property="logid" column="logid"/>
+   		<result property="vUnderId" column="vUnderId"/>
+   		<result property="loginId" column="loginId"/>
+   		<result property="corpId" column="corpId"/>
+   		<result property="lineId" column="lineId"/>
+   		<result property="siteId" column="siteId"/>
+   		<result property="underNum" column="underNum"/>
+   		<result property="curState" column="curState"/>
+   		<result property="stateTime" column="stateTime"/>
+   		<result property="createTime" column="createTime"/>
+    </resultMap>
+    
+    <sql id="selectProductVunder">
+    	select logid,vUnderId,loginId,corpId,lineId,siteId,underNum,curState,stateTime,createTime from as_product_vunder
+    </sql>
+   
+    <insert id="insertProductVunderBatch" parameterType="java.util.List">
+    	insert into as_product_vunder (logid,vUnderId,loginId,corpId,lineId,siteId,underNum,curState,stateTime,createTime) values
+    	<foreach collection="list" item="item" index="index" separator=",">
+            (#{item.logid},#{item.vUnderId},#{item.loginId},#{item.corpId},#{item.lineId},#{item.siteId},#{item.underNum},#{item.curState},#{item.stateTime},#{item.createTime})
+        </foreach>
+    </insert>
+    
+    <select id="selectProductVunderList" parameterType="ProductVunder" resultMap="productVunderMap">
+    	<include refid="selectProductVunder"/>
+    	<where>
+    		<if test="loginId != null and loginId != ''"> and loginId = #{loginId}</if>
+    		<if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+    		<if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+    		<if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+    		<if test="underNum != null and underNum != ''"> and underNum = #{underNum}</if>
+    		<if test="curState != null and curState != ''"> and curState = #{curState}</if>
+    	</where>
+    </select>
+    
+    <update id="updateProductVunder" parameterType="ProductVunder">
+    	update as_product_vunder set underNum=0,curState=1
+    	<if test="stateTime != null and stateTime != ''">,stateTime=#{stateTime}</if>
+    	where 
+    </update>
+    
+</mapper>

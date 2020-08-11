@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vendingPoint.mapper.VendingPointMapper">
+    
+    <resultMap type="VendingPoint" id="VendingPointResult">
+        <result property="logid"    column="logid"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="name"    column="name"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+        <result property="adderss"    column="adderss"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="locationType"    column="locationType"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="code"    column="code"    />
+        <result property="description"    column="description"    />
+        <result property="lineName"    column="lineName"    />
+        <result property="districtName"    column="districtName"    />
+    </resultMap>
+	
+	<sql id="selectVendingPointVo">
+        select logid, pointId, code, districtId, lineId, name, country, province, city, district, adderss, longitude, latitude, locationType, corpId,description, createTime from as_vending_point
+    </sql>
+	
+    <select id="selectVendingPointList" parameterType="VendingPoint" resultMap="VendingPointResult">
+        select a.logid, a.pointId, a.code, a.districtId, a.lineId, a.name, a.country, a.province, a.city, a.district, a.adderss, a.longitude, 
+        	a.latitude, a.locationType, a.corpId,a.description, a.createTime, b.name as lineName, c.name as districtName
+        from as_vending_point a left join as_vending_line b on a.lineId = b.lineId and a.corpId = b.corpId
+        	left join as_vending_district c on a.districtId = c.districtId and a.corpId = c.corpId
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+             <if test="pointId != null and pointId != ''"> and a.pointId = #{pointId}</if>
+             <if test="code != null and code != ''"> and a.code = #{code}</if>
+             <if test="districtId != null and districtId != ''"> and a.districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and a.lineId = #{lineId}</if>
+             <if test="name != null and name != ''"> and a.name like concat('%', #{name}, '%')</if>
+             <if test="country != null and country != ''"> and a.country = #{country}</if>
+             <if test="province != null and province != ''"> and a.province = #{province}</if>
+             <if test="city != null and city != ''"> and a.city = #{city}</if>
+             <if test="district != null and district != ''"> and a.district = #{district}</if>
+             <if test="adderss != null and adderss != ''"> and a.adderss = #{adderss}</if>
+             <if test="longitude != null and longitude != ''"> and a.longitude = #{longitude}</if>
+             <if test="latitude != null and latitude != ''"> and a.latitude = #{latitude}</if>
+             <if test="locationType != null and locationType != ''"> and a.locationType = #{locationType}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectNotBindingVendingPointList" parameterType="VendingPoint" resultMap="VendingPointResult">
+        select a.pointId,a.name from as_vending_point a left join as_vending b on a.pointId=b.pointId and b.curState!='3' 
+        where b.siteId is null and a.corpId=#{corpId} 
+    </select>
+    
+    <select id="selectVendingPointById" parameterType="String" resultMap="VendingPointResult">
+        <include refid="selectVendingPointVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectVendingPointByPointId" parameterType="String" resultMap="VendingPointResult">
+        <include refid="selectVendingPointVo"/>
+        where pointId = #{pointId}
+    </select>
+    
+    <select id="selectVendingPointExist" parameterType="VendingPoint" resultMap="VendingPointResult">
+        <include refid="selectVendingPointVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="pointId != null and pointId != ''"> and pointId != #{pointId}</if>
+             <if test="code != null and code != ''"> and code = #{code}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="name != null and name != ''"> and name = #{name}</if>
+             <if test="country != null and country != ''"> and country = #{country}</if>
+             <if test="province != null and province != ''"> and province = #{province}</if>
+             <if test="city != null and city != ''"> and city = #{city}</if>
+             <if test="district != null and district != ''"> and district = #{district}</if>
+             <if test="adderss != null and adderss != ''"> and adderss = #{adderss}</if>
+             <if test="longitude != null and longitude != ''"> and longitude = #{longitude}</if>
+             <if test="latitude != null and latitude != ''"> and latitude = #{latitude}</if>
+             <if test="locationType != null and locationType != ''"> and locationType = #{locationType}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+         limit 0,1
+    </select>
+    
+    <select id="selectVendingPoint" parameterType="VendingPoint" resultMap="VendingPointResult">
+        <include refid="selectVendingPointVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="code != null and code != ''"> and code = #{code}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
+             <if test="country != null and country != ''"> and country = #{country}</if>
+             <if test="province != null and province != ''"> and province = #{province}</if>
+             <if test="city != null and city != ''"> and city = #{city}</if>
+             <if test="district != null and district != ''"> and district = #{district}</if>
+             <if test="adderss != null and adderss != ''"> and adderss = #{adderss}</if>
+             <if test="longitude != null and longitude != ''"> and longitude = #{longitude}</if>
+             <if test="latitude != null and latitude != ''"> and latitude = #{latitude}</if>
+             <if test="locationType != null and locationType != ''"> and locationType = #{locationType}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+        
+    <insert id="insertVendingPoint" parameterType="VendingPoint">
+        insert into as_vending_point
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			pointId,
+			<if test="districtId != null and districtId != '' ">districtId,</if>
+			<if test="code != null and code != '' ">code,</if>
+			<if test="lineId != null and lineId != '' ">lineId,</if>
+			<if test="name != null and name != '' ">name,</if>
+			<if test="country != null and country != '' ">country,</if>
+			<if test="province != null and province != '' ">province,</if>
+			<if test="city != null and city != '' ">city,</if>
+			<if test="district != null and district != '' ">district,</if>
+			<if test="adderss != null and adderss != '' ">adderss,</if>
+			<if test="longitude != null and longitude != '' ">longitude,</if>
+			<if test="latitude != null and latitude != '' ">latitude,</if>
+			<if test="locationType != null and locationType != '' ">locationType,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="description != null and description != '' ">description,</if>
+			createTime
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			#{pointId},
+			<if test="districtId != null and districtId != ''">#{districtId},</if>
+			<if test="code != null and code != '' ">#{code},</if>
+			<if test="lineId != null and lineId != ''">#{lineId},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="country != null and country != ''">#{country},</if>
+			<if test="province != null and province != ''">#{province},</if>
+			<if test="city != null and city != ''">#{city},</if>
+			<if test="district != null and district != ''">#{district},</if>
+			<if test="adderss != null and adderss != ''">#{adderss},</if>
+			<if test="longitude != null and longitude != ''">#{longitude},</if>
+			<if test="latitude != null and latitude != ''">#{latitude},</if>
+			<if test="locationType != null and locationType != ''">#{locationType},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="description != null and description != ''">#{description},</if>
+			date_format(now(), '%Y-%m-%d %H:%i:%s'),
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingPoint" parameterType="VendingPoint">
+        update as_vending_point
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pointId != null  and pointId != ''  ">pointId = #{pointId},</if>
+            <if test="districtId != null  and districtId != ''  ">districtId = #{districtId},</if>
+            <if test="lineId != null  and lineId != ''  ">lineId = #{lineId},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="country != null  and country != ''  ">country = #{country},</if>
+            <if test="province != null  and province != ''  ">province = #{province},</if>
+            <if test="city != null  and city != ''  ">city = #{city},</if>
+            <if test="district != null  and district != ''  ">district = #{district},</if>
+            <if test="adderss != null  and adderss != ''  ">adderss = #{adderss},</if>
+            <if test="longitude != null  and longitude != ''  ">longitude = #{longitude},</if>
+            <if test="latitude != null  and latitude != ''  ">latitude = #{latitude},</if>
+            <if test="locationType != null  and locationType != ''  ">locationType = #{locationType},</if>
+            <if test="code != null  and code != ''  ">code = #{code},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingPointById" parameterType="String">
+        delete from as_vending_point where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingPointByIds" parameterType="String">
+        delete from as_vending_point where pointId in 
+        <foreach item="pointId" collection="array" open="(" separator="," close=")">
+            #{pointId}
+        </foreach>
+    </delete>
+    
+</mapper>

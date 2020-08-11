@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingLsdifferMapper">
+    
+    <resultMap type="VendingLsdiffer" id="VendingLsdifferResult">
+        <result property="logid"    column="logid"    />
+        <result property="lsdifferId"    column="lsdifferId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="productId"    column="productId"    />
+        <result property="curCap"    column="curCap"    />
+        <result property="resetCap"    column="resetCap"    />
+        <result property="differNum"    column="differNum"    />
+        <result property="handlerNum"    column="handlerNum"    />
+        <result property="handleType"    column="handleType"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="curState"    column="curState"    />
+        <result property="createrId"    column="createrId"    />
+        <result property="operTime"    column="operTime"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+    </resultMap>
+	
+	<sql id="selectVendingLsdifferVo">
+        select logid, lsdifferId, siteId, laneSId, laneEId, productId, curCap, resetCap, differNum, handlerNum, handleType, stateTime, curState, createrId, operTime,createTime,corpId from as_vending_lsdiffer
+    </sql>
+	
+    <select id="selectVendingLsdifferList" parameterType="VendingLsdiffer" resultMap="VendingLsdifferResult">
+        <include refid="selectVendingLsdifferVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="lsdifferId != null and lsdifferId != ''"> and lsdifferId = #{lsdifferId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="laneSId != null and laneSId != ''"> and laneSId = #{laneSId}</if>
+             <if test="laneEId != null and laneEId != ''"> and laneEId = #{laneEId}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="curCap != null and curCap != ''"> and curCap = #{curCap}</if>
+             <if test="resetCap != null and resetCap != ''"> and resetCap = #{resetCap}</if>
+             <if test="differNum != null and differNum != ''"> and differNum = #{differNum}</if>
+             <if test="handlerNum != null and handlerNum != ''"> and handlerNum = #{handlerNum}</if>
+             <if test="handleType != null and handleType != ''"> and handleType = #{handleType}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="createrId != null and createrId != ''"> and createrId = #{createrId}</if>
+             <if test="operTime != null and operTime != ''"> and operTime = #{operTime}</if>
+             <if test="btime != null and btime != ''"> and createTime &gt;= #{btime}</if>
+             <if test="etime != null and etime != ''"> and createTime &lt;= #{etime}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+              <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingLsdifferById" parameterType="String" resultMap="VendingLsdifferResult">
+        <include refid="selectVendingLsdifferVo"/>
+        where lsdifferId = #{lsdifferId}
+    </select>
+    
+</mapper>

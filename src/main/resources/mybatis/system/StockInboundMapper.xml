@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.stock.mapper.StockInboundMapper">
+    
+    <resultMap type="StockInbound" id="StockInboundResult">
+        <result property="logid"    column="logid"    />
+        <result property="winboundId"    column="winboundId"    />
+        <result property="wpurchaseId"    column="wpurchaseId"    />
+        <result property="stockId"    column="stockId"    />
+        <result property="stokcName"    column="stokcName"    />
+        <result property="pnum"    column="pnum"    />
+        <result property="tnum"    column="tnum"    />
+        <result property="totalPrice"    column="totalPrice"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="inboundId"    column="inboundId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="buyState"    column="buyState"    />
+        <result property="buyNum"    column="buyNum"    />
+        <result property="inboundId"    column="supplyId"    />
+        <result property="inboundName"    column="supplyName"    />
+        <result property="inboundType"    column="inboundType"    />
+    </resultMap>
+	
+	<sql id="selectStockInboundVo">
+        select logid, winboundId, wpurchaseId, stockId, stokcName, pnum, tnum, totalPrice, curState, stateTime, inboundId,inboundType, corpId, createTime from as_stock_inbound
+    </sql>
+	
+    <select id="selectStockInboundList" parameterType="StockInbound" resultMap="StockInboundResult">
+        SELECT a.logid, a.winboundId, a.wpurchaseId, a.stockId, a.stokcName, a.pnum, a.tnum, a.totalPrice, 
+			a.curState, a.stateTime, a.inboundId, a.corpId, a.createTime, b.`curState` AS buyState,b.supplyId,b.supplyName,a.inboundType
+		FROM as_stock_inbound AS a LEFT JOIN as_stock_purchase b ON a.`wpurchaseId` = b.`wpurchaseId`
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+             <if test="winboundId != null and winboundId != ''"> and a.winboundId = #{winboundId}</if>
+             <if test="wpurchaseId != null and wpurchaseId != ''"> and a.wpurchaseId = #{wpurchaseId}</if>
+             <if test="stockId != null and stockId != ''"> and a.stockId = #{stockId}</if>
+             <if test="stokcName != null and stokcName != ''"> and a.stokcName like concat("%",#{stokcName},"%")</if>
+             <if test="pnum != null and pnum != ''"> and a.pnum = #{pnum}</if>
+             <if test="tnum != null and tnum != ''"> and a.tnum = #{tnum}</if>
+             <if test="totalPrice != null and totalPrice != ''"> and a.totalPrice = #{totalPrice}</if>
+             <if test="curState != null and curState != ''"> and a.curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and a.stateTime = #{stateTime}</if>
+             <if test="inboundId != null and inboundId != ''"> and a.inboundId = #{inboundId}</if>
+             <if test="inboundType != null and inboundType != ''"> and a.inboundType = #{inboundType}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and left(a.createTime,10) = #{createTime}</if>
+             <if test="buyState != null and buyState != ''"> and b.`curState` = #{buyState}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockInbound" parameterType="StockInboundParamVo" resultMap="StockInboundResult">
+        SELECT a.logid, a.winboundId, a.wpurchaseId, a.stockId, a.stokcName, a.pnum, a.tnum, a.totalPrice, a.inboundType,
+			a.curState, a.stateTime, a.inboundId, a.corpId, a.createTime, b.`curState` AS buyState, b.`pnum` AS buyNum,
+			c.`user_name`
+		FROM as_stock_inbound AS a LEFT JOIN as_stock_purchase b ON a.`wpurchaseId` = b.`wpurchaseId`
+			LEFT JOIN sys_user c ON a.`inboundId` = c.`user_id`
+        <where>  
+             <if test="wInboundId != null and wInboundId != ''"> and a.winboundId = #{wInboundId}</if>
+             <if test="curState != null and curState != ''"> and a.curState = #{curState}</if>
+             <if test="stokcName != null and stokcName != ''"> and a.stokcName like concat("%",#{stokcName},"%")</if>
+             <if test="createTime != null and createTime != ''"> and left(a.createTime,10) = #{createTime}</if>
+             <if test="inboundName != null and inboundName != ''"> and c.`user_name` like concat("%",#{inboundName},"%")</if>
+             <if test="wpurchaseId != null and wpurchaseId != ''"> and a.`wpurchaseId` = #{wpurchaseId}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockInboundById" parameterType="String" resultMap="StockInboundResult">
+        <include refid="selectStockInboundVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectStockInboundByWInboundId" parameterType="String" resultMap="StockInboundResult">
+        <include refid="selectStockInboundVo"/>
+        where winboundId = #{winboundId}
+    </select>
+        
+    <insert id="insertStockInbound" parameterType="StockInbound">
+        insert into as_stock_inbound
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="winboundId != null and winboundId != '' ">winboundId,</if>
+			<if test="wpurchaseId != null and wpurchaseId != '' ">wpurchaseId,</if>
+			<if test="stockId != null and stockId != '' ">stockId,</if>
+			<if test="stokcName != null and stokcName != '' ">stokcName,</if>
+			pnum,
+			tnum,
+			totalPrice,
+			<if test="curState != null and curState != '' ">curState,</if>
+			<if test="stateTime != null and stateTime != '' ">stateTime,</if>
+			<if test="inboundId != null and inboundId != '' ">inboundId,</if>
+			<if test="inboundType != null and inboundType != '' ">inboundType,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			createTime,
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="winboundId != null and winboundId != ''">#{winboundId},</if>
+			<if test="wpurchaseId != null and wpurchaseId != ''">#{wpurchaseId},</if>
+			<if test="stockId != null and stockId != ''">#{stockId},</if>
+			<if test="stokcName != null and stokcName != ''">#{stokcName},</if>
+			#{pnum},
+			#{tnum},
+			#{totalPrice},
+			<if test="curState != null and curState != ''">#{curState},</if>
+			<if test="stateTime != null and stateTime != ''">#{stateTime},</if>
+			<if test="inboundId != null and inboundId != ''">#{inboundId},</if>
+			<if test="inboundType != null and inboundType != ''">#{inboundType},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			date_format(now(), '%Y-%m-%d %H:%i:%s'),
+         </trim>
+    </insert>
+	 
+    <update id="updateStockInbound" parameterType="StockInbound">
+        update as_stock_inbound
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="winboundId != null  and winboundId != ''  ">winboundId = #{winboundId},</if>
+            <if test="wpurchaseId != null  and wpurchaseId != ''  ">wpurchaseId = #{wpurchaseId},</if>
+            <if test="stockId != null  and stockId != ''  ">stockId = #{stockId},</if>
+            <if test="stokcName != null  and stokcName != ''  ">stokcName = #{stokcName},</if>
+            <if test="pnum != null  ">pnum = #{pnum},</if>
+            <if test="tnum != null  ">tnum = #{tnum},</if>
+            <if test="totalPrice != null  ">totalPrice = #{totalPrice},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="inboundId != null  and inboundId != ''  ">inboundId = #{inboundId},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteStockInboundById" parameterType="String">
+        delete from as_stock_inbound where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStockInboundByIds" parameterType="String">
+        delete from as_stock_inbound where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

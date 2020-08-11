@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingModelMapper">
+    
+    <resultMap type="VendingModel" id="VendingModelResult">
+        <result property="logid"    column="logid"    />
+        <result property="deviceCode"    column="deviceCode"    />
+        <result property="factoryId"    column="factoryId"    />
+        <result property="deviceId"    column="deviceId"    />
+        <result property="startId"    column="startId"    />
+        <result property="row"    column="row"    />
+        <result property="col"    column="col"    />
+        <result property="rowNum"    column="rowNum"    />
+        <result property="arrange"    column="arrange"    />
+        <result property="laneNum"    column="laneNum"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="warnCap"    column="warnCap"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="cabinetType"    column="cabinetType"    />
+    </resultMap>
+	
+	<sql id="selectVendingModelVo">
+        select logid, deviceCode, factoryId, deviceId, startId, cabinetType, `row`, col, rowNum, arrange, laneNum, capacity, warnCap, createTime, corpId from as_vending_model
+    </sql>
+	
+    <select id="selectVendingModelList" parameterType="VendingModel" resultMap="VendingModelResult">
+        <include refid="selectVendingModelVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="deviceCode != null and deviceCode != ''"> and deviceCode = #{deviceCode}</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+             <if test="startId != null and startId != ''"> and startId = #{startId}</if>
+             <if test="row != null and row != ''"> and `row` = #{row}</if>
+             <if test="col != null and col != ''"> and `col` = #{col}</if>
+             <if test="rowNum != null and rowNum != ''"> and rowNum = #{rowNum}</if>
+             <if test="arrange != null and arrange != ''"> and arrange = #{arrange}</if>
+             <if test="laneNum != null and laneNum != ''"> and laneNum = #{laneNum}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingModelById" parameterType="String" resultMap="VendingModelResult">
+        <include refid="selectVendingModelVo"/>
+        where deviceCode = #{deviceCode}
+    </select>
+        
+    <insert id="insertVendingModel" parameterType="VendingModel">
+        insert into as_vending_model
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			deviceCode,
+			<if test="factoryId != null and factoryId != '' ">factoryId,</if>
+			<if test="deviceId != null and deviceId != '' ">deviceId,</if>
+			<if test="startId != null and startId != '' ">startId,</if>
+			<if test="row != null and row != '' ">`row`,</if>
+			<if test="col != null and col != '' ">`col`,</if>
+			<if test="rowNum != null and rowNum != '' ">rowNum,</if>
+			<if test="arrange != null and arrange != '' ">arrange,</if>
+			<if test="laneNum != null and laneNum != '' ">laneNum,</if>	
+			<if test="capacity != null and capacity != '' ">capacity,</if>	
+			<if test="warnCap != null and warnCap != '' ">warnCap,</if>			
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="cabinetType != null and cabinetType != '' ">cabinetType,</if>
+			createTime
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="deviceCode != null and deviceCode != ''">#{deviceCode},</if>
+			<if test="factoryId != null and factoryId != ''">#{factoryId},</if>
+			<if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+			<if test="startId != null and startId != ''">#{startId},</if>
+			<if test="row != null and row != ''">#{row},</if>
+			<if test="col != null and col != ''">#{col},</if>
+			<if test="rowNum != null and rowNum != ''">#{rowNum},</if>
+			<if test="arrange != null and arrange != ''">#{arrange},</if>
+			<if test="laneNum != null and laneNum != ''">#{laneNum},</if>
+			<if test="capacity != null and capacity != '' ">#{capacity},</if>	
+			<if test="warnCap != null and warnCap != '' ">#{warnCap},</if>	
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="cabinetType != null and cabinetType != ''">#{cabinetType},</if>
+			date_format(now(), '%Y-%m-%d %H:%i:%s'),
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingModel" parameterType="VendingModel">
+        update as_vending_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceCode != null  and deviceCode != ''  ">deviceCode = #{deviceCode},</if>
+            <if test="factoryId != null  and factoryId != ''  ">factoryId = #{factoryId},</if>
+            <if test="deviceId != null  and deviceId != ''  ">deviceId = #{deviceId},</if>
+            <if test="startId != null  ">startId = #{startId},</if>
+            <if test="row != null  ">`row` = #{row},</if>
+            <if test="col != null  ">`col` = #{col},</if>
+            <if test="rowNum != null  ">rowNum = #{rowNum},</if>
+            <if test="arrange != null  ">arrange = #{arrange},</if>
+            <if test="laneNum != null  ">laneNum = #{laneNum},</if>
+            <if test="capacity != null and capacity != '' ">capacity=#{capacity},</if>	
+			<if test="warnCap != null and warnCap != '' ">warnCap=#{warnCap},</if>	
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="cabinetType != null and cabinetType != ''">cabinetType = #{cabinetType},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingModelById" parameterType="String">
+        delete from as_vending_model where logid = #{logid}
+    </delete>
+    
+    <delete id="deleteVendingModelByIds" parameterType="String">
+        delete from as_vending_model where deviceCode in 
+        <foreach item="deviceCode" collection="array" open="(" separator="," close=")">
+            #{deviceCode}
+        </foreach>
+    </delete>
+    
+</mapper>

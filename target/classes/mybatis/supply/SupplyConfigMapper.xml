@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.supply.mapper.SupplyConfigMapper">
+    
+    <resultMap type="SupplyConfig" id="SupplyConfigResult">
+        <result property="logid"    column="logid"    />
+        <result property="supplyId"    column="supplyId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="name"    column="name"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="wmId"    column="wmId"    />
+        <result property="supplierId"    column="supplierId"    />
+        <result property="num"    column="num"    />
+        <result property="type"    column="type"    />
+        <result property="advTime"    column="advTime"    />
+        <result property="finshTime"    column="finshTime"    />
+        <result property="pendingNum"    column="pendingNum"    />
+        <result property="finshNum"    column="finshNum"    />
+        <result property="supplyPnum"    column="supplyPnum"    />
+        <result property="sproductNum"    column="sproductNum"    />
+        <result property="strategy"    column="strategy"    />
+        <result property="curPNum"    column="curPNum"    />
+        <result property="maxPNum"    column="maxPNum"    />
+        <result property="storyLevel"    column="storyLevel"    />
+        <result property="fristlevel"    column="fristlevel"    />
+        <result property="twolevel"    column="twolevel"    />
+        <result property="threelevel"    column="threelevel"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="waitSPNum"    column="waitSPNum"    />
+        <result property="waitSVNum"    column="waitSVNum"    />
+        <result property="lastSTime"    column="lastSTime"    />
+        <result property="everyTime"    column="everyTime"    />
+        <result property="description"    column="description"    />
+
+    </resultMap>
+	
+	<sql id="selectSupplyConfigVo">
+        select logid, supplyId, corpId, name, lineId, wmId, supplierId, num, type, advTime, finshTime, pendingNum, finshNum, supplyPnum, sproductNum, strategy, curPNum, maxPNum, storyLevel, fristlevel, twolevel, threelevel, createTime,waitSPNum,waitSVNum,lastSTime,everyTime,description from as_supply_config
+    </sql>
+	
+    <select id="selectSupplyConfigList" parameterType="SupplyConfig" resultMap="SupplyConfigResult">
+        <include refid="selectSupplyConfigVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="supplyId != null and supplyId != ''"> and supplyId = #{supplyId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="name != null and name != ''"> and name like concat("%",#{name},"%")</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="wmId != null and wmId != ''"> and wmId = #{wmId}</if>
+             <if test="supplierId != null and supplierId != ''"> and supplierId = #{supplierId}</if>
+             <if test="num != null and num != ''"> and num = #{num}</if>
+             <if test="type != null and type != ''"> and type = #{type}</if>
+             <if test="advTime != null and advTime != ''"> and advTime = #{advTime}</if>
+             <if test="finshTime != null and finshTime != ''"> and finshTime = #{finshTime}</if>
+             <if test="pendingNum != null and pendingNum != ''"> and pendingNum = #{pendingNum}</if>
+             <if test="finshNum != null and finshNum != ''"> and finshNum = #{finshNum}</if>
+             <if test="supplyPnum != null and supplyPnum != ''"> and supplyPnum = #{supplyPnum}</if>
+             <if test="sproductNum != null and sproductNum != ''"> and sproductNum = #{sproductNum}</if>
+             <if test="strategy != null and strategy != ''"> and strategy = #{strategy}</if>
+             <if test="curPNum != null and curPNum != ''"> and curPNum = #{curPNum}</if>
+             <if test="maxPNum != null and maxPNum != ''"> and maxPNum = #{maxPNum}</if>
+             <if test="storyLevel != null and storyLevel != ''"> and storyLevel = #{storyLevel}</if>
+             <if test="fristlevel != null and fristlevel != ''"> and fristlevel = #{fristlevel}</if>
+             <if test="twolevel != null and twolevel != ''"> and twolevel = #{twolevel}</if>
+             <if test="threelevel != null and threelevel != ''"> and threelevel = #{threelevel}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+              <if test="startTime != null and startTime != ''"> and createTime &gt;= #{startTime}</if>
+             <if test="endTime != null and endTime != ''"> and createTime &lt;= #{endTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectSupplyConfigById" parameterType="String" resultMap="SupplyConfigResult">
+        <include refid="selectSupplyConfigVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectSupplyConfigBySupplyId" parameterType="String" resultMap="SupplyConfigResult">
+        <include refid="selectSupplyConfigVo"/>
+        where supplyId = #{supplyId}
+    </select>
+
+    <insert id="insertSupplyConfig" parameterType="SupplyConfig">
+        insert into as_supply_config (logid,supplyId,corpId,name,lineId,wmId,supplierId,num,type,advTime,finshTime,pendingNum,finshNum,supplyPnum,sproductNum,strategy,curPNum,maxPNum,storyLevel,fristlevel,twolevel,threelevel,createTime,waitSPNum,waitSVNum,lastSTime,everyTime,description)
+        values(#{logid},#{supplyId},#{corpId},#{name},#{lineId},#{wmId},#{supplierId},#{num},#{type},#{advTime},#{finshTime},#{pendingNum},#{finshNum},#{supplyPnum},#{sproductNum},#{strategy},#{curPNum},#{maxPNum},#{storyLevel},#{fristlevel},#{twolevel},#{threelevel},date_format(now(), '%Y-%m-%d %H:%i:%s'),#{waitSPNum},#{waitSVNum},#{lastSTime},#{everyTime},#{description})
+    </insert>
+	 
+    <update id="updateSupplyConfig" parameterType="SupplyConfig">
+        update as_supply_config set name=#{name},wmId=#{wmId},supplierId=#{supplierId},type=#{type},advTime=#{advTime},supplyPnum=#{supplyPnum},strategy=#{strategy},storyLevel=#{storyLevel},fristlevel=#{fristlevel},twolevel=#{twolevel},threelevel=#{threelevel},waitSPNum=#{waitSPNum},waitSVNum=#{waitSVNum},everyTime=#{everyTime},description=#{description}
+        <if test="num != null and num != null">,num=#{num}</if>
+        <if test="maxPNum != null and maxPNum != null">,maxPNum=#{maxPNum}</if>
+        <if test="curPNum != null and curPNum != null">,curPNum=#{curPNum}</if>
+        where supplyId = #{supplyId}
+    </update>
+
+	<delete id="deleteSupplyConfigById" parameterType="String">
+        delete from as_supply_config where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteSupplyConfigByIds" parameterType="String">
+        delete from as_supply_config where supplyId in
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <update id="updateSupplyConfigMax" parameterType="SupplyConfig">
+    	UPDATE as_supply_config t SET t.`maxPNum`=#{maxPNum} WHERE t.`supplyId`=#{supplyId}
+    </update>
+    
+    <select id="selectSupplyConfigByLineId" parameterType="String" resultMap="SupplyConfigResult">
+        <include refid="selectSupplyConfigVo"/>
+        where lineId = #{lineId}
+    </select>
+    
+</mapper>

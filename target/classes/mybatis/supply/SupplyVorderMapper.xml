@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.supply.mapper.SupplyVorderMapper">
+	
+	<resultMap type="SupplyVorder" id="SupplyVorderResult">
+        <result property="logid"    column="logid"    />
+        <result property="vorderId"    column="vOrderId"    />
+        <result property="sorderId"    column="sOrderId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="supplyId"    column="supplyId"    />
+        <result property="supplierId"    column="supplierId"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="supplyNum"    column="supplyNum"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+    
+    <resultMap type="SupplyOrderTmpVo" id="SupplyOrderTmpVoResult">
+        <result property="vorderId"    column="vOrderId"    />
+        <result property="sOrderId"    column="sOrderId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="wmId"    column="wmId"    />
+        <result property="curState"    column="curState"    />
+        <result property="supplierId"    column="supplierId"    />
+        <result property="stockState"    column="stockState"    />
+        <result property="supplyNum"    column="supplyNum"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+    </resultMap>
+    
+     
+    <select id="selectSupplyVorderBySiteId" parameterType="String" resultMap="SupplyOrderTmpVoResult">
+	    SELECT t1.`vOrderId`, t1.`sOrderId`, t2.`lineId`, t2.`wmId`, t1.`supplierId`, t1.`curState`, t2.`stockState`,
+			t1.`supplyNum`, t1.`createTime`, t1.`corpId`
+		FROM as_supply_vorder t1 LEFT JOIN as_supply_order t2 ON t1.`sOrderId` = t2.`sOrderId`
+		WHERE t1.`siteId` = #{siteId} 
+		<if test="supplyFTime != null and supplyFTime != ''"> 
+		AND t1.`createTime` LIKE '${supplyFTime}%'
+		</if>
+		<if test="supplierId != null and supplierId != ''"> 
+		AND t1.`supplierId`=#{supplierId}
+		</if>
+	</select>
+	
+	<sql id="selectSupplyVorderVo">
+        SELECT
+  `logid`,
+  `vOrderId`,
+  `sOrderId`,
+  `corpId`,
+  `supplyId`,
+  `supplierId`,
+  `curState`,
+  `stateTime`,
+  `siteId`,
+  `lineId`,
+  `supplyNum`,
+  `createTime`
+	FROM
+  `as_supply_vorder`
+    </sql>
+	
+    <select id="selectSupplyVorderList" parameterType="SupplyVorder" resultMap="SupplyVorderResult">
+        <include refid="selectSupplyVorderVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="vorderId != null and vorderId != ''"> and vOrderId = #{vorderId}</if>
+             <if test="sorderId != null and sorderId != ''"> and sOrderId = #{sorderId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="supplyId != null and supplyId != ''"> and supplyId = #{supplyId}</if>
+             <if test="supplierId != null and supplierId != ''"> and supplierId = #{supplierId}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="supplyNum != null and supplyNum != ''"> and supplyNum = #{supplyNum}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+
+    <insert id="insertSupplyVorderBatch" parameterType="java.util.List">
+        insert into as_supply_vorder (logid,vOrderId,sOrderId,corpId,supplyId,lineId,siteId,supplierId,supplyNum,curState,stateTime,createTime) values 
+        <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.logid},#{item.vOrderId},#{item.sOrderId},#{item.corpId},#{item.supplyId},#{item.lineId},#{item.siteId},#{item.supplierId},#{item.supplyNum},#{item.curState},#{item.stateTime},#{item.createTime})
+    	</foreach>
+    </insert>
+    
+    <update id="updateSupplyVorder" parameterType="SupplyVorder">
+    	update as_supply_vorder set supplyNum=#{supplyNum} where vorderId=#vorderId
+    </update>
+
+</mapper>

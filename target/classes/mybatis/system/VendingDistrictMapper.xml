@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vendingPoint.mapper.VendingDistrictMapper">
+    
+    <resultMap type="VendingDistrict" id="VendingDistrictResult">
+        <result property="logid"    column="logid"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="name"    column="name"    />
+        <result property="code"    column="code"    />
+        <result property="manager"    column="manager"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="description"    column="description"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+    </resultMap>
+	
+	<sql id="selectVendingDistrictVo">
+        select logid, districtId, name, code, manager, mobile, description, createTime, corpId from as_vending_district
+    </sql>
+	
+    <select id="selectVendingDistrictList" parameterType="VendingDistrict" resultMap="VendingDistrictResult">
+        <include refid="selectVendingDistrictVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
+             <if test="code != null and code != ''"> and code = #{code}</if>
+             <if test="manager != null and manager != ''"> and manager = #{manager}</if>
+             <if test="mobile != null and mobile != ''"> and mobile = #{mobile}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingDistrictById" parameterType="String" resultMap="VendingDistrictResult">
+        <include refid="selectVendingDistrictVo"/>
+        where districtId = #{districtId}
+    </select>
+    
+    <select id="selectVendingDistrictByIds" parameterType="String" resultMap="VendingDistrictResult">
+        <include refid="selectVendingDistrictVo"/>
+        where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </select>
+    
+    <select id="selectVendingDistrictExist" parameterType="VendingDistrict" resultMap="VendingDistrictResult">
+        select districtId from as_vending_district
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="districtId != null and districtId != ''"> and districtId != #{districtId}</if>
+             <if test="name != null and name != ''"> and name=#{name}</if>
+             <if test="code != null and code != ''"> and code = #{code}</if>
+             <if test="manager != null and manager != ''"> and manager = #{manager}</if>
+             <if test="mobile != null and mobile != ''"> and mobile = #{mobile}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+         limit 0,1
+    </select>
+        
+    <insert id="insertVendingDistrict" parameterType="VendingDistrict">
+        insert into as_vending_district(logid,districtId,name,code,manager,mobile,description,createTime,corpId) 
+        values (#{logid},#{districtId},#{name},#{code},#{manager},#{mobile},#{description},#{createTime},#{corpId})
+    </insert>
+	 
+    <update id="updateVendingDistrict" parameterType="VendingDistrict">
+        update as_vending_district
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="code != null  and code != ''  ">code = #{code},</if>
+            <if test="manager != null  and manager != ''  ">manager = #{manager},</if>
+            <if test="mobile != null  and mobile != ''  ">mobile = #{mobile},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingDistrictById" parameterType="String">
+        delete from as_vending_district where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingDistrictByIds" parameterType="String">
+        delete from as_vending_district where districtId in 
+        <foreach item="districtId" collection="array" open="(" separator="," close=")">
+            #{districtId}
+        </foreach>
+    </delete>
+    
+</mapper>

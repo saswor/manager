@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.supply.mapper.SupplyVproductMapper">
+    
+    <resultMap type="SupplyVproduct" id="SupplyVproductResult">
+        <result property="logid"    column="logid"    />
+        <result property="sVendingId"    column="sVendingId"    />
+        <result property="sOrderId"    column="sOrderId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="productId"    column="productId"    />
+        <result property="supplyNum"    column="supplyNum"    />
+        <result property="rSupplyNum"    column="rSupplyNum"    />
+        <result property="saleNum"    column="saleNum"    />
+        <result property="finshState"    column="finshState"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="invalidTime"    column="invalidTime"    />
+        <result property="invalidState"    column="invalidState"    />
+        <result property="buyPrice"    column="buyPrice"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectSupplyVproductVo">
+        select logid, sVendingId, sOrderId, corpId, districtId, lineId, pointId, siteId, laneSId, laneEId, productId, supplyNum, rSupplyNum, saleNum, finshState, curState, stateTime, invalidTime, invalidState, buyPrice, createTime from as_supply_vproduct
+    </sql>
+	
+    <select id="selectSupplyVproductList" parameterType="SupplyVproduct" resultMap="SupplyVproductResult">
+        <include refid="selectSupplyVproductVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="sVendingId != null and sVendingId != ''"> and sVendingId = #{sVendingId}</if>
+             <if test="sOrderId != null and sOrderId != ''"> and sOrderId = #{sOrderId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="laneSId != null and laneSId != ''"> and laneSId = #{laneSId}</if>
+             <if test="laneEId != null and laneEId != ''"> and laneEId = #{laneEId}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="supplyNum != null and supplyNum != ''"> and supplyNum = #{supplyNum}</if>
+             <if test="rSupplyNum != null and rSupplyNum != ''"> and rSupplyNum = #{rSupplyNum}</if>
+             <if test="saleNum != null and saleNum != ''"> and saleNum = #{saleNum}</if>
+             <if test="finshState != null and finshState != ''"> and finshState = #{finshState}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="invalidTime != null and invalidTime != ''"> and invalidTime = #{invalidTime}</if>
+             <if test="invalidState != null and invalidState != ''"> and invalidState = #{invalidState}</if>
+             <if test="buyPrice != null and buyPrice != ''"> and buyPrice = #{buyPrice}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectSupplyVproductById" parameterType="String" resultMap="SupplyVproductResult">
+        <include refid="selectSupplyVproductVo"/>
+        where sOrderId = #{sOrderId} and siteId=#{siteId} and laneSId=#{laneSId} and laneEId=#{laneEId}
+    </select>
+
+    <select id="selectSupplyVproductByVpId" parameterType="SupplyVproduct" resultMap="SupplyVproductResult">
+        <include refid="selectSupplyVproductVo"/>
+        where sOrderId = #{sOrderId} and siteId=#{siteId} and laneSId=#{laneSId} and laneEId=#{laneEId} limit 0,1
+    </select>
+
+        
+    <insert id="insertSupplyVproduct" parameterType="SupplyVproduct">
+        insert into as_supply_vproduct(logid,sVendingId,sOrderId,vOrderId,sProductId,corpId,districtId,lineId,pointId,siteId,laneSId,laneEId,productId,supplyNum,rSupplyNum,
+saleNum,finshState,curState,stateTime,invalidTime,invalidState,buyPrice,createTime)
+        values (#{logid},#{sVendingId},#{sOrderId},#{vOrderId},#{sProductId},#{corpId},#{districtId},#{lineId},#{pointId},#{siteId},#{laneSId},#{laneEId},#{productId},#{supplyNum},#{rSupplyNum},
+#{saleNum},#{finshState},#{curState},#{stateTime},#{invalidTime},#{invalidState},#{buyPrice},#{createTime})
+    </insert>
+    
+    <insert id="insertSupplyVproductBatch" parameterType="java.util.List">
+        insert into as_supply_vproduct(logid,sVendingId,sOrderId,vOrderId,sProductId,corpId,districtId,lineId,pointId,siteId,laneSId,laneEId,productId,supplyNum,rSupplyNum,
+		saleNum,finshState,curState,stateTime,invalidTime,invalidState,buyPrice,createTime) values 
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.logid},#{item.sVendingId},#{item.sOrderId},#{item.vOrderId},#{item.sProductId},#{item.corpId},#{item.districtId},#{item.lineId},#{item.pointId},#{item.siteId},#{item.laneSId},#{item.laneEId},#{item.productId},#{item.supplyNum},#{item.rSupplyNum},
+			#{item.saleNum},#{item.finshState},#{item.curState},#{item.stateTime},#{item.invalidTime},#{item.invalidState},#{item.buyPrice},#{item.createTime})
+	    </foreach>
+    </insert>
+	 
+    <update id="updateSupplyVproduct" parameterType="SupplyVproduct">
+        update as_supply_vproduct set productId=#{productId},supplyNum=#{supplyNum},saleNum=#{saleNum},finshState=#{finshState},curState=#{curState},stateTime=#{stateTime}
+        <if test="buyPrice != null and buyPrice != ''">,buyPrice=#{buyPrice}</if>
+        where sVendingId=#{sVendingId}
+    </update>
+
+	<delete id="deleteSupplyVproductById" parameterType="String">
+        delete from as_supply_vproduct where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteSupplyVproductByIds" parameterType="String">
+        delete from as_supply_vproduct where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+
+    <select id="selectTotalSupplyNumByOrderId" parameterType="SupplyVproduct" resultMap="SupplyVproductResult">
+        SELECT  sum(supplyNum) as supplyNum,sum(rSupplyNum) as rSupplyNum,sum(saleNum) as saleNum
+        FROM as_supply_vproduct  WHERE sOrderId =#{sOrderId} group by sOrderId
+    </select>
+
+    <select id="selectTotalSupplyNumBySiteId" parameterType="SupplyVproduct" resultMap="SupplyVproductResult">
+        SELECT  sum(supplyNum) as supplyNum,sum(rSupplyNum) as rSupplyNum,sum(saleNum) as saleNum
+        FROM as_supply_vproduct  WHERE sOrderId =#{sOrderId} and siteId=#{siteId} group by sOrderId
+    </select>
+
+    <select id="selectTotalSupplyNumByProductId" parameterType="SupplyVproduct" resultMap="SupplyVproductResult">
+        SELECT  sum(supplyNum) as supplyNum,sum(rSupplyNum) as rSupplyNum,sum(saleNum) as saleNum
+        FROM as_supply_vproduct  WHERE sOrderId =#{sOrderId} and productId=#{productId} group by sOrderId
+    </select>
+
+	<select id="findsupplyVproductList" resultMap="SupplyVproductResult">
+        <include refid="selectSupplyVproductVo"/>
+        where sOrderId = #{sOrderId} and productId=#{productId}
+    </select>
+
+</mapper>

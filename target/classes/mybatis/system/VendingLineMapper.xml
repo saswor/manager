@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vendingPoint.mapper.VendingLineMapper">
+    
+    <resultMap type="VendingLine" id="VendingLineResult">
+        <result property="logid"    column="logid"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="lineNum"    column="lineNum"    />
+        <result property="onlineNum"    column="onlineNum"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="code"    column="code"    />
+        <result property="districtName"    column="districtName"    />
+    </resultMap>
+	
+	<sql id="selectVendingLineVo">
+        select logid, code, lineId, districtId, name, description, lineNum, onlineNum, corpId, createTime from as_vending_line
+    </sql>
+	
+    <select id="selectVendingLineList" parameterType="VendingLine" resultMap="VendingLineResult">
+        select a.logid, a.code, a.lineId, a.districtId, b.name as districtName,
+			a.name, a.description, a.lineNum, a.onlineNum, a.corpId, a.createTime 
+		from as_vending_line a left join as_vending_district b on a.districtId = b.districtId
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid} </if>
+             <if test="code != null and code != ''"> and a.code = #{code} </if>
+             <if test="lineId != null and lineId != ''">and  a.lineId = #{lineId} </if>
+             <if test="districtId != null and districtId != ''"> and a.districtId = #{districtId}</if>
+             <if test="name != null and name != ''"> and a.name like concat('%', #{name}, '%')</if>
+             <if test="description != null and description != ''"> and a.description = #{description}</if>
+             <if test="lineNum != null and lineNum != ''"> and a.lineNum = #{lineNum}</if>
+             <if test="onlineNum != null and onlineNum != ''"> and a.onlineNum = #{onlineNum}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingLineExist" parameterType="VendingLine" resultMap="VendingLineResult">
+        select lineId from as_vending_line
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid} </if>
+             <if test="code != null and code != ''"> and code = #{code} </if>
+             <if test="lineId != null and lineId != ''">and  lineId != #{lineId} </if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="name != null and name != ''"> and name =#{name}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingLineById" parameterType="String" resultMap="VendingLineResult">
+        <include refid="selectVendingLineVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectVendingLineByLineId" parameterType="String" resultMap="VendingLineResult">
+        <include refid="selectVendingLineVo"/>
+        where lineId = #{lineId}
+    </select>
+        
+    <insert id="insertVendingLine" parameterType="VendingLine">
+        insert into as_vending_line
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="code != null and code != '' ">code,</if>
+			lineId,
+			<if test="districtId != null and districtId != '' ">districtId,</if>
+			<if test="name != null and name != '' ">name,</if>
+			<if test="description != null and description != '' ">description,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			createTime
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="code != null and code != ''">#{code},</if>
+			<!-- nextval(#{corpId}, 'as_vending_line'), -->
+			#{lineId},
+			<if test="districtId != null and districtId != ''">#{districtId},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="description != null and description != ''">#{description},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			date_format(now(), '%Y-%m-%d %H:%i:%s'),
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingLine" parameterType="VendingLine">
+        update as_vending_line
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="districtId != null  and districtId != ''  ">districtId = #{districtId},</if>
+            <if test="code != null  and code != ''  ">code = #{code},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingLineById" parameterType="String">
+        delete from as_vending_line where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingLineByIds" parameterType="String">
+        delete from as_vending_line where lineId in 
+        <foreach item="lineId" collection="array" open="(" separator="," close=")">
+            #{lineId}
+        </foreach>
+    </delete>
+    
+</mapper>

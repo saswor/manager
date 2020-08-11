@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.index.mapper.IndexMapper">
+    <resultMap type="ReportBoard" id="ReportBoardResult">
+        <result property="logid"    column="logid"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="onlineNum"    column="onlineNum"    />
+        <result property="offlineNum"    column="offlineNum"    />
+        <result property="offlineDayNum"    column="offlineDayNum"    />
+        <result property="saleNum"    column="saleNum"    />
+        <result property="saleMoney"    column="saleMoney"    />
+        <result property="profit"    column="profit"    />
+        <result property="vendingCost"    column="vendingCost"    />
+        <result property="productCost"    column="productCost"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+    
+    <resultMap type="ReportOsale" id="ReportOsaleResult">
+        <result property="logid"    column="logid"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="syear"    column="syear"    />
+        <result property="smonth"    column="smonth"    />
+        <result property="sDay"    column="sDay"    />
+        <result property="saleType"    column="saleType"    />
+        <result property="saleId"    column="saleId"    />
+        <result property="saleName"    column="saleName"    />
+        <result property="saleNum"    column="saleNum"    />
+        <result property="saleMoney"    column="saleMoney"    />
+        <result property="profit"    column="profit"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+    
+    <resultMap type="ReportMsale" id="ReportMsaleResult">
+        <result property="logid"    column="logid"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="syear"    column="syear"    />
+        <result property="smonth"    column="smonth"    />
+        <result property="saleNum"    column="saleNum"    />
+        <result property="saleMoney"    column="saleMoney"    />
+        <result property="profit"    column="profit"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+    
+    <resultMap type="ReportDsale" id="ReportDsaleResult">
+        <result property="logid"    column="logid"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="syear"    column="syear"    />
+        <result property="smonth"    column="smonth"    />
+        <result property="sday"    column="sday"    />
+        <result property="stime"    column="stime"    />
+        <result property="etime"    column="etime"    />
+        <result property="saleNum"    column="saleNum"    />
+        <result property="saleMoney"    column="saleMoney"    />
+        <result property="profit"    column="profit"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+    
+    <resultMap type="com.manage.project.system.index.vo.OneMonthReviewVo" id="DsaleMap">
+        <result property="totalSale"    column="totalSale"    />
+        <result property="totalSaleNum"    column="totalSaleNum"    />
+        <result property="totalProfit"    column="totalProfit"    />
+    </resultMap>
+	
+	<resultMap type="com.manage.project.system.index.vo.RegionLonLatVo" id="RegionLLMap">
+        <result property="latitude"    column="latitude"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="region"    column="region"    />
+    </resultMap>
+	
+	<sql id="selectReportDsaleVo">
+        select logid, corpId, syear, smonth, sday, stime, etime, saleNum, saleMoney, profit, createTime from rpt_report_dsale
+    </sql>
+	
+    <sql id="selectReportBoardVo">
+        select logid, corpId, onlineNum, offlineNum, offlineDayNum, saleNum, saleMoney, profit, vendingCost, productCost, createTime from rpt_report_board
+    </sql>
+    
+    <sql id="selectReportOsaleVo">
+        select logid, corpId, syear, smonth, sDay, saleType, saleId, saleName, saleNum, saleMoney, profit, createTime from rpt_report_osale
+    </sql>
+    
+    <sql id="selectReportMsaleVo">
+        select logid, corpId, syear, smonth, saleNum, saleMoney, profit, createTime from rpt_report_msale
+    </sql>
+    
+    <select id="selectReportBoardById" parameterType="String" resultMap="ReportBoardResult">
+        <include refid="selectReportBoardVo"/>
+        where corpId = #{corpId}
+    </select>
+    
+    <select id="selectReportMsaleByDate" resultMap="ReportMsaleResult">
+        <include refid="selectReportMsaleVo"/>
+        where CONCAT(syear, '-',smonth) in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}       
+        </foreach>
+        <if test="corpId != null and corpId != ''">
+			AND corpId = #{corpId} 
+		</if>
+    </select>
+    
+    <select id="selectCurMonthReportMsale" resultMap="ReportMsaleResult">
+        select corpId,rptYear as syear,rptMonth as smonth,sum(payPrice) as saleMoney,sum(profitMoney) as profit,sum(outNum) as saleNum from rpt_order_base
+        where rptYear=#{curYear} and rptMonth=#{curMonth} 
+        <if test="corpId != null and corpId != ''">
+			AND corpId = #{corpId} 
+		</if>
+		group by corpId,syear,smonth
+    </select>
+    
+    <select id="selectReportMsaleForZhi" resultMap="ReportMsaleResult">
+		select syear,smonth,  sum(saleNum) as saleNum, sum(saleMoney) as saleMoney,sum(profit) as profit 
+		from rpt_report_msale
+		where CONCAT(syear, '-',smonth) in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}       
+        </foreach>
+		group by syear,smonth
+    </select>
+    
+    <select id="selectSDsaleByDate" resultMap="DsaleMap">
+        select sum(saleNum) as totalSaleNum, 
+			sum(saleMoney) as totalSale, 
+			sum(profit) as totalProfit
+		from rpt_report_dsale
+        where CONCAT(syear, '-',smonth, '-',sday) in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+	                #{item}       
+	        </foreach>
+	        <if test="corpId != null and corpId != ''">
+				AND corpId = #{corpId} 
+			</if>
+    </select>
+    
+    <select id="selectTodayReportDsale" resultMap="ReportDsaleResult">
+        <include refid="selectReportDsaleVo"/>
+        where corpId = #{corpId} 
+    		and syear = #{syear}
+    		and smonth = #{smonth}
+    		and sday= #{sday}
+    	order by etime asc
+    </select>
+    
+    <select id="selectTodayReportZhi" resultMap="ReportDsaleResult">
+        select etime, sum(saleNum) as saleNum, sum(saleMoney) as saleMoney, sum(profit) as profit
+		from rpt_report_dsale
+		where syear = #{syear}
+    		  and smonth = #{smonth}
+    		  and sday= #{sday}
+		group by etime asc
+    </select>
+    
+    <select id="getTodayLineTop10" resultMap="ReportOsaleResult">
+    	<include refid="selectReportOsaleVo"/>
+		where syear = #{syear}
+    		and smonth = #{smonth}
+    		and sday= #{sday}
+    		and saleType = #{saleType}
+    		<if test="corpId != null and corpId != ''">
+				AND corpId = #{corpId} 
+			</if>
+		 order by saleMoney asc
+		limit 10
+	</select>
+	
+	<select id="selectTodayReview" resultMap="DsaleMap">
+        select sum(outNum) as totalSaleNum, 
+			sum(payPrice-returnMoney) as totalSale, 
+			sum(profitMoney-returnMoney) as totalProfit
+		from rpt_order_base 
+        where corpId = #{corpId} 
+    		and rptYear = #{syear}
+    		and rptMonth = #{smonth}
+    		and rptDay= #{sday}
+    </select>
+	
+	<!-- <select id="findOnlyCountryForPoint" resultMap="RegionLLMap">
+    	select longitude, latitude, country as region 
+    	from as_vending_point 
+    	where corpId = #{corpId} 
+    	group by country, longitude, latitude
+	</select>
+	
+	<select id="findOnlyProvinceForPoint" resultMap="RegionLLMap">
+    	select longitude, latitude, province as region 
+    	from as_vending_point 
+    	<where>
+			<if test="country != null and country != ''">
+				AND country = #{country}
+			</if>
+			<if test="corpId != null and corpId != ''">
+				AND corpId = #{corpId}
+			</if>			
+		</where>
+    	group by province, longitude, latitude
+	</select>
+	
+	<select id="findOnlyCityForPoint" resultMap="RegionLLMap">
+    	select longitude, latitude, city as region 
+    	from as_vending_point 
+    	<where>
+			<if test="province != null and province != ''">
+				AND province = #{province}
+			</if>
+			<if test="corpId != null and corpId != ''">
+				AND corpId = #{corpId}
+			</if>	
+		</where>
+    	group by city, longitude, latitude
+	</select>
+	<select id="findOnlyDistrictForPoint" resultMap="RegionLLMap">
+    	select longitude, latitude, district as region 
+    	from as_vending_point 
+    	<where>
+			<if test="city != null and city != ''">
+				AND city = #{city}
+			</if>
+			<if test="corpId != null and corpId != ''">
+				AND corpId = #{corpId}
+			</if>	
+		</where>
+    	group by district, longitude, latitude
+	</select> -->
+</mapper>

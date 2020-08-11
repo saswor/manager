@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.supply.mapper.SupplyVendingMapper">
+    
+    <resultMap type="SupplyVending" id="SupplyVendingResult">
+        <result property="logid"    column="logid"    />
+        <result property="supplyId"    column="supplyId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="name"    column="name"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="curPNum"    column="curPNum"    />
+        <result property="maxPNum"    column="maxPNum"    />
+        <result property="storyLevel"    column="storyLevel"    />
+        <result property="fristlevel"    column="fristlevel"    />
+        <result property="twoLevel"    column="twoLevel"    />
+        <result property="threeLevel"    column="threeLevel"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectSupplyVendingVo">
+        select logid, supplyId, siteId, name, corpId, lineId, curPNum, maxPNum, storyLevel, fristlevel, twoLevel, threeLevel, createTime from as_supply_vending
+    </sql>
+	
+    <select id="selectSupplyVendingList" parameterType="SupplyVending" resultMap="SupplyVendingResult">
+        select a.logid, a.supplyId, a.siteId, a.name, a.corpId, a.lineId, a.curPNum, a.maxPNum, a.storyLevel, a.fristlevel, a.twoLevel, a.threeLevel, a.createTime,b.siteName from as_supply_vending a left join as_vending b on a.siteId=b.siteId
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+             <if test="supplyId != null and supplyId != ''"> and a.supplyId = #{supplyId}</if>
+             <if test="siteId != null and siteId != ''"> and a.siteId = #{siteId}</if>
+             <if test="name != null and name != ''"> and a.name = #{name}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="lineId != null and lineId != ''"> and a.lineId = #{lineId}</if>
+             <if test="curPNum != null and curPNum != ''"> and a.curPNum = #{curPNum}</if>
+             <if test="maxPNum != null and maxPNum != ''"> and a.maxPNum = #{maxPNum}</if>
+             <if test="storyLevel != null and storyLevel != ''"> and a.storyLevel = #{storyLevel}</if>
+             <if test="fristlevel != null and fristlevel != ''"> and a.fristlevel = #{fristlevel}</if>
+             <if test="twoLevel != null and twoLevel != ''"> and a.twoLevel = #{twoLevel}</if>
+             <if test="threeLevel != null and threeLevel != ''"> and a.threeLevel = #{threeLevel}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+             <if test="siteName != null and siteName != ''"> and b.siteName like concat("%",#{siteName},"%")</if>
+         </where>
+    </select>
+    
+    <select id="selectSupplyVendingById" parameterType="String" resultMap="SupplyVendingResult">
+        <include refid="selectSupplyVendingVo"/>
+        where logid = #{logid}
+    </select>
+    <select id="selectSupplyVendingBySiteId" parameterType="String" resultMap="SupplyVendingResult">
+        <include refid="selectSupplyVendingVo"/>
+        where siteId = #{siteId}
+    </select>
+    
+    <select id="selectSupplyVendingBySiteIdAndSupplyId" parameterType="String" resultMap="SupplyVendingResult">
+        <include refid="selectSupplyVendingVo"/>
+        where siteId = #{siteId} and supplyId=#{supplyId}
+    </select>
+
+    <insert id="insertSupplyVending" parameterType="SupplyVending">
+        insert into as_supply_vending(logid,supplyId,siteId,name,corpId,lineId,curPNum,maxPNum,storyLevel,fristlevel,twoLevel,threeLevel,createTime) values (#{logid},#{supplyId},#{siteId},#{name},#{corpId},#{lineId},#{curPNum},#{maxPNum},#{storyLevel},#{fristlevel},#{twoLevel},#{threeLevel},#{createTime})
+    </insert>
+	 
+    <update id="updateSupplyVending" parameterType="SupplyVending">
+        update as_supply_vending
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="supplyId != null  and supplyId != ''  ">supplyId = #{supplyId},</if>
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="lineId != null  and lineId != ''  ">lineId = #{lineId},</if>
+            <if test="curPNum != null  ">curPNum = #{curPNum},</if>
+            <if test="maxPNum != null  ">maxPNum = #{maxPNum},</if>
+            <if test="storyLevel != null  ">storyLevel = #{storyLevel},</if>
+            <if test="fristlevel != null  and fristlevel != ''  ">fristlevel = #{fristlevel},</if>
+            <if test="twoLevel != null  and twoLevel != ''  ">twoLevel = #{twoLevel},</if>
+            <if test="threeLevel != null  and threeLevel != ''  ">threeLevel = #{threeLevel},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteSupplyVendingById" parameterType="String">
+        delete from as_supply_vending where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteSupplyVendingByIds" parameterType="String">
+        delete from as_supply_vending where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+
+    <delete id="deleteSupplyVendingBySupplyIds" parameterType="String">
+        delete from as_supply_vending where supplyId in
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+
+	<delete id="deleteSupplyVendingBySiteId" parameterType="String">
+        delete from as_supply_vending where siteId = #{siteId}
+    </delete>
+    
+    <update id="updateSupplyVendingMax" parameterType="SupplyVending">
+        update as_supply_vending SET maxPNum = #{maxPNum} where logid = #{logid}
+    </update>
+</mapper>

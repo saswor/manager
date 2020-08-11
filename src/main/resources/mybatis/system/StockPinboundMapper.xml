@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.stock.mapper.StockPinboundMapper">
+    
+    <resultMap type="StockPinbound" id="StockPinboundResult">
+        <result property="logid"    column="logid"    />
+        <result property="wpInboundId"    column="wpInboundId"    />
+        <result property="winboundId"    column="winboundId"    />
+        <result property="stockId"    column="stockId"    />
+        <result property="stokcName"    column="stokcName"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="supplierId"    column="supplierId"    />
+        <result property="pnum"    column="pnum"    />
+        <result property="buyPrice"    column="buyPrice"    />
+        <result property="totalPrice"    column="totalPrice"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="buyNum"    column="buyNum"    />
+        <result property="inboundType"    column="inboundType"    />
+    </resultMap>
+	
+	<sql id="selectStockPinboundVo">
+        select logid, wpInboundId, winboundId, stockId, stokcName, productId, productName, supplierId, pnum, buyPrice, totalPrice, corpId, inboundType, createTime from as_stock_pinbound
+    </sql>
+	
+    <select id="selectStockPinboundList" parameterType="StockPinbound" resultMap="StockPinboundResult">
+        SELECT a.logid, a.wpInboundId, a.winboundId, a.stockId, a.stokcName, a.productId, a.productName, 
+			a.supplierId, a.pnum, a.buyPrice, a.totalPrice, a.corpId, a.createTime, c.`pnum` AS buyNum
+		FROM as_stock_pinbound a LEFT JOIN as_stock_inbound b ON a.`winboundId` = b.`winboundId`
+			LEFT JOIN as_stock_ppurchase c ON b.`wPurchaseId` = c.wPurchaseId and a.productId=c.productId
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+             <if test="wpInboundId != null and wpInboundId != ''"> and a.wpInboundId = #{wpInboundId}</if>
+             <if test="winboundId != null and winboundId != ''"> and a.winboundId = #{winboundId}</if>
+             <if test="stockId != null and stockId != ''"> and a.stockId = #{stockId}</if>
+             <if test="stokcName != null and stokcName != ''"> and a.stokcName = #{stokcName}</if>
+             <if test="productId != null and productId != ''"> and a.productId = #{productId}</if>
+             <if test="productName != null and productName != ''"> and a.productName = #{productName}</if>
+             <if test="supplierId != null and supplierId != ''"> and a.supplierId = #{supplierId}</if>
+             <if test="pnum != null and pnum != ''"> and a.pnum = #{pnum}</if>
+             <if test="buyPrice != null and buyPrice != ''"> and a.buyPrice = #{buyPrice}</if>
+             <if test="totalPrice != null and totalPrice != ''"> and a.totalPrice = #{totalPrice}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockPinboundById" parameterType="String" resultMap="StockPinboundResult">
+        <include refid="selectStockPinboundVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectBuyPriceRecentlyByProductId" parameterType="String" resultType="Float">
+        select buyPrice from as_stock_pinbound where productId = #{productId} order by createTime desc limit 0,1
+    </select>
+        
+    <insert id="insertStockPinbound" parameterType="StockPinbound">
+        insert into as_stock_pinbound
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="wpInboundId != null and wpInboundId != '' ">wpInboundId,</if>
+			<if test="winboundId != null and winboundId != '' ">winboundId,</if>
+			<if test="stockId != null and stockId != '' ">stockId,</if>
+			<if test="stokcName != null and stokcName != '' ">stokcName,</if>
+			<if test="productId != null and productId != '' ">productId,</if>
+			<if test="productName != null and productName != '' ">productName,</if>
+			<if test="supplierId != null and supplierId != '' ">supplierId,</if>
+			<if test="inboundType != null and inboundType != '' ">inboundType,</if>
+			pnum,
+			buyPrice,
+			totalPrice,
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="wpInboundId != null and wpInboundId != ''">#{wpInboundId},</if>
+			<if test="winboundId != null and winboundId != ''">#{winboundId},</if>
+			<if test="stockId != null and stockId != ''">#{stockId},</if>
+			<if test="stokcName != null and stokcName != ''">#{stokcName},</if>
+			<if test="productId != null and productId != ''">#{productId},</if>
+			<if test="productName != null and productName != ''">#{productName},</if>
+			<if test="supplierId != null and supplierId != ''">#{supplierId},</if>
+			<if test="inboundType != null and inboundType != ''">#{inboundType},</if>
+			#{pnum},
+			#{buyPrice},
+			#{totalPrice},
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateStockPinbound" parameterType="StockPinbound">
+        update as_stock_pinbound
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wpInboundId != null  and wpInboundId != ''  ">wpInboundId = #{wpInboundId},</if>
+            <if test="winboundId != null  and winboundId != ''  ">winboundId = #{winboundId},</if>
+            <if test="stockId != null  and stockId != ''  ">stockId = #{stockId},</if>
+            <if test="stokcName != null  and stokcName != ''  ">stokcName = #{stokcName},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="productName != null  and productName != ''  ">productName = #{productName},</if>
+            <if test="supplierId != null  and supplierId != ''  ">supplierId = #{supplierId},</if>
+            <if test="pnum != null  ">pnum = #{pnum},</if>
+            <if test="buyPrice != null  ">buyPrice = #{buyPrice},</if>
+            <if test="totalPrice != null  ">totalPrice = #{totalPrice},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteStockPinboundById" parameterType="String">
+        delete from as_stock_pinbound where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStockPinboundByIds" parameterType="String">
+        delete from as_stock_pinbound where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

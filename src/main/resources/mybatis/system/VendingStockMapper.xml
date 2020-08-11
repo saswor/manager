@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingStockMapper">
+    
+    <resultMap type="VendingStock" id="VendingStockResult">
+        <result property="logid"    column="logid"    />
+        <result property="wproductId"    column="wproductId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="num"    column="num"    />
+        <result property="recoveryNum"    column="recoveryNum"    />
+        <result property="overdueNum"    column="overdueNum"    />
+        <result property="typeId"    column="typeId"    />
+        <result property="salePrice"    column="salePrice"    />
+        <result property="picUrl"    column="picUrl"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectVendingStockVo">
+        select logid, wproductId, corpId, siteId, siteName, productId, productName, num, recoveryNum, overdueNum, typeId, salePrice, picUrl, createTime from as_vending_stock
+    </sql>
+	
+    <select id="selectVendingStockList" parameterType="VendingStock" resultMap="VendingStockResult">
+        <include refid="selectVendingStockVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="wproductId != null and wproductId != ''"> and wproductId = #{wproductId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="productName != null and productName != ''"> and productName = #{productName}</if>
+             <if test="num != null and num != ''"> and num = #{num}</if>
+             <if test="recoveryNum != null and recoveryNum != ''"> and recoveryNum = #{recoveryNum}</if>
+             <if test="overdueNum != null and overdueNum != ''"> and overdueNum = #{overdueNum}</if>
+             <if test="typeId != null and typeId != ''"> and typeId = #{typeId}</if>
+             <if test="salePrice != null and salePrice != ''"> and salePrice = #{salePrice}</if>
+             <if test="picUrl != null and picUrl != ''"> and picUrl = #{picUrl}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingStockCurNumNotNull" parameterType="VendingStock" resultMap="VendingStockResult">
+        <include refid="selectVendingStockVo"/>
+        where num>0 
+        <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+        <if test="wproductId != null and wproductId != ''"> and wproductId = #{wproductId}</if>
+        <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+        <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+        <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+        <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+        <if test="productName != null and productName != ''"> and productName = #{productName}</if>
+        <if test="recoveryNum != null and recoveryNum != ''"> and recoveryNum = #{recoveryNum}</if>
+        <if test="overdueNum != null and overdueNum != ''"> and overdueNum = #{overdueNum}</if>
+        <if test="typeId != null and typeId != ''"> and typeId = #{typeId}</if>
+        <if test="salePrice != null and salePrice != ''"> and salePrice = #{salePrice}</if>
+        <if test="picUrl != null and picUrl != ''"> and picUrl = #{picUrl}</if>
+        <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+    </select>
+       
+    <select id="selectVendingStockById" parameterType="String" resultMap="VendingStockResult">
+        <include refid="selectVendingStockVo"/>
+        where logid = #{logid}           
+    </select>
+    
+    <select id="selectVendingStockByIds" parameterType="String" resultMap="VendingStockResult">
+        <include refid="selectVendingStockVo"/>
+        where logid in
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>       
+    </select>
+    
+    <select id="selectVendingStockListByProductId" parameterType="VendingStock" resultMap="VendingStockResult">
+        <include refid="selectVendingStockVo"/>
+        where productId = #{productId}
+        <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+    </select>
+    
+    <select id="selectOnlineVendingStockList" parameterType="UnderProductVo" resultMap="VendingStockResult">
+        select a.logid, a.wproductId, a.corpId, a.siteId, a.siteName, a.productId, a.productName, a.num, a.recoveryNum, a.overdueNum, typeId, a.salePrice, a.picUrl, a.createTime
+        from as_vending_stock a left join as_vending b on a.siteId=b.siteId
+        where a.productId = #{productId} and a.num>0 and a.siteId not in (select siteId from as_product_under where productId=#{productId} and curState='1')
+        <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+        <if test="lineId != null and lineId != ''"> and b.lineId = #{lineId}</if>
+        <if test="districtId != null and districtId != ''"> and b.districtId = #{districtId}</if>
+        <if test="siteId != null and siteId != ''"> and (b.siteId = #{siteId} or b.siteCode=#{siteId} or b.siteName like concat("%",#{siteId},"%")) </if>
+        group by a.logid, a.wproductId, a.corpId, a.siteId, a.siteName, a.productId, a.productName, a.num, a.recoveryNum, a.overdueNum, typeId, a.salePrice, a.picUrl, a.createTime
+    </select>
+    
+    <!-- <select id="selectOnlineVendingStockList" parameterType="UnderProductVo" resultMap="VendingStockResult">
+        select a.logid, a.wproductId, a.corpId, a.siteId, a.siteName, a.productId, a.productName, a.num, a.recoveryNum, a.overdueNum, typeId, a.salePrice, a.picUrl, a.createTime
+        from as_vending_stock a left join as_vending b on a.siteId=b.siteId
+        left join as_product_under c on a.siteId=c.siteId and a.productId=c.productId and a.corpId=c.corpId 
+        where a.productId = #{productId} and a.num>0 and (c.curState is null or (c.curState!="1" and c.curState !="2"))
+        <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+        <if test="lineId != null and lineId != ''"> and b.lineId = #{lineId}</if>
+        <if test="districtId != null and districtId != ''"> and b.districtId = #{districtId}</if>
+        <if test="siteId != null and siteId != ''"> and b.siteId = #{siteId}</if>
+        <if test="siteName != null and siteName != ''"> and b.siteName = #{siteName}</if>
+        group by a.logid, a.wproductId, a.corpId, a.siteId, a.siteName, a.productId, a.productName, a.num, a.recoveryNum, a.overdueNum, typeId, a.salePrice, a.picUrl, a.createTime
+    </select> -->
+    
+    
+        
+    <insert id="insertVendingStock" parameterType="VendingStock">
+        insert into as_vending_stock
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="wproductId != null and wproductId != '' ">wproductId,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="siteId != null and siteId != '' ">siteId,</if>
+			<if test="siteName != null and siteName != '' ">siteName,</if>
+			<if test="productId != null and productId != '' ">productId,</if>
+			<if test="productName != null and productName != '' ">productName,</if>
+			<if test="num != null and num != '' ">num,</if>
+			<if test="recoveryNum != null and recoveryNum != '' ">recoveryNum,</if>
+			<if test="overdueNum != null and overdueNum != '' ">overdueNum,</if>
+			<if test="typeId != null and typeId != '' ">typeId,</if>
+			<if test="salePrice != null and salePrice != '' ">salePrice,</if>
+			<if test="picUrl != null and picUrl != '' ">picUrl,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="wproductId != null and wproductId != ''">#{wproductId},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="siteId != null and siteId != ''">#{siteId},</if>
+			<if test="siteName != null and siteName != ''">#{siteName},</if>
+			<if test="productId != null and productId != ''">#{productId},</if>
+			<if test="productName != null and productName != ''">#{productName},</if>
+			<if test="num != null and num != ''">#{num},</if>
+			<if test="recoveryNum != null and recoveryNum != ''">#{recoveryNum},</if>
+			<if test="overdueNum != null and overdueNum != ''">#{overdueNum},</if>
+			<if test="typeId != null and typeId != ''">#{typeId},</if>
+			<if test="salePrice != null and salePrice != ''">#{salePrice},</if>
+			<if test="picUrl != null and picUrl != ''">#{picUrl},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingStock" parameterType="VendingStock">
+        update as_vending_stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wproductId != null  and wproductId != ''  ">wproductId = #{wproductId},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="productName != null  and productName != ''  ">productName = #{productName},</if>
+            <if test="num != null  and num != ''  ">num = #{num},</if>
+            <if test="recoveryNum != null  and recoveryNum != ''  ">recoveryNum = #{recoveryNum},</if>
+            <if test="overdueNum != null  and overdueNum != ''  ">overdueNum = #{overdueNum},</if>
+            <if test="typeId != null  and typeId != ''  ">typeId = #{typeId},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+            <if test="picUrl != null  and picUrl != ''  ">picUrl = #{picUrl},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingStockById" parameterType="String">
+        delete from as_vending_stock where logid = #{logid}
+    </delete>
+    
+    <delete id="deleteVendingStockBySiteId" parameterType="String">
+        delete from as_vending_stock where siteId = #{siteId}
+    </delete>
+	
+    <delete id="deleteVendingStockByIds" parameterType="String">
+        delete from as_vending_stock where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteVendingStockByProductId" parameterType="String">
+        delete from as_vending_stock where productId = #{productId}
+    </delete>
+    
+    <update id="updateVendingStockByProductId" parameterType="VendingStock">
+        update as_vending_stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null  and productName != ''  ">productName = #{productName},</if>
+            <if test="typeId != null  and typeId != ''  ">typeId = #{typeId},</if>
+            <if test="salePrice != null  ">salePrice = #{salePrice},</if>
+            <if test="picUrl != null  and picUrl != ''  ">picUrl = #{picUrl},</if>
+        </trim>
+        where productId = #{productId}
+    </update>
+    
+</mapper>

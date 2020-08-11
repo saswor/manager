@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.base.mapper.SystemMapper">
+    <!-- 定义函数 -->
+  <select id="getGenderById" parameterType="map" statementType="CALLABLE">
+          {
+              #{seqId,mode=OUT,jdbcType=NUMERIC}=call nextval(
+                  #{corpId,mode=IN,jdbcType=NUMERIC},
+               #{tableName,mode=IN,jdbcType=NUMERIC}
+              )
+          }
+  </select>
+
+    <select id="getCallGenOrderBase" parameterType="map" statementType="CALLABLE">
+          {
+            call rpt_order_base()
+          }
+  </select>
+    <select id="getCallPointDay" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_point_day(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallPointMonth" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_point_month(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallPointYear" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_point_year(
+                  #{year,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+
+    <select id="getCallLineDay" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_line_day(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallLineMonth" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_line_month(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallLineYear" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_line_year(
+                  #{year,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+
+    <select id="getCallPtimeDay" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_ptime_day(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallPtimeWeek" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_ptime_week(
+               #{year,mode=IN,jdbcType=INTEGER},
+               #{week,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallPtimeMonth" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_ptime_month(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+
+    <select id="getCallVtimeDay" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_vtime_day(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallVtimeWeek" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_vtime_week(
+               #{year,mode=IN,jdbcType=INTEGER},
+               #{week,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+    <select id="getCallVtimeMonth" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_vtime_month(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+  
+    <select id="getCallVtimeQuarter" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_vtime_quarter(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{quarter,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+  
+    <select id="getCallVtimeHalfYear" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_vtime_halfyear(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{halfYear,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+  
+    <select id="getCallVtimeYear" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_vtime_year(
+               #{year,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+
+    <select id="getCallReportBoard" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_report_board()
+          }
+  </select>
+
+    <select id="getCallReportDsale" parameterType="map" resultType="map" statementType="CALLABLE">
+          {
+              call rpt_report_dsale(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER},
+               #{stime,mode=IN,jdbcType=VARCHAR},
+               #{etime,mode=IN,jdbcType=VARCHAR},
+               #{sMinute,mode=IN,jdbcType=INTEGER},
+               #{eMinute,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+
+    <select id="getCallReportMsale" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_report_msale(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+
+    <select id="getCallReportOsale" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_report_osale(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER},
+               #{beforeNum,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+  
+  <select id="getCallOsaleDay" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_osale_day(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+
+  <select id="getCallOsaleDayHistory" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_osale_day_history(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{day,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+  
+    <select id="getCallOsaleOther" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_osale_other(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{quarter,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+  
+  <select id="getCallOsaleOtherHistory" parameterType="map" statementType="CALLABLE">
+          {
+              call rpt_osale_other_history(
+                  #{year,mode=IN,jdbcType=INTEGER},
+               #{month,mode=IN,jdbcType=INTEGER},
+               #{quarter,mode=IN,jdbcType=INTEGER}
+              )
+          }
+  </select>
+</mapper>

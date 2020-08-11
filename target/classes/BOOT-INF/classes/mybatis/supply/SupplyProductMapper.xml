@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.supply.mapper.SupplyProductMapper">
+    
+    <resultMap type="SupplyProduct" id="SupplyProductResult">
+        <result property="logid"    column="logid"    />
+        <result property="sProductId"    column="sProductId"    />
+        <result property="sOrderId"    column="sOrderId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="supplyId"    column="supplyId"    />
+        <result property="productId"    column="productId"    />
+        <result property="supplyNum"    column="supplyNum"    />
+        <result property="outNum"    column="outNum"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="buyPrice"    column="buyPrice"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="stockOutNum"    column="stockOutNum"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="supplyrNum"    column="supplyrNum"    />
+        <result property="supplynNum"    column="supplynNum"    />
+        <result property="supplydNum"    column="supplydNum"    />
+        <result property="supplylNum"    column="supplylNum"    />
+    </resultMap>
+	
+	<sql id="selectSupplyProductVo">
+        select logid, sProductId, sOrderId, corpId, supplyId, productId, supplyNum, outNum, curState, stateTime, stockOutNum, buyPrice, createTime, supplyrNum, supplynNum, supplydNum, supplylNum from as_supply_product
+    </sql>
+	
+    <select id="selectSupplyProductList" parameterType="SupplyProduct" resultMap="SupplyProductResult">
+        <include refid="selectSupplyProductVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="sProductId != null and sProductId != ''"> and sProductId = #{sProductId}</if>
+             <if test="sOrderId != null and sOrderId != ''"> and sOrderId = #{sOrderId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="supplyId != null and supplyId != ''"> and supplyId = #{supplyId}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="supplyNum != null and supplyNum != ''"> and supplyNum = #{supplyNum}</if>
+             <if test="outNum != null and outNum != ''"> and outNum = #{outNum}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="buyPrice != null and buyPrice != ''"> and buyPrice = #{buyPrice}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="stockOutNum != null and stockOutNum != ''"> and stockOutNum = #{stockOutNum}</if>
+         </where>
+    </select>
+	
+	<select id="selectSupplyProductListForExport" parameterType="SupplyOrder" resultMap="SupplyProductResult">
+        select a.sOrderId,b.lineId,a.productId,a.buyPrice,a.outNum,a.stockOutnum,a.supplyrNum,a.stateTime from as_supply_product a left join as_supply_order b on a.sOrderId=b.sOrderId where b.curState='2' and b.stockState='2'
+ 
+        <if test="sOrderId != null and sOrderId != ''"> and b.sOrderId = #{sOrderId}</if>
+        <if test="lineId != null and lineId != ''"> and b.lineId = #{lineId}</if>
+        <if test="supplierId != null and supplierId != ''"> and b.supplierId = #{supplierId}</if>
+        <!-- <if test="curState != null and curState != ''"> and b.curState = #{curState}</if> -->
+        <if test="wmId != null and wmId != ''"> and b.wmId = #{wmId}</if>
+        <if test="startDate != null and startDate != ''"> and b.stateTime &gt;= #{startDate}</if>
+        <if test="endDate != null and endDate != ''"> and b.stateTime &lt;= #{endDate}</if>
+        <if test="corpId != null and corpId != ''"> and b.corpId = #{corpId}</if>
+    </select>
+
+
+    <select id="selectSupplyProductByPId" parameterType="String" resultMap="SupplyProductResult">
+        <include refid="selectSupplyProductVo"/>
+        where sOrderId = #{sOrderId} and productId=#{productId}
+    </select>
+    
+    <select id="selectSupplyProductById" parameterType="String" resultMap="SupplyProductResult">
+        <include refid="selectSupplyProductVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectSupplyProductPriceList" parameterType="String" resultType="Float">
+        select distinct buyPrice from as_stock_pinbound where productId = #{productId} limit 0,5
+    </select>
+        
+    <insert id="insertSupplyProduct" parameterType="SupplyProduct">
+        insert into as_supply_product(logid,sProductId,sOrderId,corpId,supplyId,productId,supplyNum,outNum,curState,stateTime,buyPrice,createTime,stockOutNum)
+        values (#{logid},#{sProductId},#{sOrderId},#{corpId},#{supplyId},#{productId},#{supplyNum},#{outNum},#{curState},#{stateTime},#{buyPrice},#{createTime},#{stockOutNum})
+    </insert>
+    
+    <insert id="insertSupplyProductBatch" parameterType="java.util.List">
+        insert into as_supply_product(logid,sProductId,sOrderId,corpId,supplyId,productId,supplyNum,outNum,curState,stateTime,buyPrice,createTime,stockOutNum,supplyRNum,supplyNNum,supplyDNum,supplyLNum) values 
+        <foreach collection="list" item="item" index="index" separator=",">
+        	(#{item.logid},#{item.sProductId},#{item.sOrderId},#{item.corpId},#{item.supplyId},#{item.productId},#{item.supplyNum},#{item.outNum},#{item.curState},#{item.stateTime},#{item.buyPrice},#{item.createTime},#{item.stockOutNum},#{item.supplyrNum},#{item.supplynNum},#{item.supplydNum},#{item.supplylNum})
+    	</foreach>
+    </insert>
+	 
+    <update id="updateSupplyProduct" parameterType="SupplyProduct">
+        update as_supply_product
+        <set>
+        	<if test="outNum != null">outNum=#{outNum},</if>
+        	<if test="buyPrice != null">buyPrice=#{buyPrice},</if>
+        	<if test="stockOutNum != null">stockOutNum=#{stockOutNum},</if>
+        	<if test="supplynNum != null">supplynNum=#{supplynNum},</if>
+        	<if test="supplydNum != null">supplydNum=#{supplydNum},</if>
+        	<if test="supplylNum != null">supplylNum=#{supplylNum}</if>
+        </set>
+        where sOrderId = #{sOrderId} and productId=#{productId}
+    </update>
+
+	<delete id="deleteSupplyProductById" parameterType="String">
+        delete from as_supply_product where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteSupplyProductByIds" parameterType="String">
+        delete from as_supply_product where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    <select id="selectListBySOrderId" parameterType="String" resultMap="SupplyProductResult">
+        <include refid="selectSupplyProductVo"/>
+        where sOrderId = #{sOrderId}
+    </select>
+</mapper>

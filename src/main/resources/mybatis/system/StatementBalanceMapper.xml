@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.statement.mapper.StatementBalanceMapper">
+    
+    <resultMap type="StatementBalance" id="StatementBalanceResult">
+        <result property="logid"    column="logid"    />
+        <result property="balanceId"    column="balanceId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="tradeSTime"    column="tradeSTime"    />
+        <result property="tradeEtime"    column="tradeEtime"    />
+        <result property="payPMoney"    column="payPMoney"    />
+        <result property="incomeMoney"    column="incomeMoney"    />
+        <result property="poundage"    column="poundage"    />
+        <result property="payRMoney"    column="payRMoney"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectStatementBalanceVo">
+        select logid, balanceId, districtId, tradeSTime, tradeEtime, payPMoney, incomeMoney, poundage, payRMoney, corpId, createTime from as_statement_balance
+    </sql>
+	
+    <select id="selectStatementBalanceList" parameterType="StatementBalance" resultMap="StatementBalanceResult">
+        <include refid="selectStatementBalanceVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="balanceId != null and balanceId != ''"> and balanceId = #{balanceId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="tradeSTime != null and tradeSTime != ''"> and tradeSTime = #{tradeSTime}</if>
+             <if test="tradeEtime != null and tradeEtime != ''"> and tradeEtime = #{tradeEtime}</if>
+             <if test="payPMoney != null and payPMoney != ''"> and payPMoney = #{payPMoney}</if>
+             <if test="incomeMoney != null and incomeMoney != ''"> and incomeMoney = #{incomeMoney}</if>
+             <if test="poundage != null and poundage != ''"> and poundage = #{poundage}</if>
+             <if test="payRMoney != null and payRMoney != ''"> and payRMoney = #{payRMoney}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectStatementBalanceById" parameterType="String" resultMap="StatementBalanceResult">
+        <include refid="selectStatementBalanceVo"/>
+        where logid = #{logid}
+    </select>
+        
+    <insert id="insertStatementBalance" parameterType="StatementBalance">
+        insert into as_statement_balance
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="balanceId != null and balanceId != '' ">balanceId,</if>
+			<if test="districtId != null and districtId != '' ">districtId,</if>
+			<if test="tradeSTime != null and tradeSTime != '' ">tradeSTime,</if>
+			<if test="tradeEtime != null and tradeEtime != '' ">tradeEtime,</if>
+			<if test="payPMoney != null and payPMoney != '' ">payPMoney,</if>
+			<if test="incomeMoney != null and incomeMoney != '' ">incomeMoney,</if>
+			<if test="poundage != null and poundage != '' ">poundage,</if>
+			<if test="payRMoney != null and payRMoney != '' ">payRMoney,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="balanceId != null and balanceId != ''">#{balanceId},</if>
+			<if test="districtId != null and districtId != ''">#{districtId},</if>
+			<if test="tradeSTime != null and tradeSTime != ''">#{tradeSTime},</if>
+			<if test="tradeEtime != null and tradeEtime != ''">#{tradeEtime},</if>
+			<if test="payPMoney != null and payPMoney != ''">#{payPMoney},</if>
+			<if test="incomeMoney != null and incomeMoney != ''">#{incomeMoney},</if>
+			<if test="poundage != null and poundage != ''">#{poundage},</if>
+			<if test="payRMoney != null and payRMoney != ''">#{payRMoney},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateStatementBalance" parameterType="StatementBalance">
+        update as_statement_balance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="balanceId != null  and balanceId != ''  ">balanceId = #{balanceId},</if>
+            <if test="districtId != null  and districtId != ''  ">districtId = #{districtId},</if>
+            <if test="tradeSTime != null  and tradeSTime != ''  ">tradeSTime = #{tradeSTime},</if>
+            <if test="tradeEtime != null  and tradeEtime != ''  ">tradeEtime = #{tradeEtime},</if>
+            <if test="payPMoney != null  ">payPMoney = #{payPMoney},</if>
+            <if test="incomeMoney != null  ">incomeMoney = #{incomeMoney},</if>
+            <if test="poundage != null  ">poundage = #{poundage},</if>
+            <if test="payRMoney != null  ">payRMoney = #{payRMoney},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteStatementBalanceById" parameterType="String">
+        delete from as_statement_balance where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStatementBalanceByIds" parameterType="String">
+        delete from as_statement_balance where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

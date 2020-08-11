@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.stock.mapper.StockPurchaseMapper">
+    
+    <resultMap type="StockPurchase" id="StockPurchaseResult">
+        <result property="logid"    column="logid"    />
+        <result property="wpurchaseId"    column="wPurchaseId"    />
+        <result property="stockId"    column="stockId"    />
+        <result property="stokcName"    column="stokcName"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="pnum"    column="pNum"    />
+        <result property="tnum"    column="tNum"    />
+        <result property="totalPrice"    column="totalPrice"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="checkState"    column="checkState"    />
+        <result property="checkTime"    column="checkTime"    />
+        <result property="checkId"    column="checkId"    />
+        <result property="stockState"    column="stockState"    />
+        <result property="stockSTime"    column="stockSTime"    />
+        <result property="description"    column="description"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="supplyId"    column="supplyId"    />
+        <result property="supplyName"    column="supplyName"    />
+    </resultMap>
+	
+	<sql id="selectStockPurchaseVo">
+        select logid, wpurchaseId, stockId, stokcName, productId, productName, pnum, tnum, totalPrice, curState, stateTime, checkState, checkTime, checkId, stockState, stockSTime, description, corpId, createTime, supplyId, supplyName from as_stock_purchase
+    </sql>
+	
+    <select id="selectStockPurchaseList" parameterType="StockPurchase" resultMap="StockPurchaseResult">
+        <include refid="selectStockPurchaseVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="wpurchaseId != null and wpurchaseId != ''"> and wPurchaseId = #{wpurchaseId}</if>
+             <if test="stockId != null and stockId != ''"> and stockId = #{stockId}</if>
+             <if test="stokcName != null and stokcName != ''"> and stokcName like concat("%",#{stokcName},"%")</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="productName != null and productName != ''"> and productName = #{productName}</if>
+             <if test="pnum != null and pnum != ''"> and pNum = #{pnum}</if>
+             <if test="tnum != null and tnum != ''"> and tNum = #{tnum}</if>
+             <if test="totalPrice != null and totalPrice != ''"> and totalPrice = #{totalPrice}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="checkState != null and checkState != ''"> and checkState = #{checkState}</if>
+             <if test="checkTime != null and checkTime != ''"> and checkTime = #{checkTime}</if>
+             <if test="checkId != null and checkId != ''"> and checkId = #{checkId}</if>
+             <if test="stockState != null and stockState != ''"> and stockState = #{stockState}</if>
+             <if test="stockSTime != null and stockSTime != ''"> and stockSTime = #{stockSTime}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and left(createTime,10) = #{createTime}</if>
+             <if test="supplyName != null and supplyName != ''"> and supplyName like concat("%",#{supplyName},"%")</if>
+             <if test="supplyId != null and supplyId != ''"> and supplyId = #{supplyId}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockPurchaseById" parameterType="String" resultMap="StockPurchaseResult">
+        <include refid="selectStockPurchaseVo"/>
+        where wPurchaseId = #{wpurchaseId}
+    </select>
+    
+    <select id="selectStockPurchaseByWpurchaseId" parameterType="String" resultMap="StockPurchaseResult">
+        <include refid="selectStockPurchaseVo"/>
+        where wPurchaseId = #{wpurchaseId}
+    </select>
+        
+    <insert id="insertStockPurchase" parameterType="StockPurchase">
+        insert into as_stock_purchase
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="wpurchaseId != null and wpurchaseId != '' ">wPurchaseId,</if>
+			<if test="stockId != null and stockId != '' ">stockId,</if>
+			<if test="stokcName != null and stokcName != '' ">stokcName,</if>
+			<if test="productId != null and productId != '' ">productId,</if>
+			<if test="productName != null and productName != '' ">productName,</if>
+			<if test="pnum != null and pnum != '' ">pNum,</if>
+			<if test="tnum != null and tnum != '' ">tNum,</if>
+			<if test="totalPrice != null and totalPrice != '' ">totalPrice,</if>
+			<if test="curState != null and curState != '' ">curState,</if>
+			<if test="stateTime != null and stateTime != '' ">stateTime,</if>
+			<if test="checkState != null and checkState != '' ">checkState,</if>
+			<if test="checkTime != null and checkTime != '' ">checkTime,</if>
+			<if test="checkId != null and checkId != '' ">checkId,</if>
+			<if test="stockState != null and stockState != '' ">stockState,</if>
+			<if test="stockSTime != null and stockSTime != '' ">stockSTime,</if>
+			<if test="description != null and description != '' ">description,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+			<if test="supplyId != null and supplyId != '' ">supplyId,</if>
+			<if test="supplyName != null and supplyName != '' ">supplyName,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="wpurchaseId != null and wpurchaseId != ''">#{wpurchaseId},</if>
+			<if test="stockId != null and stockId != ''">#{stockId},</if>
+			<if test="stokcName != null and stokcName != ''">#{stokcName},</if>
+			<if test="productId != null and productId != ''">#{productId},</if>
+			<if test="productName != null and productName != ''">#{productName},</if>
+			<if test="pnum != null and pnum != ''">#{pnum},</if>
+			<if test="tnum != null and tnum != ''">#{tnum},</if>
+			<if test="totalPrice != null and totalPrice != ''">#{totalPrice},</if>
+			<if test="curState != null and curState != ''">#{curState},</if>
+			<if test="stateTime != null and stateTime != ''">#{stateTime},</if>
+			<if test="checkState != null and checkState != ''">#{checkState},</if>
+			<if test="checkTime != null and checkTime != ''">#{checkTime},</if>
+			<if test="checkId != null and checkId != ''">#{checkId},</if>
+			<if test="stockState != null and stockState != ''">#{stockState},</if>
+			<if test="stockSTime != null and stockSTime != ''">#{stockSTime},</if>
+			<if test="description != null and description != ''">#{description},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+			<if test="supplyId != null and supplyId != ''">#{supplyId},</if>
+			<if test="supplyName != null and supplyName != ''">#{supplyName},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateStockPurchase" parameterType="StockPurchase">
+        update as_stock_purchase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wpurchaseId != null  and wpurchaseId != ''  ">wPurchaseId = #{wpurchaseId},</if>
+            <if test="stockId != null  and stockId != ''  ">stockId = #{stockId},</if>
+            <if test="stokcName != null  and stokcName != ''  ">stokcName = #{stokcName},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="productName != null  and productName != ''  ">productName = #{productName},</if>
+            <if test="pnum != null  ">pNum = #{pnum},</if>
+            <if test="tnum != null  ">tNum = #{tnum},</if>
+            <if test="totalPrice != null  ">totalPrice = #{totalPrice},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="checkState != null  and checkState != ''  ">checkState = #{checkState},</if>
+            <if test="checkTime != null  and checkTime != ''  ">checkTime = #{checkTime},</if>
+            <if test="checkId != null  and checkId != ''  ">checkId = #{checkId},</if>
+            <if test="stockState != null  and stockState != ''  ">stockState = #{stockState},</if>
+            <if test="stockSTime != null  and stockSTime != ''  ">stockSTime = #{stockSTime},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="supplyId != null  and supplyId != ''  ">supplyId = #{supplyId},</if>
+            <if test="supplyName != null  and supplyName != ''  ">supplyName = #{supplyName},</if>
+        </trim>
+        where wPurchaseId = #{wpurchaseId}
+    </update>
+
+	<delete id="deleteStockPurchaseById" parameterType="String">
+        delete from as_stock_purchase where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteStockPurchaseByIds" parameterType="String">
+        delete from as_stock_purchase where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

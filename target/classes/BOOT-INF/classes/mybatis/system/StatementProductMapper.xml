@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.statement.mapper.StatementProductMapper">
+    
+    <resultMap type="com.manage.project.system.statement.vo.StatementProductVo" id="StatementProductResult">
+        <result property="logid"    column="logid"    />
+        <result property="statementPid"    column="statementPid"    />
+        <result property="productId"    column="productId"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="proboxId"    column="proboxId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="seqId"    column="seqId"    />
+        <result property="outType"    column="outType"    />
+        <result property="payType"    column="payType"    />
+        <result property="tradeNo"    column="tradeNo"    />
+        <result property="buyMoney"    column="buyMoney"    />
+        <result property="salePMoney"    column="salePMoney"    />
+        <result property="saleRMoney"    column="saleRMoney"    />
+        <result property="saleFMoney"    column="saleFMoney"    />
+        <result property="saleReturn"    column="saleReturn"    />
+        <result property="pTradeNo"    column="pTradeNo"    />
+        <result property="rTradeNo"    column="rTradeNo"    />
+        <result property="curState"    column="curState"    />
+        <result property="abnomarlMoney"    column="abnomarlMoney"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="payState"    column="payState"    />
+        <result property="outTypeName"    column="outTypeName"    />
+        <result property="payTypeName"    column="payTypeName"    />
+        <result property="curStateName"    column="curStateName"    />
+    </resultMap>
+	
+	<sql id="selectStatementProductVo">
+        select a.logid, a.statementPid, a.productId, a.orderId, a.proboxId, a.siteId, a.laneSId, a.laneEId, a.seqId, 
+        a.outType, a.payType, a.tradeNo, a.buyMoney, a.salePMoney, a.saleRMoney, a.saleFMoney, a.saleReturn, a.pTradeNo,
+        a.rTradeNo, a.curState, a.abnomarlMoney, a.corpId, a.createTime,b.payState,
+        case a.outType when '1' then '销售' when '2' then '下架' end as outTypeName,
+        case a.curState when '1' then '未出柜' when '2' then '已出柜' when '3' then '对账正常' when '4' then '对账异常' end as curStateName,
+        case a.payType when '1' then '支付宝' when '2' then '微信' when '3' then '无' end as payTypeName,
+        case b.payState when '1' then '等待支付' when '2' then '支付成功' when '3' then '支付失败' end as payStateName
+        from as_statement_product a left join as_order_apply b on a.orderId=b.orderId
+    </sql>
+	
+    <select id="selectStatementProductList" parameterType="com.manage.project.system.statement.vo.StatementProductVo" resultMap="StatementProductResult">
+        <include refid="selectStatementProductVo"/>
+        <where>
+        	<if test="sOrderId != null and sOrderId != '' ">and a.sOrderId = #{sOrderId}</if>
+        	<if test="siteId != null and siteId != '' ">and a.siteId = #{siteId}</if>
+        	<if test="outType != null and outType != '' ">and a.outType = #{outType}</if>
+        </where>
+    </select>
+    
+    <select id="selectStatementProductListBySupply" parameterType="com.manage.project.system.statement.domain.StatementSupply" resultMap="StatementProductResult">
+        <include refid="selectStatementProductVo"/>
+        left join as_statement_supply c on a.sOrderId=c.sOrderId and a.siteId=c.siteId
+        <where>  
+             <if test="siteId != null and siteId != ''"> and c.siteId = #{siteId}</if>
+             <if test="corpId != null and corpId != ''"> and c.corpId = #{corpId}</if>
+             <if test="districtId != null and districtId != ''"> and c.districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and c.lineId = #{lineId}</if>
+             <if test="tradeSTime != null and tradeSTime != ''"> and str_to_date(c.tradeSTime,'%Y-%m-%d') &gt;= str_to_date(#{tradeSTime},'%Y-%m-%d')</if>
+             <if test="tradeEtime != null and tradeEtime != ''"> and str_to_date(c.tradeEtime,'%Y-%m-%d') &lt;= str_to_date(#{tradeEtime},'%Y-%m-%d')</if>
+             <if test="statementState != null and statementState != ''"> and c.statementState = #{statementState}</if>
+         </where>
+    </select>
+    
+    <select id="selectStatementProductById" parameterType="String" resultMap="StatementProductResult">
+        <include refid="selectStatementProductVo"/>
+        where a.logid=#{logid}
+    </select>
+	 
+    <update id="updateStatementProduct" parameterType="StatementProduct">
+        update as_statement_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="statementPid != null  and statementPid != ''  ">statementPid = #{statementPid},</if>
+            <if test="productId != null  and productId != ''  ">productId = #{productId},</if>
+            <if test="orderId != null  and orderId != '' ">orderId = #{orderId},</if>
+            <if test="proboxId != null  and proboxId != '' ">proboxId = #{proboxId},</if>
+            <if test="siteId != null  and siteId != '' ">siteId = #{siteId},</if>
+            <if test="laneSId != null  ">laneSId = #{laneSId},</if>
+            <if test="laneEId != null  ">laneEId = #{laneEId},</if>
+            <if test="seqId != null  ">seqId = #{seqId},</if>
+            <if test="outType != null  and outType != ''  ">outType = #{outType},</if>
+            <if test="payType != null  and payType != ''  ">payType = #{payType},</if>
+            <if test="tradeNo != null  and tradeNo != ''  ">tradeNo = #{tradeNo},</if>
+            <if test="buyMoney != null  ">buyMoney = #{buyMoney},</if>
+            <if test="salePMoney != null  ">salePMoney = #{salePMoney},</if>
+            <if test="saleRMoney != null  ">saleRMoney = #{saleRMoney},</if>
+            <if test="saleFMoney != null  ">saleFMoney = #{saleFMoney},</if>
+            <if test="saleReturn != null  ">saleReturn = #{saleReturn},</if>
+            <if test="pTradeNo != null  and pTradeNo != ''  ">pTradeNo = #{pTradeNo},</if>
+            <if test="rTradeNo != null  and rTradeNo != ''  ">rTradeNo = #{rTradeNo},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="abnomarlMoney != null  ">abnomarlMoney = #{abnomarlMoney},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+    
+   
+</mapper>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.report.mapper.ReportMapper">
+ <resultMap id="lineReportMap" type="com.manage.project.system.report.vo.LineSaleMoneyVo">
+	<result property="lineId" column="lineId"/>
+	<result property="lineName" column="lineName"/>
+	<result property="pointNum" column="pointNum"/>
+	<result property="totalSaleMoney" column="totalSaleMoney"/>
+	<collection property="details" resultMap="detailsMap"/>
+ </resultMap>
+ 
+ <resultMap id="pointReportMap" type="com.manage.project.system.report.vo.PointSaleMoneyVo">
+	<result property="pointId" column="pointId"/>
+	<result property="pointName" column="pointName"/>
+	<result property="totalSaleMoney" column="totalSaleMoney"/>
+	<collection property="details" resultMap="detailsMap"/>
+ </resultMap>
+  
+  <resultMap type="HashMap" id="detailsMap">
+  	<result property="date" column="rptDate"/>
+	<result property="saleMoney" column="saleMoney" javaType="double"/>
+  </resultMap>
+  
+  <sql id="strConcat">
+  	CONCAT(a.syear,'/',a.smonth,'/',a.sday)
+  </sql>
+  
+  <sql id="line_where">
+  	<where>
+  		<if test="corpId != null and corpId != ''">
+  			and a.corpId=#{corpId} 
+  		</if>
+  		<if test="lineId != null and lineId != ''">
+  			and a.lineId=#{lineId}
+  		</if>
+  		<if test="lineName != null and lineName != ''">
+  			and b.name like concat("%",#{lineName},"%")
+  		</if>
+  		<if test="syear != null and syear != ''">
+  			and a.syear=#{syear}
+  		</if>
+  		<if test="smonth != null and smonth != ''">
+  			and a.smonth=#{smonth}
+  		</if>
+  	</where>
+  </sql>
+  
+  <sql id="point_where">
+  	<where>
+  		<if test="corpId != null and corpId != ''">
+  			and a.corpId=#{corpId} 
+  		</if>
+  		<if test="pointId != null and pointId != ''">
+  			and a.pointId=#{pointId}
+  		</if>
+  		<if test="pointName != null and pointName != ''">
+  			and b.name like concat("%",#{pointName},"%")
+  		</if>
+  		<if test="syear != null and syear != ''">
+  			and a.syear=#{syear}
+  		</if>
+  		<if test="smonth != null and smonth != ''">
+  			and a.smonth=#{smonth}
+  		</if>
+  	</where>
+  </sql>
+  
+   <select id="selectLineSaleListForExport" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="lineReportMap">
+   	select a.lineId,b.name lineName,a.pointNum,a.saleMoney totalSaleMoney,
+   	CONCAT(c.syear,'-',c.smonth,'-',c.sday) rptDate,c.saleMoney
+   	from rpt_line_month a inner join as_vending_line b on a.lineId=b.lineId 
+    left join rpt_line_day c on a.lineId=c.lineId
+    <where>
+  		<if test="corpId != null and corpId != ''">
+  			and a.corpId=#{corpId} and c.corpId=#{corpId} 
+  		</if>
+  		<if test="lineId != null and lineId != ''">
+  			and a.lineId=#{lineId}
+  		</if>
+  		<if test="lineName != null and lineName != ''">
+  			and b.name like concat("%",#{lineName},"%")
+  		</if>
+  		<if test="syear != null and syear != ''">
+  			and a.syear=#{syear} and c.syear=#{syear}
+  		</if>
+  		<if test="smonth != null and smonth != ''">
+  			and a.smonth=#{smonth} and c.smonth=#{smonth}
+  		</if>
+  	</where>
+    order by c.sday
+  </select>
+  
+  <select id="selectLineSaleCurMonthForExport" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="lineReportMap">
+   	select a.lineId,b.name lineName,a.pointNum,
+   	CONCAT(a.syear,'-',a.smonth,'-',a.sday) rptDate,a.saleMoney
+   	from rpt_line_day a inner join as_vending_line b on a.lineId=b.lineId 
+    <where>
+  		<if test="corpId != null and corpId != ''">
+  			and a.corpId=#{corpId} and c.corpId=#{corpId} 
+  		</if>
+  		<if test="lineId != null and lineId != ''">
+  			and a.lineId=#{lineId}
+  		</if>
+  		<if test="lineName != null and lineName != ''">
+  			and b.name like concat("%",#{lineName},"%")
+  		</if>
+  		<if test="syear != null and syear != ''">
+  			and a.syear=#{syear} and c.syear=#{syear}
+  		</if>
+  		<if test="smonth != null and smonth != ''">
+  			and a.smonth=#{smonth} and c.smonth=#{smonth}
+  		</if>
+  	</where>
+  	order by a.sday
+  </select>
+  
+  <select id="selectPointSaleListForExport" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="pointReportMap">
+   	select a.pointId,b.name pointName,a.saleMoney totalSaleMoney,
+   	CONCAT(c.syear,'-',c.smonth,'-',c.sday) rptDate,c.saleMoney
+   	from rpt_point_month a inner join as_vending_point b on a.pointId=b.pointId 
+    left join rpt_point_day c on a.pointId=c.pointId
+    <where>
+  		<if test="corpId != null and corpId != ''">
+  			and a.corpId=#{corpId} and c.corpId=#{corpId} 
+  		</if>
+  		<if test="pointId != null and pointId != ''">
+  			and a.pointId=#{pointId}
+  		</if>
+  		<if test="pointName != null and pointName != ''">
+  			and b.name like concat("%",#{pointName},"%")
+  		</if>
+  		<if test="syear != null and syear != ''">
+  			and a.syear=#{syear} and c.syear=#{syear}
+  		</if>
+  		<if test="smonth != null and smonth != ''">
+  			and a.smonth=#{smonth} and c.smonth=#{smonth}
+  		</if>
+  	</where>
+    order by c.sday
+  </select>
+  
+  <select id="selectPointSaleListCurMonthForExport" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="pointReportMap">
+   	select a.pointId,b.name pointName,
+   	CONCAT(c.syear,'-',c.smonth,'-',c.sday) rptDate,c.saleMoney
+   	from rpt_point_day a inner join as_vending_point b on a.pointId=b.pointId 
+    <where>
+  		<if test="corpId != null and corpId != ''">
+  			and a.corpId=#{corpId} and c.corpId=#{corpId} 
+  		</if>
+  		<if test="pointId != null and pointId != ''">
+  			and a.pointId=#{pointId}
+  		</if>
+  		<if test="pointName != null and pointName != ''">
+  			and b.name like concat("%",#{pointName},"%")
+  		</if>
+  		<if test="syear != null and syear != ''">
+  			and a.syear=#{syear} and c.syear=#{syear}
+  		</if>
+  		<if test="smonth != null and smonth != ''">
+  			and a.smonth=#{smonth} and c.smonth=#{smonth}
+  		</if>
+  	</where>
+    order by a.sday
+  </select>
+  
+  
+<!--   <select id="selectLineSaleList" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="lineReportMap">
+   	select a.lineId,b.name lineName,a.pointNum,sum(a.saleMoney) totalSaleMoney
+   	from rpt_line_day a left join as_vending_line b on a.lineId=b.lineId 
+   	<include refid="line_where"></include>
+   	group by a.lineId,a.pointNum
+  </select> -->
+  
+  <select id="selectLineSaleMonth" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="lineReportMap">
+   	select a.lineId,b.name lineName,a.pointNum,a.saleMoney totalSaleMoney
+   	from rpt_line_month a inner join as_vending_line b on a.lineId=b.lineId 
+   	<include refid="line_where"></include>
+  </select>
+  
+  <select id="selectLineSaleCurMonth" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="lineReportMap">
+   	select a.lineId,b.name lineName,sum(a.saleMoney) totalSaleMoney
+   	from rpt_line_day a inner join as_vending_line b on a.lineId=b.lineId 
+   	<include refid="line_where"></include>
+   	group by a.lineId,b.name
+  </select>
+  
+  <select id="selectLineSaleDay" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="detailsMap">
+   	select CONCAT(a.syear,'-',a.smonth,'-',a.sday) rptDate,saleMoney from rpt_line_day a
+   	<include refid="line_where"></include>
+   	order by a.sday
+  </select>
+  
+  <select id="selectPointSaleMonth" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="pointReportMap">
+   	select a.pointId,b.name pointName,a.saleMoney totalSaleMoney
+   	from rpt_point_month a inner join as_vending_point b on a.pointId=b.pointId 
+   	<include refid="point_where"></include>
+  </select>
+  
+  <select id="selectPointSaleCurMonth" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="pointReportMap">
+   	select a.pointId,b.name pointName,sum(a.saleMoney) totalSaleMoney
+   	from rpt_point_day a inner join as_vending_point b on a.pointId=b.pointId 
+   	<include refid="point_where"></include>
+   	group by a.pointId,b.name
+  </select>
+  
+  <select id="selectPointSaleDay" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="detailsMap">
+   	select CONCAT(a.syear,'-',a.smonth,'-',a.sday) rptDate,saleMoney from rpt_point_day a
+   	<include refid="point_where"></include>
+   	order by a.sday
+  </select>
+  
+<!--   <select id="selectLineSaleDetail" parameterType="com.manage.project.system.report.vo.ReportVo" resultMap="detailsMap">
+   	select CONCAT(a.syear,'/',a.smonth,'/',a.sday) rptDate,saleMoney
+   	from rpt_line_day a
+   	<include refid="line_where"></include>
+   	order by str_to_date(CONCAT(a.syear,'/',a.smonth,'/',a.sday),"%Y/%m/%d")
+  </select> -->
+  
+  
+ 
+</mapper>

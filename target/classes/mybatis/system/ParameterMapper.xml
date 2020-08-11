@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.base.mapper.ParameterMapper">
+    
+    <resultMap type="com.manage.project.system.base.domain.Parameter" id="parameterMap">
+    	<result property="logid" column="logid"/>
+    	<result property="paraCode" column="paraCode"/>
+    	<result property="name" column="name"/>
+    	<result property="value" column="value"/>
+    	<result property="description" column="description"/>
+    </resultMap>
+    
+    <select id="selectParameterList" parameterType="String" resultMap="parameterMap">
+    	select logid,paraCode,name,value,description from sys_parameter
+    </select>
+    
+    <select id="selectParameterByName" parameterType="String" resultMap="parameterMap">
+    	select logid,paraCode,name,value,description from sys_parameter where name=#{name}
+    </select>
+    
+    <insert id="insert" parameterType="com.manage.project.system.base.domain.Parameter">
+    	insert into sys_parameter values 
+    	(#{logid},#{paraCode},#{name},#{value},#{description})
+    </insert>
+    
+    <update id="update">
+    	update sys_parameter set value=#{value} where logid = #{logid}
+    </update>
+    
+    <delete id="delete">
+    	delete from sys_parameter where logid=#{logid}
+    </delete>
+    
+</mapper>

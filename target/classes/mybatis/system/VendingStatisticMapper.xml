@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingStatisticMapper">
+    
+    <resultMap type="VendingStatistic" id="VendingStatisticResult">
+        <result property="logid"    column="logid"    />
+        <result property="rptdate"    column="rptdate"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="supplyNum"    column="supplyNum"    />
+        <result property="orderNum"    column="orderNum"    />
+        <result property="offlineNum"    column="offlineNum"    />
+        <result property="proTNum"    column="proTNum"    />
+        <result property="warnNum"    column="warnNum"    />
+        <result property="profitMoney"    column="profitMoney"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectVendingStatisticVo">
+        select logid, rptdate, districtId, lineId, pointId, siteId, siteName, supplyNum, orderNum, offlineNum, proTNum, warnNum, profitMoney, corpId, createTime from as_vending_statistic
+    </sql>
+    
+    <select id="selectVendingStatisticBySiteId" parameterType="String" resultMap="VendingStatisticResult">
+        <include refid="selectVendingStatisticVo"/>
+        where siteId = #{siteId}
+    </select>
+ 
+ 	<insert id="insertVendingStatistic" parameterType="VendingStatistic">
+        insert into as_vending_statistic(logid,rptdate,districtId,lineId,pointId,siteId,siteName,supplyNum,orderNum,
+        	offlineNum,proTNum,warnNum,profitMoney,corpId,createTime)
+        values(#{logid},#{rptdate},#{districtId},#{lineId},#{pointId},#{siteId},#{siteName},#{supplyNum},#{orderNum},
+        	#{offlineNum},#{proTNum},#{warnNum},#{profitMoney},#{corpId},#{createTime})
+    </insert>
+    
+    <delete id="deleteVendingStatisticBySiteId" parameterType="String">
+    	delete from as_vending_statistic where siteId=#{siteId}
+    </delete>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingUpgradeTaskMapper">
+    
+    <resultMap type="VendingUpgradeTask" id="VendingUpgradeTaskResult">
+        <result property="logid"    column="logid"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="upgradeId"    column="upgradeId"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="uName"    column="uName"    />
+    </resultMap>
+	
+	<sql id="selectVendingUpgradeTaskVo">
+        select logid, taskId, siteId, siteName, upgradeId, state, createTime, corpId from as_vending_upgrade_task
+    </sql>
+    
+    <sql id="selectVendingUpgradeTaskJoinVendingUpgrade">
+        select a.logid, a.taskId, a.siteId, a.siteName, a.upgradeId, a.state, a.createTime, a.corpId, b.uName from as_vending_upgrade_task a left join as_vending_upgrade b on a.upgradeId=b.upgradeId 
+    </sql>
+	
+    <select id="selectVendingUpgradeTaskAndUpgradeList" parameterType="VendingUpgradeTask" resultMap="VendingUpgradeTaskResult">
+        <include refid="selectVendingUpgradeTaskJoinVendingUpgrade"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and a.logid = #{logid}</if>
+            <if test="taskId != null and taskId != ''"> and a.taskId = #{taskId}</if>
+            <if test="siteId != null and siteId != ''"> and a.siteId = #{siteId}</if>
+             <if test="site != null and site != ''"> and (a.siteId = #{site} or a.siteName like concat("%",#{site},"%"))</if>
+             <if test="siteName != null and siteName != ''"> and a.siteName like concat("%",#{siteName},"%")</if>
+             <if test="upgradeId != null and upgradeId != ''"> and a.upgradeId = #{upgradeId}</if>
+             <if test="state != null and state != ''"> and a.state = #{state}</if>
+             <if test="createTime != null and createTime != ''"> and a.createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="uName != null and uName != ''"> and b.uName like concat("%",#{uName},"%")</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingUpgradeTaskList" parameterType="VendingUpgradeTask" resultMap="VendingUpgradeTaskResult">
+        <include refid="selectVendingUpgradeTaskVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+            <if test="taskId != null and taskId != ''"> and taskId = #{taskId}</if>
+            <if test="siteId != null and siteId != ''"> andsiteId = #{siteId}</if>
+             <if test="site != null and site != ''"> and (siteId = #{site} or siteName like concat("%",#{site},"%"))</if>
+             <if test="siteName != null and siteName != ''"> and siteName like concat("%",#{siteName},"%")</if>
+             <if test="upgradeId != null and upgradeId != ''"> and upgradeId = #{upgradeId}</if>
+             <if test="state != null and state != ''"> and state = #{state}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectNotFinishVendingUpgradeTaskListBySiteId" parameterType="String" resultMap="VendingUpgradeTaskResult">
+        <include refid="selectVendingUpgradeTaskVo"/>
+        where siteId=#{siteId} and state ='02' limit 0,1
+    </select>
+    
+    <select id="selectVendingUpgradeTaskById" parameterType="String" resultMap="VendingUpgradeTaskResult">
+        <include refid="selectVendingUpgradeTaskVo"/>
+        where taskId = #{taskId}
+    </select>
+        
+    <insert id="insertVendingUpgradeTask" parameterType="VendingUpgradeTask">
+        insert into as_vending_upgrade_task
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="taskId != null and taskId != '' ">taskId,</if>
+			<if test="siteId != null and siteId != '' ">siteId,</if>
+			<if test="siteName != null and siteName != '' ">siteName,</if>
+			<if test="upgradeId != null and upgradeId != '' ">upgradeId,</if>
+			<if test="state != null and state != '' ">state,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="taskId != null and taskId != '' ">#{taskId},</if>
+			<if test="siteId != null and siteId != ''">#{siteId},</if>
+			<if test="siteName != null and siteName != ''">#{siteName},</if>
+			<if test="upgradeId != null and upgradeId != ''">#{upgradeId},</if>
+			<if test="state != null and state != ''">#{state},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingUpgradeTask" parameterType="VendingUpgradeTask">
+        update as_vending_upgrade_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="upgradeId != null  and upgradeId != ''  ">upgradeId = #{upgradeId},</if>
+            <if test="state != null  and state != ''  ">state = #{state},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where taskId = #{taskId}
+    </update>
+
+	<delete id="deleteVendingUpgradeTaskById" parameterType="String">
+        delete from as_vending_upgrade_task where taskId = #{taskId}
+    </delete>
+	
+    <delete id="deleteVendingUpgradeTaskByIds" parameterType="String">
+        delete from as_vending_upgrade_task where taskId in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteVendingUpgradeTaskByUpgradeIds" parameterType="String">
+        delete from as_vending_upgrade_task where upgradeId in 
+        <foreach item="upgradeId" collection="array" open="(" separator="," close=")">
+            #{upgradeId}
+        </foreach>
+    </delete>
+    
+</mapper>

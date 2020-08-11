@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingLogfileMapper">
+    
+    <resultMap type="VendingLogfile" id="VendingLogfileResult">
+        <result property="logid"    column="logid"    />
+        <result property="fileId"    column="fileId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteCode"    column="siteCode"    />
+        <result property="sTime"    column="sTime"    />
+        <result property="eTime"    column="eTime"    />
+        <result property="fileSize"    column="fileSize"    />
+        <result property="fileNum"    column="fileNum"    />
+        <result property="fileUrl"    column="fileUrl"    />
+        <result property="filePath"    column="filePath"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectVendingLogfileVo">
+        select logid, fileId, siteId, siteCode, sTime, eTime, fileSize, fileNum, fileUrl, filePath, curState, stateTime, corpId, createTime from as_vending_logfile
+    </sql>
+	
+    <select id="selectVendingLogfileList" parameterType="VendingLogfile" resultMap="VendingLogfileResult">
+        <include refid="selectVendingLogfileVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+            <if test="fileId != null and fileId != ''"> and fileId = #{fileId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteCode != null and siteCode != ''"> and siteCode = #{siteCode}</if>
+             <if test="sTime != null and sTime != ''"> and sTime &gt;= #{sTime}</if>
+             <if test="eTime != null and eTime != ''"> and eTime &lt;= #{eTime}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingLogfileByFileId" parameterType="String" resultMap="VendingLogfileResult">
+        <include refid="selectVendingLogfileVo"/>
+        where fileId=#{fileId}
+    </select>
+         
+    <insert id="insertVendingLogfile" parameterType="VendingLogfile">
+        insert into as_vending_logfile(logid, fileId, siteId, siteCode, sTime, eTime, fileSize, fileNum, fileUrl, filePath, curState, stateTime, corpId, createTime)
+        values (#{logid},#{fileId},#{siteId},#{siteCode},#{sTime},#{eTime},#{fileSize},#{fileNum},#{fileUrl},#{filePath},#{curState},#{stateTime},#{corpId},#{createTime})
+    </insert>
+    
+    <update id="updateVendingLogfile">
+    	update as_vending_logfile set fileSize=#{fileSize},fileNum=#{fileNum},fileUrl=#{fileUrl},filePath=#{filePath},curState=#{curState},stateTime=#{stateTime} where fileId=#{fileId}
+    </update>
+    
+</mapper>

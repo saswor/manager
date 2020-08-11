@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.statement.mapper.OrderBoxMapper">
+    
+    <resultMap type="OrderBox" id="OrderBoxResult">
+        <result property="logid"    column="logid"    />
+        <result property="proboxId"    column="proboxId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="prodetailId"    column="prodetailId"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="torderId"    column="torderId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="laneSId"    column="laneSId"    />
+        <result property="laneEId"    column="laneEId"    />
+        <result property="productId"    column="productId"    />
+        <result property="productName"    column="productName"    />
+        <result property="buyPrice"    column="buyPrice"    />
+        <result property="salePrice"    column="salePrice"    />
+        <result property="payPrice"    column="payPrice"    />
+        <result property="favPrice"    column="favPrice"    />
+        <result property="returnPrice"    column="returnPrice"    />
+        <result property="profitMoney"    column="profitMoney"    />
+        <result property="supplyId"    column="supplyId"    />
+        <result property="outIndex"    column="outIndex"    />
+        <result property="outState"    column="outState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="create_time"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectOrderBoxVo">
+        select logid, proboxId, corpId, prodetailId, orderId, torderId, siteId, siteName, laneSId, laneEId, productId, productName, buyPrice, salePrice, payPrice,favPrice,returnPrice,profitMoney,supplyId,outIndex,outState,stateTime,createTime,correctState from as_order_box
+    </sql>
+	
+    <select id="selectOrderBoxList" parameterType="OrderBox" resultMap="OrderBoxResult">
+        <include refid="selectOrderBoxVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="proboxId != null and proboxId != ''"> and proboxId = #{proboxId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="prodetailId != null and prodetailId != ''"> and prodetailId = #{prodetailId}</if>
+             <if test="orderId != null and orderId != ''"> and orderId = #{orderId}</if>
+             <if test="torderId != null and torderId != ''"> and torderId = #{torderId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="laneSId != null and laneSId != ''"> and laneSId = #{laneSId}</if>
+             <if test="laneEId != null and laneEId != ''"> and laneEId = #{laneEId}</if>
+             <if test="productId != null and productId != ''"> and productId = #{productId}</if>
+             <if test="productName != null and productName != ''"> and productName = #{productName}</if>
+             <if test="buyPrice != null and buyPrice != ''"> and buyPrice = #{buyPrice}</if>
+             <if test="salePrice != null and salePrice != ''"> and salePrice = #{salePrice}</if>
+             <if test="payPrice != null and payPrice != ''"> and payPrice = #{payPrice}</if>
+             <if test="favPrice != null and favPrice != ''"> and favPrice = #{favPrice}</if>
+             <if test="returnPrice != null and returnPrice != ''"> and returnPrice = #{returnPrice}</if>
+             <if test="profitMoney != null and profitMoney != ''"> and profitMoney = #{profitMoney}</if>
+             <if test="supplyId != null and supplyId != ''"> and supplyId = #{supplyId}</if>
+             <if test="outIndex != null and outIndex != ''"> and outIndex = #{outIndex}</if>
+             <if test="outState != null and outState != ''"> and outState = #{outState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="btime != null and btime != ''"> and create_time &gt;= #{btime}</if>
+             <if test="etime != null and etime != ''"> and create_time &lt;= #{etime}</if>
+             <if test="create_time != null and create_time != ''"> and create_time = #{create_time}</if>
+         </where>
+    </select>
+    <select id="selectOrderBoxById" parameterType="String" resultMap="OrderBoxResult">
+        <include refid="selectOrderBoxVo"/>
+        where proboxId = #{proboxId}
+    </select>
+</mapper>

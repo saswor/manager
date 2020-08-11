@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingPconfigMapper">
+    
+    <resultMap type="VendingPconfig" id="VendingPconfigResult">
+        <result property="logid"    column="logid"    />
+        <result property="mConfigId"    column="mConfigId"    />
+        <result property="name"    column="name"    />
+        <result property="seqId"    column="seqId"    />
+        <result property="factoryId"    column="factoryId"    />
+        <result property="cabinetType"    column="cabinetType"    />
+        <result property="deviceId"    column="deviceId"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+    </resultMap>
+	
+	<sql id="selectVendingPconfigVo">
+        select logid, mConfigId, name, seqId, factoryId, cabinetType, deviceId, createTime, corpId from as_vending_pconfig
+    </sql>
+	
+    <select id="selectVendingPconfigList" parameterType="VendingPconfig" resultMap="VendingPconfigResult">
+        <include refid="selectVendingPconfigVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="mConfigId != null and mConfigId != ''"> and mConfigId = #{mConfigId}</if>
+             <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
+             <if test="seqId != null and seqId != ''"> and seqId = #{seqId}</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+             <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingPconfigById" parameterType="String" resultMap="VendingPconfigResult">
+        <include refid="selectVendingPconfigVo"/>
+        where logid = #{logid}
+    </select>
+    <select id="selectVendingPconfigByMconfigId" parameterType="String" resultMap="VendingPconfigResult">
+        <include refid="selectVendingPconfigVo"/>
+        where mConfigId = #{mConfigId}
+    </select>
+    
+    <select id="selectVendingPconfigListByDeviceIds" parameterType="String" resultType="Integer">
+        select count(*) from as_vending_pconfig where deviceId in 
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+    </select>
+        
+    <insert id="insertVendingPconfig" parameterType="VendingPconfig">
+        insert into as_vending_pconfig
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="mConfigId != null and mConfigId != '' ">mConfigId,</if>
+			<if test="name != null and name != '' ">name,</if>
+			<if test="seqId != null and seqId != '' ">seqId,</if>
+			<if test="factoryId != null and factoryId != '' ">factoryId,</if>
+			<if test="cabinetType != null and cabinetType != '' ">cabinetType,</if>
+			<if test="deviceId != null and deviceId != '' ">deviceId,</if>
+			createTime,
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="mConfigId != null and mConfigId != ''">#{mConfigId},</if>
+			<if test="name != null and name != ''">#{name},</if>
+			<if test="seqId != null and seqId != ''">#{seqId},</if>
+			<if test="factoryId != null and factoryId != ''">#{factoryId},</if>
+			<if test="cabinetType != null and cabinetType != ''">#{cabinetType},</if>
+			<if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+			date_format(now(), '%Y-%m-%d %H:%i:%s'),
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingPconfig" parameterType="VendingPconfig">
+        update as_vending_pconfig
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mConfigId != null  and mConfigId != ''  ">mConfigId = #{mConfigId},</if>
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="seqId != null  ">seqId = #{seqId},</if>
+            <if test="factoryId != null  and factoryId != ''  ">factoryId = #{factoryId},</if>
+            <if test="cabinetType != null  and cabinetType != ''  ">cabinetType = #{cabinetType},</if>
+            <if test="deviceId != null  and deviceId != ''  ">deviceId = #{deviceId},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingPconfigById" parameterType="String">
+        delete from as_vending_pconfig where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingPconfigByIds" parameterType="String">
+        delete from as_vending_pconfig where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

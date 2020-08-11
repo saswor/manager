@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.report.mapper.SaleAnalyzeMapper">
+ <resultMap id="rankMap" type="com.manage.project.system.report.vo.RankVo">
+	<result property="name" column="name"/>
+	<result property="saleNum" column="saleNum"/>
+	<result property="saleMoney" column="saleMoney"/>
+	<result property="profit" column="profit"/>
+	<!-- <result property="rank" column="rank"/> -->
+ </resultMap>
+  
+  <sql id="where">
+  	where syear=#{year} and smonth=#{month} and sDay=#{day}
+	<if test="corpId !=null and corpId !=''">
+		and corpId=#{corpId}
+	</if>
+	<if test="saleType !=null and saleType !=''">
+		and saleType=#{saleType}
+	</if>
+  </sql>
+  
+  <sql id="day_where">
+  	where syear=#{year} and smonth=#{month} and sDay=#{day}
+  	<if test="saleType !=null and saleType !=''">
+		and saleType=#{saleType}
+	</if>
+	<if test="corpId !=null and corpId !=''">
+		and corpId=#{corpId}
+	</if>
+	<if test="orderByColumn !=null and orderByColumn != ''">order by ${orderByColumn} </if>
+	<if test="isAsc !=null and isAsc != ''">${isAsc} </if>
+	<if test="pageSize !=null and pageSize != ''">limit 0,${pageSize} </if>
+  </sql>
+  
+  <sql id="other_where">
+  	<where>
+	  	<if test="year !=null and year !=''"> and syear=#{year}</if>
+	  	<if test="month !=null and month !=''"> and smonth=#{month}</if>
+	  	<if test="quarter !=null and quarter !=''"> and squarter=#{quarter}</if>
+  		<if test="saleType !=null and saleType !=''"> and saleType=#{saleType}</if>
+  		<if test="dateType !=null and dateType !=''"> and dateType=#{dateType}</if>
+		<if test="corpId !=null and corpId !=''"> and corpId=#{corpId}</if>
+		<if test="orderByColumn !=null and orderByColumn != ''"> order by ${orderByColumn} </if>
+		<if test="isAsc !=null and isAsc != ''"> ${isAsc} </if>
+		<if test="pageSize !=null and pageSize != ''"> limit 0,${pageSize} </if>
+  	</where>
+  </sql>
+  
+  <select id="selectTopTen" parameterType="com.manage.project.system.report.vo.SaleAnalyzeVo" resultMap="rankMap">
+    select saleName name,saleNum, saleMoney, profit from rpt_report_osale
+	<include refid="where"></include>
+	order by ${orderByColumn} desc limit 0,10
+  </select>
+    
+  <select id="selectTotalProductSaleNum" parameterType="com.manage.project.system.report.vo.SaleAnalyzeVo" resultType="Integer">
+    select sum(saleNum) from rpt_report_osale
+    <include refid="where"/> 
+  </select>
+  
+  <select id="selectDayTotalProductSaleNum" parameterType="com.manage.project.system.report.vo.SaleAnalyzeVo" resultType="Long">
+    select sum(saleNum) from rpt_osale_day
+    <include refid="day_where"/> 
+  </select>
+  
+  <select id="selectOtherTotalProductSaleNum" parameterType="com.manage.project.system.report.vo.SaleAnalyzeVo" resultType="Long">
+    select sum(saleNum) from rpt_osale_other
+    <include refid="other_where"/> 
+  </select>
+  
+  <select id="selectDayRank" parameterType="com.manage.project.system.report.vo.SaleAnalyzeVo" resultMap="rankMap">
+    select saleName name,saleNum, saleMoney, profit from rpt_osale_day
+	<include refid="day_where"></include>
+  </select>
+  
+  <select id="selectOtherRank" parameterType="com.manage.project.system.report.vo.SaleAnalyzeVo" resultMap="rankMap">
+    select saleName name,saleNum, saleMoney, profit from rpt_osale_other
+	<include refid="other_where"></include>
+  </select>
+  
+ 
+</mapper>

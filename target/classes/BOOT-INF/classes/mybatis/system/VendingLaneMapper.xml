@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingLaneMapper">
+    
+    <resultMap type="VendingLane" id="VendingLaneResult">
+        <result property="logid"    column="logid"    />
+        <result property="slaneId"    column="slaneId"    />
+        <result property="cabinetId"    column="cabinetId"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="laneId"    column="laneId"    />
+        <result property="cabinetType"    column="cabinetType"    />
+        <result property="deviceId"    column="deviceId"    />
+        <result property="laneCode"    column="laneCode"    />
+        <result property="row"    column="row"    />
+        <result property="col"    column="col"    />
+        <result property="arrange"    column="arrange"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="productId"    column="productId"    />
+        <result property="productPic"    column="productPic"    />
+        <result property="salePrice"    column="salePrice"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="warnCap"    column="warnCap"    />
+        <result property="curCap"    column="curCap"    />
+        <result property="laneSate"    column="laneSate"    />
+        <result property="lSateTime"    column="lSateTime"    />
+        <result property="productName"    column="productName"    />
+        <result property="plogid"    column="plogid"    />
+    </resultMap>
+	
+	<sql id="selectVendingLaneVo">
+        select logid, cabinetId, slaneId, siteId, siteName, laneId, cabinetType, deviceId, laneCode, `row`, col, arrange, curState, stateTime, createTime, corpId from as_vending_lane
+    </sql>
+	
+    <select id="selectVendingLaneList" parameterType="VendingLane" resultMap="VendingLaneResult">
+        <include refid="selectVendingLaneVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="slaneId != null and slaneId != ''"> and slaneId = #{slaneId}</if>
+             <if test="cabinetId != null and cabinetId != ''"> and cabinetId = #{cabinetId}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="laneId != null and laneId != ''"> and laneId = #{laneId}</if>
+             <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+             <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+             <if test="laneCode != null and laneCode != ''"> and laneCode = #{laneCode}</if>
+             <if test="row != null and row != ''"> and row = #{row}</if>
+             <if test="col != null and col != ''"> and col = #{col}</if>
+             <if test="arrange != null and arrange != ''"> and arrange = #{arrange}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingLaneById" parameterType="String" resultMap="VendingLaneResult">
+        <include refid="selectVendingLaneVo"/>
+        where logid = #{logid}
+    </select>
+        
+    <insert id="insertVendingLane" parameterType="VendingLane">
+        insert into as_vending_lane
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="slaneId != null and slaneId != '' ">slaneId,</if>
+			<if test="cabinetId != null and cabinetId != '' ">cabinetId,</if>
+			<if test="siteId != null and siteId != '' ">siteId,</if>
+			<if test="siteName != null and siteName != '' ">siteName,</if>
+			<if test="laneId != null and laneId != '' ">laneId,</if>
+			<if test="cabinetType != null and cabinetType != '' ">cabinetType,</if>
+			<if test="deviceId != null and deviceId != '' ">deviceId,</if>
+			<if test="laneCode != null and laneCode != '' ">laneCode,</if>
+			<if test="row != null and row != '' ">`row`,</if>
+			<if test="col != null and col != '' ">col,</if>
+			<if test="arrange != null and arrange != '' ">arrange,</if>
+			<if test="curState != null and curState != '' ">curState,</if>
+			<if test="stateTime != null and stateTime != '' ">stateTime,</if>
+			createTime,
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="slaneId != null and slaneId != ''">#{slaneId},</if>
+			<if test="cabinetId != null and cabinetId != ''">#{cabinetId},</if>
+			<if test="siteId != null and siteId != ''">#{siteId},</if>
+			<if test="siteName != null and siteName != ''">#{siteName},</if>
+			<if test="laneId != null and laneId != ''">#{laneId},</if>
+			<if test="cabinetType != null and cabinetType != ''">#{cabinetType},</if>
+			<if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+			<if test="laneCode != null and laneCode != ''">#{laneCode},</if>
+			<if test="row != null and row != ''">#{row},</if>
+			<if test="col != null and col != ''">#{col},</if>
+			<if test="arrange != null and arrange != ''">#{arrange},</if>
+			<if test="curState != null and curState != ''">#{curState},</if>
+			<if test="stateTime != null and stateTime != ''">#{stateTime},</if>
+			date_format(now(), '%Y-%m-%d %H:%i:%s'),
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+         </trim>
+    </insert>
+    
+    <insert id="insertVendingLaneBatch" parameterType="java.util.List">
+        insert into as_vending_lane(logid,slaneId,cabinetId,siteId,siteName,laneId,cabinetType,deviceId,laneCode,`row`,col,arrange,curState,stateTime,createTime,corpId)
+		values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.logid}, #{item.slaneId},#{item.cabinetId},#{item.siteId},#{item.siteName},#{item.laneId},#{item.cabinetType},#{item.deviceId}
+            ,#{item.laneCode},#{item.row},#{item.col},#{item.arrange},#{item.curState},#{item.stateTime},#{item.createTime},#{item.corpId})
+        </foreach>
+    </insert>
+	 
+    <update id="updateVendingLane" parameterType="VendingLane">
+        update as_vending_lane
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="slaneId != null  and slaneId != ''  ">slaneId = #{slaneId},</if>
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="cabinetId != null  and cabinetId != ''  ">cabinetId = #{cabinetId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="laneId != null  ">laneId = #{laneId},</if>
+            <if test="cabinetType != null  and cabinetType != ''  ">cabinetType = #{cabinetType},</if>
+            <if test="deviceId != null  and deviceId != ''  ">deviceId = #{deviceId},</if>
+            <if test="laneCode != null  ">laneCode = #{laneCode},</if>
+            <if test="row != null  ">`row` = #{row},</if>
+            <if test="col != null  ">col = #{col},</if>
+            <if test="arrange != null  ">arrange = #{arrange},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+    
+    
+    <update id="updateVendingLaneBySlaneId" parameterType="VendingLane">
+        update as_vending_lane
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="slaneId != null  and slaneId != ''  ">slaneId = #{slaneId},</if>
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="cabinetId != null  and cabinetId != ''  ">cabinetId = #{cabinetId},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="laneId != null  ">laneId = #{laneId},</if>
+            <if test="cabinetType != null  and cabinetType != ''  ">cabinetType = #{cabinetType},</if>
+            <if test="deviceId != null  and deviceId != ''  ">deviceId = #{deviceId},</if>
+            <if test="laneCode != null  ">laneCode = #{laneCode},</if>
+            <if test="row != null  ">`row` = #{row},</if>
+            <if test="col != null  ">col = #{col},</if>
+            <if test="arrange != null  ">arrange = #{arrange},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+        </trim>
+        where slaneId = #{slaneId}
+    </update>
+
+	<delete id="deleteVendingLaneById" parameterType="String">
+        delete from as_vending_lane where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingLaneByIds" parameterType="String">
+        delete from as_vending_lane where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+    
+    <select id="selectVendingLaneByCabinetId" parameterType="String" resultMap="VendingLaneResult">
+    	SELECT a.`logid`, a.`slaneId`, a.`siteId`, a.`siteName`, a.`laneId`, b.`productId`, b.`productPic`,a.`row`,a.`col`,b.`laneSate`,
+			b.`salePrice`, b.`capacity`, b.`warnCap`, b.`curCap`, b.`laneSate`,a.`arrange`,
+			b.`lSateTime`, a.`createTime`, a.`corpId`, c.`name` AS productName, b.`logid` AS plogid
+		FROM as_vending_lane a LEFT JOIN as_vending_lanep b ON a.`slaneId` = b.`slaneId` AND a.`corpId` = b.`corpId`
+			LEFT JOIN as_product_info c ON b.`productId` = c.`productId` AND b.`corpId` = c.`corpId`
+		WHERE a.`cabinetId` = #{cabinetId}
+		ORDER BY a.`laneId` ASC
+    </select>
+    
+    <delete id="deleteVendingLaneByCabId" parameterType="VendingLane">
+        DELETE FROM as_vending_lane
+		WHERE cabinetId IN (SELECT a.cabinetId FROM as_vending_cabinet a WHERE a.`logid`=#{logid}) AND corpId=#{corpId}
+    </delete>
+    
+    <delete id="deleteVendingLaneByCabinetId" parameterType="String">
+        DELETE FROM as_vending_lane
+		WHERE cabinetId = #{cabinetId}
+    </delete>
+    
+    <delete id="deleteVendingLaneBySiteId" parameterType="String">
+        DELETE FROM as_vending_lane WHERE siteId = #{siteId}
+    </delete>
+    
+</mapper>

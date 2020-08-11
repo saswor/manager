@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.advert.mapper.AdvertStrategyMapper">
+    
+    <resultMap type="AdvertStrategy" id="AdvertStrategyResult">
+        <result property="logid"    column="logid"    />
+        <result property="strategyId"    column="strategyId"    />
+        <result property="advertId"    column="advertId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="seqId"    column="seqId"    />
+        <result property="strategyPoint"    column="strategyPoint"    />
+        <result property="strategyPointName"    column="strategyPointName"    />
+        <result property="strategyType"    column="strategyType"    />
+        <result property="playSTime"    column="playSTime"    />
+        <result property="playEtime"    column="playEtime"    />
+        <result property="materialNum"    column="materialNum"    />
+        <result property="playerTime"    column="playerTime"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+	
+	<sql id="selectAdvertStrategyVo">
+        select logid, strategyId, advertId, corpId, seqId, strategyPoint, strategyPointName, strategyType, playSTime, playEtime, materialNum, playerTime, createTime from as_advert_strategy
+    </sql>
+    
+    <select id="selectAdvertStrategyByAdvertId" parameterType="String" resultMap="AdvertStrategyResult">
+        <include refid="selectAdvertStrategyVo"/>
+        where advertId = #{advertId}
+    </select>
+	
+    <select id="selectAdvertStrategyList" parameterType="AdvertStrategy" resultMap="AdvertStrategyResult">
+        <include refid="selectAdvertStrategyVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="strategyId != null and strategyId != ''"> and strategyId = #{strategyId}</if>
+             <if test="advertId != null and advertId != ''"> and advertId = #{advertId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="seqId != null and seqId != ''"> and seqId = #{seqId}</if>
+             <if test="strategyPoint != null and strategyPoint != ''"> and strategyPoint = #{strategyPoint}</if>
+             <if test="strategyPointName != null and strategyPointName != ''"> and strategyPointName = #{strategyPointName}</if>
+             <if test="strategyType != null and strategyType != ''"> and strategyType = #{strategyType}</if>
+             <if test="playSTime != null and playSTime != ''"> and playSTime = #{playSTime}</if>
+             <if test="playEtime != null and playEtime != ''"> and playEtime = #{playEtime}</if>
+             <if test="materialNum != null and materialNum != ''"> and materialNum = #{materialNum}</if>
+             <if test="playerTime != null and playerTime != ''"> and playerTime = #{playerTime}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectAdvertStrategyById" parameterType="String" resultMap="AdvertStrategyResult">
+        <include refid="selectAdvertStrategyVo"/>
+        where logid = #{logid}
+    </select>
+        
+    <insert id="insertAdvertStrategy" parameterType="AdvertStrategy">
+        insert into as_advert_strategy
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="strategyId != null and strategyId != '' ">strategyId,</if>
+			<if test="advertId != null and advertId != '' ">advertId,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="seqId != null and seqId != '' ">seqId,</if>
+			<if test="strategyPoint != null and strategyPoint != '' ">strategyPoint,</if>
+			<if test="strategyPointName != null and strategyPointName != '' ">strategyPointName,</if>
+			<if test="strategyType != null and strategyType != '' ">strategyType,</if>
+			<if test="playSTime != null and playSTime != '' ">playSTime,</if>
+			<if test="playEtime != null and playEtime != '' ">playEtime,</if>
+			<if test="materialNum != null and materialNum != '' ">materialNum,</if>
+			<if test="playerTime != null and playerTime != '' ">playerTime,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="strategyId != null and strategyId != ''">#{strategyId},</if>
+			<if test="advertId != null and advertId != ''">#{advertId},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="seqId != null and seqId != ''">#{seqId},</if>
+			<if test="strategyPoint != null and strategyPoint != ''">#{strategyPoint},</if>
+			<if test="strategyPointName != null and strategyPointName != '' ">#{strategyPointName},</if>
+			<if test="strategyType != null and strategyType != ''">#{strategyType},</if>
+			<if test="playSTime != null and playSTime != ''">#{playSTime},</if>
+			<if test="playEtime != null and playEtime != ''">#{playEtime},</if>
+			<if test="materialNum != null and materialNum != ''">#{materialNum},</if>
+			<if test="playerTime != null and playerTime != ''">#{playerTime},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateAdvertStrategy" parameterType="AdvertStrategy">
+        update as_advert_strategy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="strategyId != null  and strategyId != ''  ">strategyId = #{strategyId},</if>
+            <if test="advertId != null  and advertId != ''  ">advertId = #{advertId},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="seqId != null  ">seqId = #{seqId},</if>
+            <if test="strategyPoint != null  and strategyPoint != ''  ">strategyPoint = #{strategyPoint},</if>
+            <if test="strategyPointName != null  and strategyPointName != ''  ">strategyPointName = #{strategyPointName},</if>
+            <if test="strategyType != null  and strategyType != ''  ">strategyType = #{strategyType},</if>
+            <if test="playSTime != null  and playSTime != ''  ">playSTime = #{playSTime},</if>
+            <if test="playEtime != null  and playEtime != ''  ">playEtime = #{playEtime},</if>
+            <if test="materialNum != null  ">materialNum = #{materialNum},</if>
+            <if test="playerTime != null  ">playerTime = #{playerTime},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteAdvertStrategyById" parameterType="String">
+        delete from as_advert_strategy where strategyId = #{strategyId}
+    </delete>
+    
+    <delete id="deleteAdvertStrategyByAdvertId" parameterType="String">
+        delete from as_advert_strategy where advertId = #{advertId}
+    </delete>
+	
+    <delete id="deleteAdvertStrategyByIds" parameterType="String">
+        delete from as_advert_strategy where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>

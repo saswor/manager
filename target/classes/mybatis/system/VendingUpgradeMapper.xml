@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingUpgradeMapper">
+    
+    <resultMap type="VendingUpgrade" id="VendingUpgradeResult">
+        <result property="logid"    column="logid"    />
+        <result property="upgradeId"    column="upgradeId"    />
+        <result property="uName"    column="uName"    />
+        <result property="uType"    column="uType"    />
+        <result property="issuedType"    column="issuedType"    />
+        <result property="planTime"    column="planTime"    />
+        <result property="factoryId"    column="factoryId"    />
+        <result property="description"    column="description"    />
+        <result property="versionId"    column="versionId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="isPush"    column="isPush"    />
+    </resultMap>
+	
+	<sql id="selectVendingUpgradeVo">
+        select logid, upgradeId, uName, uType, issuedType, planTime, factoryId, description, versionId, corpId, createTime,isPush from as_vending_upgrade
+    </sql>
+	
+    <select id="selectVendingUpgradeList" parameterType="VendingUpgrade" resultMap="VendingUpgradeResult">
+        <include refid="selectVendingUpgradeVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="upgradeId != null and upgradeId != ''"> and upgradeId = #{upgradeId}</if>
+             <if test="uName != null and uName != ''"> and uName like concat("%",#{uName},"%")</if>
+             <if test="uType != null and uType != ''"> and uType = #{uType}</if>
+             <if test="issuedType != null and issuedType != ''"> and issuedType = #{issuedType}</if>
+             <if test="planTime != null and planTime != ''"> and planTime = #{planTime}</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="versionId != null and versionId != ''"> and versionId = #{versionId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="isPush != null and isPush != ''"> and isPush = #{isPush}</if>
+         </where>
+    </select>
+    
+    <select id="selectNotPushVendingUpgradeList" parameterType="VendingUpgrade" resultMap="VendingUpgradeResult">
+        <include refid="selectVendingUpgradeVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="upgradeId != null and upgradeId != ''"> and upgradeId = #{upgradeId}</if>
+             <if test="uName != null and uName != ''"> and uName like concat("%",#{uName},"%")</if>
+             <if test="uType != null and uType != ''"> and uType = #{uType}</if>
+             <if test="issuedType != null and issuedType != ''"> and issuedType = #{issuedType}</if>
+             <if test="planTime != null and planTime != ''"> and planTime &lt;= #{planTime}</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="versionId != null and versionId != ''"> and versionId = #{versionId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="isPush != null and isPush != ''"> and isPush = #{isPush}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingUpgradeById" parameterType="String" resultMap="VendingUpgradeResult">
+        <include refid="selectVendingUpgradeVo"/>
+        where upgradeId = #{upgradeId}
+    </select>
+        
+    <insert id="insertVendingUpgrade" parameterType="VendingUpgrade">
+        insert into as_vending_upgrade
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="upgradeId != null and upgradeId != '' ">upgradeId,</if>
+			<if test="uName != null and uName != '' ">uName,</if>
+			<if test="uType != null and uType != '' ">uType,</if>
+			<if test="issuedType != null and issuedType != '' ">issuedType,</if>
+			<if test="planTime != null and planTime != '' ">planTime,</if>
+			<if test="factoryId != null and factoryId != '' ">factoryId,</if>
+			<if test="description != null and description != '' ">description,</if>
+			<if test="versionId != null and versionId != '' ">versionId,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="createTime != null and createTime != ''">createTime,</if>
+			<if test="isPush != null and isPush != ''">isPush,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="upgradeId != null and upgradeId != ''">#{upgradeId},</if>
+			<if test="uName != null and uName != ''">#{uName},</if>
+			<if test="uType != null and uType != ''">#{uType},</if>
+			<if test="issuedType != null and issuedType != ''">#{issuedType},</if>
+			<if test="planTime != null and planTime != ''">#{planTime},</if>
+			<if test="factoryId != null and factoryId != ''">#{factoryId},</if>
+			<if test="description != null and description != ''">#{description},</if>
+			<if test="versionId != null and versionId != ''">#{versionId},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+			<if test="isPush != null and isPush != ''">#{isPush},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateVendingUpgrade" parameterType="VendingUpgrade">
+        update as_vending_upgrade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="upgradeId != null  and upgradeId != ''  ">upgradeId = #{upgradeId},</if>
+            <if test="uName != null  and uName != ''  ">uName = #{uName},</if>
+            <if test="uType != null  and uType != ''  ">uType = #{uType},</if>
+            <if test="issuedType != null  and issuedType != ''  ">issuedType = #{issuedType},</if>
+            <if test="planTime != null  and planTime != ''  ">planTime = #{planTime},</if>
+            <if test="factoryId != null  and factoryId != ''  ">factoryId = #{factoryId},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+            <if test="versionId != null  and versionId != ''  ">versionId = #{versionId},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="isPush != null and isPush != ''">isPush = #{isPush},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingUpgradeById" parameterType="String">
+        delete from as_vending_upgrade where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingUpgradeByIds" parameterType="String">
+        delete from as_vending_upgrade where upgradeId in 
+        <foreach item="upgradeId" collection="array" open="(" separator="," close=")">
+            #{upgradeId}
+        </foreach>
+    </delete>
+    
+</mapper>

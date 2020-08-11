@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.vending.mapper.VendingMapper">
+    
+    <resultMap type="Vending" id="VendingResult">
+        <result property="logid"    column="logid"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteCode"    column="siteCode"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="factoryId"    column="factoryId"    />
+        <result property="cabinetType"    column="cabinetType"    />
+        <result property="deviceId"    column="deviceId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="payType"    column="payType"    />
+        <result property="mediaType"    column="mediaType"    />
+        <result property="onlineTime"    column="onlineTime"    />
+        <result property="initTime"    column="initTime"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="netWork"    column="netWork"    />
+        <result property="netSate"    column="netSate"    />
+        <result property="netTime"    column="netTime"    />
+        <result property="sellState"    column="sellState"    />
+        <result property="sellTime"    column="sellTime"    />
+        <result property="laneNum"    column="laneNum"    />
+        <result property="pmaxNum"    column="pMaxNum"    />
+        <result property="pcurNum"    column="pCurNum"    />
+        <result property="stockLevel"    column="stockLevel"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="mconfigId"    column="mConfigId"    />
+        <result property="configFile"    column="configFile"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="description"    column="description"    />
+        <result property="address"    column="address"    />
+        <result property="platType"    column="platType"    />
+    </resultMap>
+    
+    <resultMap type="VendingListVo" id="VendingListVoResult">
+        <result property="logid"    column="logid"    />
+        <result property="siteId"    column="siteId"    />
+        <result property="siteCode"    column="siteCode"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="factoryId"    column="factoryId"    />
+        <result property="cabinetType"    column="cabinetType"    />
+        <result property="deviceId"    column="deviceId"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="payType"    column="payType"    />
+        <result property="mediaType"    column="mediaType"    />
+        <result property="onlineTime"    column="onlineTime"    />
+        <result property="initTime"    column="initTime"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="netWork"    column="netWork"    />
+        <result property="netSate"    column="netSate"    />
+        <result property="netTime"    column="netTime"    />
+        <result property="sellState"    column="sellState"    />
+        <result property="sellTime"    column="sellTime"    />
+        <result property="laneNum"    column="laneNum"    />
+        <result property="pmaxNum"    column="pMaxNum"    />
+        <result property="pcurNum"    column="pCurNum"    />
+        <result property="stockLevel"    column="stockLevel"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="mconfigId"    column="mConfigId"    />
+        <result property="configFile"    column="configFile"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="description"    column="description"    />
+        <result property="address"    column="address"    />
+        <result property="platType"    column="platType"    />
+        <result property="pointName"    column="pointName"    />
+        <result property="lineName"    column="lineName"    />
+        <result property="districtName"    column="districtName"    />
+        <result property="cabinetTypeName"    column="cabinetTypeName"    />
+        <result property="addresses"    column="addresses"    />
+        <result property="sellStateName"    column="sellStateName"    />
+        <result property="corpName"    column="corpName"    />
+        <result property="netSateName"    column="netSateName"    />
+        <result property="kuc"    column="kuc"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+    </resultMap>
+    
+    <resultMap type="RelationSelectResultVo" id="RelationSelectResultResult">
+        <result property="siteId"    column="siteId"    />
+        <result property="siteCode"    column="siteCode"    />
+        <result property="siteName"    column="siteName"    />
+        <result property="districtId"    column="districtId"    />
+        <result property="lineId"    column="lineId"    />
+        <result property="pointId"    column="pointId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+    
+    <resultMap type="CabinetTypeSelectVo" id="CabinetTypeSelectVoResult">
+    	<result property="factoryId"    column="factoryId"    />
+        <result property="cabinetType"    column="cabinetType"    />
+        <result property="cabinetTypeName"    column="cabinetTypeName"    />
+    </resultMap>
+    
+	<resultMap type="VendingModel" id="vendingModelResult">
+		<result property="cabinetType"    column="cabinetType"    />
+        <result property="deviceCode"    column="deviceCode"    />
+        <result property="deviceId"    column="deviceId"    />
+    </resultMap>
+	
+	<sql id="selectVendingVo">
+        select logid, siteId, siteCode, siteName, factoryId, cabinetType, deviceId, districtId, lineId, pointId, longitude, latitude, payType, mediaType, onlineTime, initTime, curState, stateTime, netWork, netSate, netTime, sellState, sellTime, laneNum, pMaxNum, pCurNum, stockLevel, corpId, mConfigId, configFile, createTime, description, address, platType from as_vending
+    </sql>
+    
+    <select id="selectVendingByCabinetType" parameterType="String" resultMap="RelationSelectResultResult">
+    SELECT DISTINCT b.`siteId`,b.`siteCode`, b.`siteName`, b.`lineId`, b.`pointId`, b.`corpId`, b.`districtId`, b.`createTime`
+ 	FROM as_vending_cabinet a, as_vending b 
+ 	WHERE a.`cabinetType` = #{cabinetType} AND b.`curState` = #{curState} 
+ 		<if test="corpId != null and corpId != ''"> AND b.corpId = #{corpId}</if>
+ 		<if test="name != null and name != ''"> (b.siteId = #{name} OR b.siteName like concat('%', #{name}, '%'))</if>
+ 		AND a.`siteId` = b.`siteId` 
+ 		
+    </select>
+    
+    <select id="selectNeverDelVendingByCabinetType" parameterType="String" resultMap="RelationSelectResultResult">
+    SELECT DISTINCT b.`siteId`,b.`siteCode`, b.`siteName`, b.`lineId`, b.`pointId`, b.`corpId`, b.`districtId`, b.`createTime`
+ 	FROM as_vending_cabinet a, as_vending b 
+ 	WHERE a.`cabinetType` = #{cabinetType} AND b.`curState` != '3' 
+ 		<if test="corpId != null and corpId != ''"> AND b.corpId = #{corpId}</if>
+ 		<if test="name != null and name != ''"> (b.siteId = #{name} OR b.siteName like concat('%', #{name}, '%'))</if>
+ 		AND a.`siteId` = b.`siteId` 
+ 		
+    </select>
+	
+    <select id="selectVendingList" parameterType="Vending" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteCode != null and siteCode != ''"> and siteCode = #{siteCode}</if>
+             <if test="siteName != null and siteName != ''"> and siteName like concat("%",#{siteName},"%")</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+             <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="longitude != null and longitude != ''"> and longitude = #{longitude}</if>
+             <if test="latitude != null and latitude != ''"> and latitude = #{latitude}</if>
+             <if test="payType != null and payType != ''"> and payType = #{payType}</if>
+             <if test="mediaType != null and mediaType != ''"> and mediaType = #{mediaType}</if>
+             <if test="onlineTime != null and onlineTime != ''"> and onlineTime = #{onlineTime}</if>
+             <if test="initTime != null and initTime != ''"> and initTime = #{initTime}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="netWork != null and netWork != ''"> and netWork = #{netWork}</if>
+             <if test="netSate != null and netSate != ''"> and netSate = #{netSate}</if>
+             <if test="netTime != null and netTime != ''"> and netTime = #{netTime}</if>
+             <if test="sellState != null and sellState != ''"> and sellState = #{sellState}</if>
+             <if test="sellTime != null and sellTime != ''"> and sellTime = #{sellTime}</if>
+             <if test="laneNum != null and laneNum != ''"> and laneNum = #{laneNum}</if>
+             <if test="pmaxNum != null and pmaxNum != ''"> and pMaxNum = #{pmaxNum}</if>
+             <if test="pcurNum != null and pcurNum != ''"> and pCurNum = #{pcurNum}</if>
+             <if test="stockLevel != null and stockLevel != ''"> and stockLevel = #{stockLevel}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="mconfigId != null and mconfigId != ''"> and mConfigId = #{mconfigId}</if>
+             <if test="configFile != null and configFile != ''"> and configFile = #{configFile}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="address != null and address != ''"> and address = #{address}</if>
+         </where>
+    </select>
+    
+    <select id="selectVendingExist" parameterType="Vending" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="siteId != null and siteId != ''"> and siteId != #{siteId}</if>
+             <if test="siteCode != null and siteCode != ''"> and siteCode = #{siteCode}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+             <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="longitude != null and longitude != ''"> and longitude = #{longitude}</if>
+             <if test="latitude != null and latitude != ''"> and latitude = #{latitude}</if>
+             <if test="payType != null and payType != ''"> and payType = #{payType}</if>
+             <if test="mediaType != null and mediaType != ''"> and mediaType = #{mediaType}</if>
+             <if test="onlineTime != null and onlineTime != ''"> and onlineTime = #{onlineTime}</if>
+             <if test="initTime != null and initTime != ''"> and initTime = #{initTime}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="netWork != null and netWork != ''"> and netWork = #{netWork}</if>
+             <if test="netSate != null and netSate != ''"> and netSate = #{netSate}</if>
+             <if test="netTime != null and netTime != ''"> and netTime = #{netTime}</if>
+             <if test="sellState != null and sellState != ''"> and sellState = #{sellState}</if>
+             <if test="sellTime != null and sellTime != ''"> and sellTime = #{sellTime}</if>
+             <if test="laneNum != null and laneNum != ''"> and laneNum = #{laneNum}</if>
+             <if test="pmaxNum != null and pmaxNum != ''"> and pMaxNum = #{pmaxNum}</if>
+             <if test="pcurNum != null and pcurNum != ''"> and pCurNum = #{pcurNum}</if>
+             <if test="stockLevel != null and stockLevel != ''"> and stockLevel = #{stockLevel}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="mconfigId != null and mconfigId != ''"> and mConfigId = #{mconfigId}</if>
+             <if test="configFile != null and configFile != ''"> and configFile = #{configFile}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="address != null and address != ''"> and address = #{address}</if>
+         </where>
+    </select>
+    
+    <select id="selectNeverDelVendingList" parameterType="Vending" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        where curState!=3  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+             <if test="siteCode != null and siteCode != ''"> and siteCode = #{siteCode}</if>
+             <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+             <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+             <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+             <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+             <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+             <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+             <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+             <if test="longitude != null and longitude != ''"> and longitude = #{longitude}</if>
+             <if test="latitude != null and latitude != ''"> and latitude = #{latitude}</if>
+             <if test="payType != null and payType != ''"> and payType = #{payType}</if>
+             <if test="mediaType != null and mediaType != ''"> and mediaType = #{mediaType}</if>
+             <if test="onlineTime != null and onlineTime != ''"> and onlineTime = #{onlineTime}</if>
+             <if test="initTime != null and initTime != ''"> and initTime = #{initTime}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="netWork != null and netWork != ''"> and netWork = #{netWork}</if>
+             <if test="netSate != null and netSate != ''"> and netSate = #{netSate}</if>
+             <if test="netTime != null and netTime != ''"> and netTime = #{netTime}</if>
+             <if test="sellState != null and sellState != ''"> and sellState = #{sellState}</if>
+             <if test="sellTime != null and sellTime != ''"> and sellTime = #{sellTime}</if>
+             <if test="laneNum != null and laneNum != ''"> and laneNum = #{laneNum}</if>
+             <if test="pmaxNum != null and pmaxNum != ''"> and pMaxNum = #{pmaxNum}</if>
+             <if test="pcurNum != null and pcurNum != ''"> and pCurNum = #{pcurNum}</if>
+             <if test="stockLevel != null and stockLevel != ''"> and stockLevel = #{stockLevel}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="mconfigId != null and mconfigId != ''"> and mConfigId = #{mconfigId}</if>
+             <if test="configFile != null and configFile != ''"> and configFile = #{configFile}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="description != null and description != ''"> and description = #{description}</if>
+             <if test="address != null and address != ''"> and address = #{address}</if>
+    </select>
+    
+    <select id="selectVendingById" parameterType="String" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectVendingByCommon" parameterType="String" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        WHERE siteId = #{name} OR siteName like concat('%', #{name}, '%')
+        <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+    </select>
+
+    <select id="selectVendingBySiteId" parameterType="String" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        where siteId = #{siteId}
+    </select>
+
+	<select id="selectVendingByPointId" parameterType="String" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        where pointId = #{pointId} and curState!='3'
+    </select>
+    
+    <select id="selectVendingAllNum" parameterType="String" resultType="Integer">
+        select count(*) from as_vending
+        <where>
+        	<if test="corpId !=null and corpId!= '' ">and corpId=#{corpId}</if>
+        </where>
+    </select>
+    
+    <select id="selectVendingOnlineNum" parameterType="String" resultType="Integer">
+        select count(*) from as_vending where netSate='0' 
+        <if test="corpId !=null and corpId!= '' ">and corpId=#{corpId}</if>
+    </select>
+    
+    <select id="selectVendingOutlineNum" parameterType="String" resultType="Integer">
+        select count(*) from as_vending where netSate='1' 
+        <if test="corpId !=null and corpId!= '' ">and corpId=#{corpId}</if>
+    </select>
+    
+    <select id="selectVendingWzNum" parameterType="String" resultType="Integer">
+        select count(*) from as_vending where curState='2' 
+        <if test="corpId !=null and corpId!= '' ">and corpId=#{corpId}</if>
+    </select>
+    
+    <select id="selectVendingDelNum" parameterType="String" resultType="Integer">
+        select count(*) from as_vending where curState='3'
+        <if test="corpId !=null and corpId!= '' ">and corpId=#{corpId}</if>
+    </select>
+        
+    <insert id="insertVending" parameterType="Vending" useGeneratedKeys="true" keyProperty="siteId">
+        insert into as_vending(logid,siteId,siteCode,siteName,factoryId,cabinetType,deviceId,districtId,lineId,pointId,longitude,latitude,
+        	payType,mediaType,onlineTime,initTime,curState,stateTime,netWork,netSate,netTime,sellState,sellTime,laneNum,pMaxNum,pCurNum,stockLevel,
+        	corpId,mConfigId,configFile,description,address,createTime,platType)
+        values (#{logid},#{siteId},#{siteCode},#{siteName},#{factoryId},#{cabinetType},#{deviceId},#{districtId},#{lineId},#{pointId},#{longitude},
+        	#{latitude},#{payType},#{mediaType},#{onlineTime},#{initTime},#{curState},#{stateTime},#{netWork},#{netSate},#{netTime},#{sellState},
+        	#{sellTime},#{laneNum},#{pmaxNum},#{pcurNum},#{stockLevel},#{corpId},#{mconfigId},#{configFile},#{description},#{address},#{createTime},#{platType})
+    </insert>
+	 
+    <update id="updateVending" parameterType="Vending">
+        update as_vending
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteId != null  and siteId != ''  ">siteId = #{siteId},</if>
+            <if test="siteCode != null  and siteCode != ''  ">siteCode = #{siteCode},</if>
+            <if test="siteName != null  and siteName != ''  ">siteName = #{siteName},</if>
+            <if test="factoryId != null  and factoryId != ''  ">factoryId = #{factoryId},</if>
+            <if test="cabinetType != null  and cabinetType != ''  ">cabinetType = #{cabinetType},</if>
+            <if test="deviceId != null  and deviceId != ''  ">deviceId = #{deviceId},</if>
+            <if test="districtId != null  and districtId != ''  ">districtId = #{districtId},</if>
+            <if test="lineId != null  and lineId != ''  ">lineId = #{lineId},</if>
+            <if test="pointId != null  and pointId != ''  ">pointId = #{pointId},</if>
+            <if test="longitude != null  and longitude != ''  ">longitude = #{longitude},</if>
+            <if test="latitude != null  and latitude != ''  ">latitude = #{latitude},</if>
+            <if test="payType != null  and payType != ''  ">payType = #{payType},</if>
+            <if test="mediaType != null  and mediaType != ''  ">mediaType = #{mediaType},</if>
+            <if test="onlineTime != null  and onlineTime != ''  ">onlineTime = #{onlineTime},</if>
+            <if test="initTime != null  and initTime != ''  ">initTime = #{initTime},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="netWork != null  and netWork != ''  ">netWork = #{netWork},</if>
+            <if test="netSate != null  and netSate != ''  ">netSate = #{netSate},</if>
+            <if test="netTime != null  and netTime != ''  ">netTime = #{netTime},</if>
+            <if test="sellState != null  and sellState != ''  ">sellState = #{sellState},</if>
+            <if test="sellTime != null  and sellTime != ''  ">sellTime = #{sellTime},</if>
+            <if test="laneNum != null  ">laneNum = #{laneNum},</if>
+            <if test="pmaxNum != null  ">pmaxNum = #{pMaxNum},</if>
+            <if test="pcurNum != null  ">pCurNum = #{pcurNum},</if>
+            <if test="stockLevel != null  ">stockLevel = #{stockLevel},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="mconfigId != null  and mconfigId != ''  ">mConfigId = #{mconfigId},</if>
+            <if test="configFile != null  and configFile != ''  ">configFile = #{configFile},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="description != null  and description != ''  ">description = #{description},</if>
+            <if test="address != null  and address != ''  ">address = #{address},</if>
+            <if test="supplyState != null  and supplyState != ''  ">supplyState = #{supplyState},</if>
+            <if test="supplySTime != null  and supplySTime != ''  ">address = #{supplySTime},</if>
+            <if test="underState != null  and underState != ''  ">address = #{underState},</if>
+            <if test="underSTime != null  and underSTime != ''  ">address = #{underSTime},</if>
+        </trim>
+        where logid = #{logid}
+    </update>
+
+	<delete id="deleteVendingById" parameterType="String">
+        delete from as_vending where logid = #{logid}
+    </delete>
+	
+    <delete id="deleteVendingByIds" parameterType="String">
+        delete from as_vending where siteId in 
+        <foreach item="siteId" collection="array" open="(" separator="," close=")">
+            #{siteId}
+        </foreach>
+    </delete>
+    
+    <select id="selectNVendingList" parameterType="VendingListVo" resultMap="VendingListVoResult">
+        select a.logid, a.siteId, a.siteCode, a.siteName, a.factoryId, a.cabinetType, a.deviceId, 
+        	a.districtId, a.lineId, a.pointId, a.longitude, a.latitude, a.payType, a.mediaType, 
+        	a.onlineTime, a.initTime, a.curState, a.stateTime, a.netWork, a.netSate, a.netTime, 
+        	a.sellState, a.sellTime, a.laneNum, a.pMaxNum, a.pCurNum, a.stockLevel, a.corpId, a.mConfigId, 
+        	a.configFile, a.createTime, a.description, a.address, b.name as districtName,c.name as lineName, 
+        	d.name as pointName, d.city, d.province,d.district,d.country
+		from as_vending a left join as_vending_district b on a.districtId = b.districtId and a.corpId = b.corpId
+		     left join as_vending_line c on a.lineId = c.lineId and a.corpId = c.corpId
+		     left join as_vending_point d on a.pointId = d.pointId and a.corpId = d.corpId
+		<where>  
+             <if test="corpId != null and corpId != ''"> and a.corpId = #{corpId}</if>
+             <if test="province != null and province != ''"> and d.province = #{province}</if>
+             <if test="city != null and city != ''"> and d.city = #{city}</if>
+             <if test="district != null and district != ''"> and d.district = #{district}</if>
+             <if test="netSate != null and netSate != ''"> and a.netSate = #{netSate}</if>
+             <if test="lineId != null and lineId != ''"> and a.lineId = #{lineId}</if>
+             <if test="districtId != null and districtId != ''"> and a.districtId = #{districtId}</if>
+             <if test="siteCode != null and siteCode != ''"> and a.siteCode = #{siteCode}</if>
+             <if test="curState != null and curState != ''"> and a.curState = #{curState}</if>
+             <if test="searchName != null and searchName != ''"> and (a.`siteCode`=#{searchName} OR a.siteName LIKE CONCAT('%', #{searchName}, '%'))</if>
+             
+         </where>
+    </select>
+    
+    <select id="selectCabinetTypeByFactoryId" resultMap="CabinetTypeSelectVoResult">
+    	SELECT s.`dict_value` as cabinetType, s.`dict_label` as cabinetTypeName,t.factoryId
+  		FROM sys_factory_cabinet t LEFT JOIN sys_dict_data s ON s.`dict_type` = 'sys_cabinet_type' AND  t.`cabinetType` = s.`dict_value`
+  		<where>
+  			<if test="factoryId != null  and factoryId != ''  ">t.factoryId = #{factoryId}</if>
+  		</where>
+  		
+  </select>
+  
+  <select id="selectDeviceByCabinetType" parameterType="java.lang.String" resultMap="vendingModelResult">
+  	SELECT DISTINCT t.`deviceId`,t.deviceCode,t.cabinetType FROM as_vending_model t
+  	 <where>
+  	 	<if test="cabinetType != null  and cabinetType != ''  ">t.cabinetType = #{cabinetType}</if>
+  	 	<if test="corpId != null and corpId != ''"> and t.corpId = #{corpId}</if>
+  	 </where>
+  </select>
+  
+  <select id="selectVendingNumByPointIds" parameterType="java.lang.String" resultType="Integer">
+  	SELECT count(*) from as_vending where curState!=3 and pointId in
+	<foreach item="pointId" collection="array" open="(" separator="," close=")">
+    	#{pointId}
+    </foreach>
+  </select>
+  
+  <select id="selectVendingCap" parameterType="java.lang.String" resultType="map">
+  	SELECT SUM(ifnull(a.`capacity`,0)) AS pmaxNum, SUM(ifnull(a.`curCap`,0)) AS pcurNum 
+  	FROM as_vending_lanep a LEFT JOIN as_vending_lane b ON a.`slaneId`=b.`slaneId` 
+ 		LEFT JOIN as_vending c ON b.`siteId` = c.`siteId` 
+ 	WHERE c.`siteId`=#{siteId}
+  </select>
+  
+  <update id="siteProductUnder" parameterType="Vending">
+        update as_vending set underState='1' where siteId in 
+        <foreach item="siteId" collection="array" open="(" separator="," close=")">
+	    	#{siteId}
+	    </foreach>
+    </update>
+    
+    <select id="selectVendingByIds" parameterType="java.lang.String" resultMap="VendingResult">
+	 	<include refid="selectVendingVo"/>
+	 	where siteId in
+		<foreach item="siteId" collection="array" open="(" separator="," close=")">
+	   		#{siteId}
+	    </foreach>
+    </select>
+    
+    <select id="selectNeverDelVendingBySiteId" parameterType="java.lang.String" resultMap="VendingResult">
+	 	<include refid="selectVendingVo"/>
+	 	where siteId = #{siteId} and curState != '3'
+    </select>
+    
+    <update id="updateLongitudeLatitude" parameterType="Vending">
+        update as_vending SET longitude = #{longitude}, latitude = #{latitude} where siteId = #{siteId}
+    </update>
+    
+    <!-- <select id="selectNeverDelVendingList" parameterType="Vending" resultMap="VendingResult">
+        <include refid="selectVendingVo"/>
+        where curState != '3'  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+            <if test="siteId != null and siteId != ''"> and siteId = #{siteId}</if>
+            <if test="siteCode != null and siteCode != ''"> and siteCode = #{siteCode}</if>
+            <if test="siteName != null and siteName != ''"> and siteName = #{siteName}</if>
+            <if test="factoryId != null and factoryId != ''"> and factoryId = #{factoryId}</if>
+            <if test="cabinetType != null and cabinetType != ''"> and cabinetType = #{cabinetType}</if>
+            <if test="deviceId != null and deviceId != ''"> and deviceId = #{deviceId}</if>
+            <if test="districtId != null and districtId != ''"> and districtId = #{districtId}</if>
+            <if test="lineId != null and lineId != ''"> and lineId = #{lineId}</if>
+            <if test="pointId != null and pointId != ''"> and pointId = #{pointId}</if>
+            <if test="longitude != null and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="latitude != null and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="payType != null and payType != ''"> and payType = #{payType}</if>
+            <if test="mediaType != null and mediaType != ''"> and mediaType = #{mediaType}</if>
+            <if test="onlineTime != null and onlineTime != ''"> and onlineTime = #{onlineTime}</if>
+            <if test="initTime != null and initTime != ''"> and initTime = #{initTime}</if>
+            <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+            <if test="netWork != null and netWork != ''"> and netWork = #{netWork}</if>
+            <if test="netSate != null and netSate != ''"> and netSate = #{netSate}</if>
+            <if test="netTime != null and netTime != ''"> and netTime = #{netTime}</if>
+            <if test="sellState != null and sellState != ''"> and sellState = #{sellState}</if>
+            <if test="sellTime != null and sellTime != ''"> and sellTime = #{sellTime}</if>
+            <if test="laneNum != null and laneNum != ''"> and laneNum = #{laneNum}</if>
+            <if test="pmaxNum != null and pmaxNum != ''"> and pMaxNum = #{pmaxNum}</if>
+            <if test="pcurNum != null and pcurNum != ''"> and pCurNum = #{pcurNum}</if>
+            <if test="stockLevel != null and stockLevel != ''"> and stockLevel = #{stockLevel}</if>
+            <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+            <if test="mconfigId != null and mconfigId != ''"> and mConfigId = #{mconfigId}</if>
+            <if test="configFile != null and configFile != ''"> and configFile = #{configFile}</if>
+            <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+            <if test="description != null and description != ''"> and description = #{description}</if>
+            <if test="address != null and address != ''"> and address = #{address}</if>
+    </select> -->
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.base.mapper.CorpMapper">
+    
+    <resultMap type="Corp" id="CorpResult">
+        <result property="logid"    column="logid"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="corpName"    column="corpName"    />
+        <result property="address"    column="address"    />
+        <result property="tel"    column="tel"    />
+        <result property="leader"    column="leader"    />
+        <result property="leaderMobile"    column="leaderMobile"    />
+        <result property="curState"    column="curState"    />
+        <result property="stateTime"    column="stateTime"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+    
+    <resultMap type="SequenceId" id="SequenceIdResult">
+        <result property="logid"    column="logid"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="name"    column="name"    />
+        <result property="id"    column="id"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+	
+	<sql id="selectCorpVo">
+        select logid, corpId, corpName, address, tel, leader, leaderMobile, curState, stateTime, createTime from as_corp
+    </sql>
+	
+    <select id="selectCorpList" parameterType="Corp" resultMap="CorpResult">
+        <include refid="selectCorpVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="corpName != null and corpName != ''"> and corpName like concat("%",#{corpName},"%")</if>
+             <if test="address != null and address != ''"> and address = #{address}</if>
+             <if test="tel != null and tel != ''"> and tel = #{tel}</if>
+             <if test="leader != null and leader != ''"> and leader = #{leader}</if>
+             <if test="leaderMobile != null and leaderMobile != ''"> and leaderMobile = #{leaderMobile}</if>
+             <if test="curState != null and curState != ''"> and curState = #{curState}</if>
+             <if test="stateTime != null and stateTime != ''"> and stateTime = #{stateTime}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectCorpById" parameterType="String" resultMap="CorpResult">
+        <include refid="selectCorpVo"/>
+        where corpId = #{corpId}
+    </select>
+    <select id="selectCorpByCorpName" parameterType="String" resultMap="CorpResult">
+        <include refid="selectCorpVo"/>
+        where corpName = #{corpName}
+    </select>
+        
+    <insert id="insertCorp" parameterType="Corp">
+        insert into as_corp
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="corpName != null and corpName != '' ">corpName,</if>
+			<if test="address != null and address != '' ">address,</if>
+			<if test="tel != null and tel != '' ">tel,</if>
+			<if test="leader != null and leader != '' ">leader,</if>
+			<if test="leaderMobile != null and leaderMobile != '' ">leaderMobile,</if>
+			<if test="curState != null and curState != '' ">curState,</if>
+			<if test="stateTime != null and stateTime != '' ">stateTime,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="corpName != null and corpName != ''">#{corpName},</if>
+			<if test="address != null and address != ''">#{address},</if>
+			<if test="tel != null and tel != ''">#{tel},</if>
+			<if test="leader != null and leader != ''">#{leader},</if>
+			<if test="leaderMobile != null and leaderMobile != ''">#{leaderMobile},</if>
+			<if test="curState != null and curState != ''">#{curState},</if>
+			<if test="stateTime != null and stateTime != ''">#{stateTime},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateCorp" parameterType="Corp">
+        update as_corp
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="corpName != null  and corpName != ''  ">corpName = #{corpName},</if>
+            <if test="address != null  and address != ''  ">address = #{address},</if>
+            <if test="tel != null  and tel != ''  ">tel = #{tel},</if>
+            <if test="leader != null  and leader != ''  ">leader = #{leader},</if>
+            <if test="leaderMobile != null  and leaderMobile != ''  ">leaderMobile = #{leaderMobile},</if>
+            <if test="curState != null  and curState != ''  ">curState = #{curState},</if>
+            <if test="stateTime != null  and stateTime != ''  ">stateTime = #{stateTime},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+        </trim>
+        where corpId = #{corpId}
+    </update>
+
+	<delete id="deleteCorpById" parameterType="String">
+        delete from as_corp where corpId = #{corpId}
+    </delete>
+	
+    <delete id="deleteCorpByIds" parameterType="String">
+        delete from as_corp where corpId in 
+        <foreach item="corpId" collection="array" open="(" separator="," close=")">
+            #{corpId}
+        </foreach>
+    </delete>
+    
+    <select id="selectCorpByName" parameterType="Corp" resultMap="CorpResult">
+        <include refid="selectCorpVo"/>
+        where corpName like '%${corpName}%'
+        <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+    </select>
+    
+    <insert id="insertSequenceIdBatch" parameterType="java.util.List">
+        insert into sys_sequence_id(logid,`id`,`name`,description,corpId)
+		values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.logid}, #{item.id},#{item.name},#{item.description},#{item.corpId})
+        </foreach>
+    </insert>
+    
+    <select id="selectAllTableName" parameterType="String" resultType="string">
+        SELECT table_name FROM information_schema.tables WHERE table_schema=#{schema}
+    </select>
+</mapper>

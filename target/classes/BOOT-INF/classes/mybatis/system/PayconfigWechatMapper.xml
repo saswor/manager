@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manage.project.system.base.mapper.PayconfigWechatMapper">
+    
+    <resultMap type="PayconfigWechat" id="PayconfigWechatResult">
+        <result property="logid"    column="logid"    />
+        <result property="payConfigId"    column="payConfigId"    />
+        <result property="corpId"    column="corpId"    />
+        <result property="payAccept"    column="payAccept"    />
+        <result property="autoReturn"    column="autoReturn"    />
+        <result property="payType"    column="payType"    />
+        <result property="contactType"    column="contactType"    />
+        <result property="appId"    column="appId"    />
+        <result property="appSecret"    column="appSecret"    />
+        <result property="contactCode"    column="contactCode"    />
+        <result property="apiSecret"    column="apiSecret"    />
+        <result property="authBack"    column="authBack"    />
+        <result property="returnNotice"    column="returnNotice"    />
+        <result property="fetchCodeNotice"    column="fetchCodeNotice"    />
+        <result property="rate"    column="rate"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="title"    column="title"    />
+        <result property="body"    column="body"    />
+        <result property="subMchId"    column="subMchId"    />
+        <result property="deviceInfo"    column="deviceInfo"    />
+        <result property="spbillCreateIp"    column="spbillCreateIp"    />
+        <result property="feeType"    column="feeType"    />
+        <result property="tradeType"    column="tradeType"    />
+        <result property="license"    column="license"    />
+        <result property="testState"    column="testState"    />
+    </resultMap>
+	
+	<sql id="selectPayconfigWechatVo">
+        select logid, payConfigId, corpId, payAccept, autoReturn, payType, contactType, appId, appSecret, contactCode, apiSecret, authBack, returnNotice, fetchCodeNotice, rate, createTime, title, body, subMchId, deviceInfo, spbillCreateIp, feeType, tradeType, license,testState from as_payconfig_wechat
+    </sql>
+	
+    <select id="selectPayconfigWechatList" parameterType="PayconfigWechat" resultMap="PayconfigWechatResult">
+        <include refid="selectPayconfigWechatVo"/>
+        <where>  
+            <if test="logid != null and logid != ''"> and logid = #{logid}</if>
+             <if test="payConfigId != null and payConfigId != ''"> and payConfigId = #{payConfigId}</if>
+             <if test="corpId != null and corpId != ''"> and corpId = #{corpId}</if>
+             <if test="payAccept != null and payAccept != ''"> and payAccept = #{payAccept}</if>
+             <if test="autoReturn != null and autoReturn != ''"> and autoReturn = #{autoReturn}</if>
+             <if test="payType != null and payType != ''"> and payType = #{payType}</if>
+             <if test="contactType != null and contactType != ''"> and contactType = #{contactType}</if>
+             <if test="appId != null and appId != ''"> and appId = #{appId}</if>
+             <if test="appSecret != null and appSecret != ''"> and appSecret = #{appSecret}</if>
+             <if test="contactCode != null and contactCode != ''"> and contactCode = #{contactCode}</if>
+             <if test="apiSecret != null and apiSecret != ''"> and apiSecret = #{apiSecret}</if>
+             <if test="authBack != null and authBack != ''"> and authBack = #{authBack}</if>
+             <if test="returnNotice != null and returnNotice != ''"> and returnNotice = #{returnNotice}</if>
+             <if test="fetchCodeNotice != null and fetchCodeNotice != ''"> and fetchCodeNotice = #{fetchCodeNotice}</if>
+             <if test="rate != null and rate != ''"> and rate = #{rate}</if>
+             <if test="createTime != null and createTime != ''"> and createTime = #{createTime}</if>
+             <if test="title != null and title != ''"> and title = #{title}</if>
+             <if test="body != null and body != ''"> and body = #{body}</if>
+             <if test="subMchId != null and subMchId != ''"> and subMchId = #{subMchId}</if>
+             <if test="deviceInfo != null and deviceInfo != ''"> and deviceInfo = #{deviceInfo}</if>
+             <if test="spbillCreateIp != null and spbillCreateIp != ''"> and spbillCreateIp = #{spbillCreateIp}</if>
+             <if test="feeType != null and feeType != ''"> and feeType = #{feeType}</if>
+             <if test="tradeType != null and tradeType != ''"> and tradeType = #{tradeType}</if>
+         	 <if test="testState != null and testState != ''"> and testState = #{testState}</if>
+         </where>
+    </select>
+    
+    <select id="selectPayconfigWechatById" parameterType="String" resultMap="PayconfigWechatResult">
+        <include refid="selectPayconfigWechatVo"/>
+        where logid = #{logid}
+    </select>
+    
+    <select id="selectPayconfigWechat" parameterType="PayconfigWechat" resultMap="PayconfigWechatResult">
+        <include refid="selectPayconfigWechatVo"/>
+        where corpId = #{corpId}
+    </select>
+        
+    <insert id="insertPayconfigWechat" parameterType="PayconfigWechat">
+        insert into as_payconfig_wechat
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != '' ">logid,</if>
+			<if test="payConfigId != null and payConfigId != '' ">payConfigId,</if>
+			<if test="corpId != null and corpId != '' ">corpId,</if>
+			<if test="payAccept != null and payAccept != '' ">payAccept,</if>
+			<if test="autoReturn != null and autoReturn != '' ">autoReturn,</if>
+			<if test="payType != null and payType != '' ">payType,</if>
+			<if test="contactType != null and contactType != '' ">contactType,</if>
+			<if test="appId != null and appId != '' ">appId,</if>
+			<if test="appSecret != null and appSecret != '' ">appSecret,</if>
+			<if test="contactCode != null and contactCode != '' ">contactCode,</if>
+			<if test="apiSecret != null and apiSecret != '' ">apiSecret,</if>
+			<if test="authBack != null and authBack != '' ">authBack,</if>
+			<if test="returnNotice != null and returnNotice != '' ">returnNotice,</if>
+			<if test="fetchCodeNotice != null and fetchCodeNotice != '' ">fetchCodeNotice,</if>
+			<if test="rate != null and rate != '' ">rate,</if>
+			<if test="createTime != null and createTime != '' ">createTime,</if>
+			<if test="title != null and title != '' ">title,</if>
+			<if test="body != null and body != '' ">body,</if>
+			<if test="subMchId != null and subMchId != '' ">subMchId,</if>
+			<if test="deviceInfo != null and deviceInfo != '' ">deviceInfo,</if>
+			<if test="spbillCreateIp != null and spbillCreateIp != '' ">spbillCreateIp,</if>
+			<if test="feeType != null and feeType != '' ">feeType,</if>
+			<if test="tradeType != null and tradeType != '' ">tradeType,</if>
+			<if test="license != null and license != '' ">license,</if>
+			<if test="testState != null and testState != ''">testState,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">#{logid},</if>
+			<if test="payConfigId != null and payConfigId != ''">#{payConfigId},</if>
+			<if test="corpId != null and corpId != ''">#{corpId},</if>
+			<if test="payAccept != null and payAccept != ''">#{payAccept},</if>
+			<if test="autoReturn != null and autoReturn != ''">#{autoReturn},</if>
+			<if test="payType != null and payType != ''">#{payType},</if>
+			<if test="contactType != null and contactType != ''">#{contactType},</if>
+			<if test="appId != null and appId != ''">#{appId},</if>
+			<if test="appSecret != null and appSecret != ''">#{appSecret},</if>
+			<if test="contactCode != null and contactCode != ''">#{contactCode},</if>
+			<if test="apiSecret != null and apiSecret != ''">#{apiSecret},</if>
+			<if test="authBack != null and authBack != ''">#{authBack},</if>
+			<if test="returnNotice != null and returnNotice != ''">#{returnNotice},</if>
+			<if test="fetchCodeNotice != null and fetchCodeNotice != ''">#{fetchCodeNotice},</if>
+			<if test="rate != null and rate != ''">#{rate},</if>
+			<if test="createTime != null and createTime != ''">#{createTime},</if>
+			<if test="title != null and title != ''">#{title},</if>
+			<if test="body != null and body != ''">#{body},</if>
+			<if test="subMchId != null and subMchId != ''">#{subMchId},</if>
+			<if test="deviceInfo != null and deviceInfo != ''">#{deviceInfo},</if>
+			<if test="spbillCreateIp != null and spbillCreateIp != ''">#{spbillCreateIp},</if>
+			<if test="feeType != null and feeType != ''">#{feeType},</if>
+			<if test="tradeType != null and tradeType != ''">#{tradeType},</if>
+			<if test="license != null and license != '' ">#{license},</if>
+			<if test="testState != null and testState != ''">#{testState},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updatePayconfigWechat" parameterType="PayconfigWechat">
+        update as_payconfig_wechat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="payConfigId != null  and payConfigId != ''  ">payConfigId = #{payConfigId},</if>
+            <if test="corpId != null  and corpId != ''  ">corpId = #{corpId},</if>
+            <if test="payAccept != null  and payAccept != ''  ">payAccept = #{payAccept},</if>
+            <if test="autoReturn != null  and autoReturn != ''  ">autoReturn = #{autoReturn},</if>
+            <if test="payType != null  and payType != ''  ">payType = #{payType},</if>
+            <if test="contactType != null  and contactType != ''  ">contactType = #{contactType},</if>
+            <if test="appId != null  and appId != ''  ">appId = #{appId},</if>
+            <if test="appSecret != null  and appSecret != ''  ">appSecret = #{appSecret},</if>
+            <if test="contactCode != null  and contactCode != ''  ">contactCode = #{contactCode},</if>
+            <if test="apiSecret != null  and apiSecret != ''  ">apiSecret = #{apiSecret},</if>
+            <if test="authBack != null  and authBack != ''  ">authBack = #{authBack},</if>
+            <if test="returnNotice != null  and returnNotice != ''  ">returnNotice = #{returnNotice},</if>
+            <if test="fetchCodeNotice != null  and fetchCodeNotice != ''  ">fetchCodeNotice = #{fetchCodeNotice},</if>
+            <if test="rate != null  ">rate = #{rate},</if>
+            <if test="createTime != null  and createTime != ''  ">createTime = #{createTime},</if>
+            <if test="title != null  and title != ''  ">title = #{title},</if>
+            <if test="body != null  and body != ''  ">body = #{body},</if>
+            <if test="subMchId != null  and subMchId != ''  ">subMchId = #{subMchId},</if>
+            <if test="deviceInfo != null  and deviceInfo != ''  ">deviceInfo = #{deviceInfo},</if>
+            <if test="spbillCreateIp != null  and spbillCreateIp != ''  ">spbillCreateIp = #{spbillCreateIp},</if>
+            <if test="feeType != null  and feeType != ''  ">feeType = #{feeType},</if>
+            <if test="tradeType != null  and tradeType != ''  ">tradeType = #{tradeType},</if>
+            <if test="license != null and license != '' ">license = #{license},</if>
+            <if test="testState != null and testState != ''">testState = #{testState},</if>
+        </trim>
+        where payConfigId = #{payConfigId}
+    </update>
+
+	<delete id="deletePayconfigWechatById" parameterType="String">
+        delete from as_payconfig_wechat where logid = #{logid}
+    </delete>
+	
+    <delete id="deletePayconfigWechatByIds" parameterType="String">
+        delete from as_payconfig_wechat where logid in 
+        <foreach item="logid" collection="array" open="(" separator="," close=")">
+            #{logid}
+        </foreach>
+    </delete>
+    
+</mapper>
